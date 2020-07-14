@@ -3,6 +3,7 @@ package com.example.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,6 +13,8 @@ import com.example.service.UserService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.security.auth.callback.ConfirmationCallback;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -66,14 +69,18 @@ public class CurryController {
 		userService.insert(user);
 		return "redirect:/";
 	}
-
+	
+	@RequestMapping("/confirm")
+	public String Confirm() {
+		return "order_confirm";
+	}
 	/**
 	 * 注文情報を登録
 	 * 
 	 * @author shoya fujisawa
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated OrderForm form, BindingResult result) {
+	public String insert(@Validated OrderForm form, BindingResult result,Model model) {
 		if (result.hasErrors()) {
 
 		}
@@ -100,8 +107,9 @@ public class CurryController {
 			long dateTimeTo = orderDate.getTime();
 			long dateTimeFrom = nowDate.getTime();
 			if ((dateTimeTo - dateTimeFrom) / (1000 * 60 * 60) <= 180) {
-				order.setOrderDate(orderDate);
+				model.addAttribute("今から3時間後の日時をご入力ください");
 			}
+			order.setOrderDate(orderDate);
 		} catch (java.text.ParseException e) {
 			e.printStackTrace();
 		}
