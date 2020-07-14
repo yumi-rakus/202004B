@@ -14,14 +14,20 @@ import com.example.service.UserService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.security.auth.callback.ConfirmationCallback;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 
 import com.example.domain.Order;
 import com.example.form.OrderForm;
 import com.example.service.OrderService;
+
+import java.util.List;
+
+import com.example.domain.Item;
+import com.example.domain.Topping;
+import com.example.form.ItemForm;
+import com.example.service.ItemService;
+import com.example.service.ToppingService;
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -33,6 +39,7 @@ import com.example.service.OrderService;
 @Controller
 @RequestMapping("")
 public class CurryController {
+
 	@ModelAttribute
 	private OrderForm orderForm() {
 		return new OrderForm();
@@ -69,18 +76,19 @@ public class CurryController {
 		userService.insert(user);
 		return "redirect:/";
 	}
-	
+
 	@RequestMapping("/confirm")
 	public String Confirm() {
 		return "order_confirm";
 	}
+
 	/**
 	 * 注文情報を登録
 	 * 
 	 * @author shoya fujisawa
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated OrderForm form, BindingResult result,Model model) {
+	public String insert(@Validated OrderForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 
 		}
@@ -123,6 +131,49 @@ public class CurryController {
 
 		orderService.insert(order);
 		return "order_finished";
+	}
+
+	@Autowired
+	private ItemService itemService;
+
+	@Autowired
+	private ToppingService toppingService;
+
+	@ModelAttribute
+	public ItemForm setUpItemForm() {
+		return new ItemForm();
+	}
+
+	/**
+	 * 商品情報詳細画面を出力する.
+	 * 
+	 * @param id    商品ID
+	 * @param model モデル
+	 * @return 商品情報詳細画面
+	 */
+	@RequestMapping("/showDetail")
+	public String showDetail(String id, Model model, ItemForm itemForm) {
+
+		Item item = itemService.showDetail(Integer.parseInt(id));
+		List<Topping> toppingList = toppingService.showToppingList();
+
+		model.addAttribute("item", item);
+		model.addAttribute("toppingList", toppingList);
+
+		itemForm.setSize("M");
+		itemForm.setQuantity(1);
+
+		return "item_detail";
+	}
+
+	@RequestMapping("/cart-in")
+	public String cartIn(@Validated ItemForm form, BindingResult result) {
+
+		if (result.hasErrors()) {
+			return "item_detail";
+		}
+
+		return "cart-in-complete";
 	}
 
 }
