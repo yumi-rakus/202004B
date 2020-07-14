@@ -26,20 +26,26 @@ public class CurryController {
     return "login";
   }
 
+  /**
+   * SpringSecurity実装後のログインユーザーを登録するメソッドです 一度だけこのURLを叩いてください ※2回目は絶対に叩かないでください
+   * 全員がこのメソッドを実行後、直ちにこのメソッドは削除します
+   */
+  @RequestMapping("/insert-user")
+  public String insertUser() {
+    User user = new User();
+    user.setName("test");
+    user.setEmail("t@t"); // ログインID
+    user.setPassword("ttt"); // ログインPW
+    user.setAddress("test住所");
+    user.setTelephone("テスト電話番号");
+    user.setZipcode("1111111");
+    userRipository.insert(user);
+    return "login";
+  }
+
   @RequestMapping("/success")
   public String success() {
-    return "success";
-  }
-
-  @RequestMapping("/fail")
-  public String fail() {
-    return "fail";
-  }
-
-  @RequestMapping("/login")
-  public String login(String email, String password) {
-    User user = userRipository.findByEmail(email);
-    return "forward:/success";
+    return "item_list_curry";
   }
 
 }
