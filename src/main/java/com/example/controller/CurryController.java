@@ -13,8 +13,6 @@ import com.example.domain.User;
 import com.example.form.UserForm;
 import com.example.service.UserService;
 
-import org.springframework.beans.BeanUtils;
-
 /**
  * カレーECサイトを操作するコントローラ.
  * 
@@ -59,7 +57,6 @@ public class CurryController {
 		userService.insert(user);
 		return "redirect:/";
 	}
-	
-	
+	//修正
 
 }
