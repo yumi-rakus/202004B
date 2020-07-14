@@ -1,35 +1,29 @@
 package com.example.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.domain.User;
-import com.example.form.UserForm;
-import com.example.service.UserService;
-
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-
-import com.example.domain.Order;
-import com.example.form.OrderForm;
-import com.example.service.OrderService;
-
-import java.util.List;
-
 import com.example.domain.Item;
+import com.example.domain.Order;
 import com.example.domain.Topping;
+import com.example.domain.User;
 import com.example.form.ItemForm;
+import com.example.form.OrderForm;
+import com.example.form.UserForm;
 import com.example.service.ItemService;
+import com.example.service.OrderService;
 import com.example.service.ToppingService;
-
+import com.example.service.UserService;
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -83,7 +77,7 @@ public class CurryController {
 		userService.insert(user);
 		return "redirect:/";
 	}
-	//修正
+	// 修正
 
 	@RequestMapping("/confirm")
 	public String Confirm() {
