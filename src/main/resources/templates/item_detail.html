@@ -16,21 +16,22 @@
 	<div class="container">
 		<span th:include="fragment-part::frag_nav"></span>
 
-		<form action="cart_list.html">
+		<form action="cart_list.html" th:action="@{/cart-in}" th:object="${itemForm}" method="post">
+		
 		<div class="row">
 			<div class="col-xs-offset-2 col-xs-8">
 
 				<h3 class="text-center">商品詳細</h3>
 				<div class="row">
 					<div class="col-xs-5">
-						<img src="../static/img_pizza/1.jpg" class="img-responsive img-rounded item-img-center">
+						<img th:src="@{'/img_curry/' + ${item.imagePath}}" class="img-responsive img-rounded item-img-center">
 					</div>
 
 					<div class="col-xs-5">
 						<div class="bs-component">
-							<h4>じゃがバターベーコン</h4> <br>
+							<h4 th:text="${item.name}">じゃがバターベーコン</h4> <br>
 							<br>
-							<p>マイルドな味付けのカレーに大きくカットしたポテトをのせた、バターとチーズの風味が食欲をそそるお子様でも楽しめる商品です。</p>
+							<p th:text="${item.description}">マイルドな味付けのカレーに大きくカットしたポテトをのせた、バターとチーズの風味が食欲をそそるお子様でも楽しめる商品です。</p>
 						</div>
 					</div>
 				</div><br>
@@ -44,13 +45,13 @@
 								<div class="col-sm-12">
 									<label class="radio-inline">
 										<input type="radio"
-											name="responsibleCompany" checked="checked">
-										<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;1,380円(税抜)
+											th:field="${itemForm.size}" th:value="M">
+										<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;<span th:text="${#numbers.formatInteger(item.priceM, 1, 'COMMA')} + '円（税抜）'">1,380円(税抜)</span>
 									</label>
 									<label class="radio-inline">
 										<input type="radio"
-											name="responsibleCompany">
-										<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円(税抜)
+											th:field="${itemForm.size}" th:value="L">
+										<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;<span th:text="${#numbers.formatInteger(item.priceL, 1, 'COMMA')} + '円（税抜）'">2,380円(税抜)</span>
 									</label>
 								</div>
 							</div>
@@ -69,30 +70,13 @@
 									</label>
 								</div>
 								<div class="col-sm-12">
-									<label class="checkbox-inline">
-										<input type="checkbox" value="">オニオン
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" value="">チーズ
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" value="">ピーマン
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" value="">ロースハム
-									</label><br>
-									<label class="checkbox-inline">
-										<input type="checkbox" value="">ほうれん草
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" value="">ぺパロに
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" value="">グリルナス
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" value="">あらびきソーセージ
-									</label>
+									<div th:each="topping : ${toppingList}">
+										<div th:object="${topping}">
+											<label class="checkbox-inline">
+												<input type="checkbox" th:field="${itemForm.toppingIdList}" th:value="*{id}" th:text="*{name}">
+											</label>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -103,22 +87,24 @@
 						<div class="form-group">
 							<div class="row">
 								<div class="col-xs-5 col-sm-5">
-									<label for="">数量:</label>
-									<label class="control-label"
-										style="color: red" for="inputError">数量を選択してください</label> <select
-										name="area" class="form-control">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-										<option value="7">7</option>
-										<option value="8">8</option>
-										<option value="9">9</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-										<option value="12">12</option>
+								<div th:if="${#fields.hasErrors('${itemForm.quantity}')}" th:errors="${itemForm.quantity}"
+										style="color: red">数量を選択してください</div> 
+									<label for="quantity">数量:</label>
+									
+										<select
+										th:field="${itemForm.quantity}" class="form-control">
+										<option value=1>1</option>
+										<option value=2>2</option>
+										<option value=3>3</option>
+										<option value=4>4</option>
+										<option value=5>5</option>
+										<option value=6>6</option>
+										<option value=7>7</option>
+										<option value=8>8</option>
+										<option value=9>9</option>
+										<option value=10>10</option>
+										<option value=11>11</option>
+										<option value=12>12</option>
 									</select>
 								</div>
 							</div>
@@ -137,6 +123,7 @@
 					<div class="col-xs-offset-2 col-xs-3">
 						<div class="form-group">
 							<p>
+								<input type="hidden" name="itemId" th:value="${item.id}">
 								<input class="form-control btn btn-warning btn-block"
 									type="submit" value="カートに入れる">
 							</p>
@@ -146,6 +133,7 @@
 				</div>
 			</div>
 		</div>
+		
 		</form>
 
 	</div>
