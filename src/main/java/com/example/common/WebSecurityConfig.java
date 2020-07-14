@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 
-	@Override
+  @Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/favicon.ico", "/css/**", "/js/**", "/img/**", "/fonts/**");
 	}
@@ -29,21 +29,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests()
-			.antMatchers("/insert", "/", "/toInsert", "/login").permitAll()
+			.antMatchers("/").permitAll()
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()
-			.loginPage("/") // 自身で作ったログインの画面のURLを設定
+			.loginPage("/").permitAll()
 			.loginProcessingUrl("/login")
-			.defaultSuccessUrl("/ok", true)
-			.failureUrl("/?error")
-			.usernameParameter("email") // formのname属性の値
-			.passwordParameter("password") // formのname属性の値
+			.defaultSuccessUrl("/success", true)
+			.failureUrl("/fail")
+			.usernameParameter("email")
+			.passwordParameter("password")
 			.and()
 		.logout()
-			.permitAll()
-			.logoutSuccessUrl("/") // ログアウト時の遷移先URL
-			.deleteCookies();// ログアウトするとCookieのJSESSIONIDを削除
+			.permitAll();
 	}
 
 	@Override

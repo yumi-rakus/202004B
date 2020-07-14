@@ -1,5 +1,9 @@
 package com.example.controller;
 
+import com.example.domain.User;
+import com.example.repository.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,15 +18,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class CurryController {
 
+  @Autowired
+  private UserRepository userRipository;
+
   @RequestMapping("")
   public String index() {
     return "login";
   }
 
+  @RequestMapping("/success")
+  public String success() {
+    return "success";
+  }
+
+  @RequestMapping("/fail")
+  public String fail() {
+    return "fail";
+  }
+
   @RequestMapping("/login")
   public String login(String email, String password) {
-    System.out.println(email + "   " + password);
-    return "item_list_curry";
+    User user = userRipository.findByEmail(email);
+    return "forward:/success";
   }
 
 }
