@@ -3,6 +3,9 @@ package com.example.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -34,7 +37,7 @@ public class CurryController {
 	// ログイン画面を表示
 	@RequestMapping("")
 	public String index() {
-		return "login";
+		return "item_list_curry";
 	}
 
 	// 従業員登録画面を表示
@@ -45,11 +48,18 @@ public class CurryController {
 
 	// 従業員登録をする
 	@RequestMapping("/register")
-	public String register(UserForm userForm) {
+	public String register(@Validated UserForm userForm, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			return indexRegister();
+		}
+
 		User user = new User();
 		BeanUtils.copyProperties(userForm, user);
 		userService.insert(user);
 		return "redirect:/";
 	}
+	
+	
 
 }

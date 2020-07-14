@@ -1,5 +1,10 @@
 package com.example.form;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 /**
  * ユーザ情報登録時に使用するフォーム.
  * 
@@ -8,12 +13,35 @@ package com.example.form;
  */
 public class UserForm {
 	private Integer id;
+	@NotBlank(message = "名前を入力してください")
 	private String name;
+	@Email(message = "メールアドレスの形式が不正です")
+	@NotBlank(message = "メールアドレスを入力してください")
 	private String email;
+	@NotBlank(message = "パスワードを入力してください")
+	@Size(min = 1, max = 16, message = "パスワードは８文字以上１６文字以内で設定してください")
 	private String password;
+	@NotBlank(message = "郵便番号を入力してください")
+	@Pattern(message = "郵便番号はXXX-XXXXの形式で入力してください", regexp = "[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]")
 	private String zipcode;
+	@NotBlank(message = "住所を入力してください")
 	private String address;
+	@NotBlank(message = "電話番号を入力してください")
+	/*
+	 * @Pattern(message = "電話番号はXXXX-XXXX-XXXXの形式で入力してください", regexp =
+	 * "[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]")
+	 */
 	private String telephone;
+	@NotBlank(message = "確認用パスワードを入力してください")
+	private String conpassword;
+
+	public String getConpassword() {
+		return conpassword;
+	}
+
+	public void setConpassword(String conpassword) {
+		this.conpassword = conpassword;
+	}
 
 	public Integer getId() {
 		return id;
@@ -74,7 +102,7 @@ public class UserForm {
 	@Override
 	public String toString() {
 		return "UserForm [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", zipcode="
-				+ zipcode + ", address=" + address + ", telephone=" + telephone + "]";
+				+ zipcode + ", address=" + address + ", telephone=" + telephone + ", conpassword=" + conpassword + "]";
 	}
 
 }

@@ -22,7 +22,7 @@ public class UserRepository {
 	NamedParameterJdbcTemplate template;
 
 	private static final RowMapper<User> USER_ROW_MAPPER = (rs, i) -> {
-
+		
 		User user = new User();
 		user.setId(rs.getInt("id"));
 		user.setName(rs.getString("name"));
@@ -36,9 +36,13 @@ public class UserRepository {
 	};
 
 	public void insert(User user) {
+		
 		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
+		
 		String sql = "insert into users (name,email,password,zipcode,address,telephone)"
 				+ "values(:name, :email, :password, :zipcode, :address, :telephone)";
+		
 		template.update(sql, param);
 	}
+
 }
