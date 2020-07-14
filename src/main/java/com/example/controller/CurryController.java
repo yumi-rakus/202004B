@@ -11,7 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/")
 public class CurryController {
+
+  @RequestMapping("")
+  public String index() {
+    return "login";
+  }
+
+  @RequestMapping("/list")
+  public String list() {
+    return "item_list_curry";
+  }
 
 }
