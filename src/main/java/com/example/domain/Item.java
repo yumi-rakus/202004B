@@ -29,7 +29,7 @@ public class Item {
 	private String imagePath;
 
 	/** 削除フラグ */
-	private boolean deleted;
+	private Boolean deleted;
 
 	/** トッピングリスト */
 	private List<Topping> toppingList;
