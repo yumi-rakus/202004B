@@ -150,6 +150,8 @@ public class CurryController {
 	 * @param id    商品ID
 	 * @param model モデル
 	 * @return 商品情報詳細画面
+	 * 
+	 * @author yumi takahashi
 	 */
 	@RequestMapping("/showDetail")
 	public String showDetail(String id, Model model, ItemForm itemForm) {
@@ -166,6 +168,15 @@ public class CurryController {
 		return "item_detail";
 	}
 
+	/**
+	 * カートに商品を追加し、商品追加完了画面を出力する.
+	 * 
+	 * @param form   フォーム
+	 * @param result BindingResultオブジェクト
+	 * @return 商品追加完了画面
+	 * 
+	 * @author yumi takahashi
+	 */
 	@RequestMapping("/cart-in")
 	public String cartIn(@Validated ItemForm form, BindingResult result) {
 
