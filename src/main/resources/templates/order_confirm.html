@@ -136,7 +136,7 @@
 		</div>
 
 		<!-- table -->
-		<form action="order_finished.html">
+		<form action="order_finished.html" th:action="@{/insert}" th:object="${orderForm}">
 			<div class="row">
 				<div
 					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
@@ -150,7 +150,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" th:field="*{name}">
 								</td>
 							</tr>
 							<tr>
@@ -160,7 +160,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" th:field="*{mailAddress}">
 								</td>
 							</tr>
 							<tr>
@@ -170,7 +170,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">&nbsp;&nbsp;<button>住所検索</button>
+									<input type="text" th:field="*{zipCode">&nbsp;&nbsp;<button>住所検索</button>
 								</td>
 							</tr>
 							<tr>
@@ -180,7 +180,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" th:field="*{address}">
 								</td>
 							</tr>
 							<tr>
@@ -190,7 +190,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" th:field="*{telephone}">
 								</td>
 							</tr>
 							<tr>
@@ -208,7 +208,7 @@
 											</div>
 											<div class="col-sm-5">
 												<input type="date" name="name" id="name"
-													class="form-control input-sm" />
+													class="form-control input-sm" th:field="orderDate"/>
 											</div>
 
 										</div>
@@ -216,47 +216,47 @@
 											<div class="col-sm-12">
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany" checked="checked">
+														name="responsibleCompany" checked="checked" th:field="*{orderTime}" value="10:00:00">
 													10時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="responsibleCompany" th:field="*{orderTime}" value="11:00:00">
 													11時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="responsibleCompany" th:field="*{orderTime}" value="12:00:00">
 													12時
 												</label><br>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="responsibleCompany" th:field="*{orderTime}" value="13:00:00">
 													13時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="responsibleCompany" th:field="*{orderTime}" value="14:00:00">
 													14時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="responsibleCompany" th:field="*{orderTime}" value="15:00:00">
 													15時
 												</label><br>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="responsibleCompany" th:field="*{orderTime}" value="16:00:00">
 													16時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="responsibleCompany" th:field="*{orderTime}" value="17:00:00">
 													17時
 												</label>
 												<label class="radio-inline">
 													<input type="radio"
-														name="responsibleCompany">
+														name="responsibleCompany" th:field="*{orderTime}" value="18:00:00">
 													18時
 												</label><br>
 											</div>
