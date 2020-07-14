@@ -1,6 +1,9 @@
 package com.example.controller;
 
 import org.springframework.beans.BeanUtils;
+import com.example.domain.User;
+import com.example.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,16 +43,19 @@ import com.example.service.ToppingService;
 @RequestMapping("/")
 public class CurryController {
 
-  @ModelAttribute
-  private OrderForm orderForm() {
-    return new OrderForm();
-  }
+  @Autowired
+  private UserRepository userRipository;
 
   @Autowired
   private OrderService orderService;
 
   @Autowired
   private UserService userService;
+
+  @ModelAttribute
+  private OrderForm orderForm() {
+    return new OrderForm();
+  }
 
   @ModelAttribute
   public UserForm setUpUserForm() {
@@ -173,6 +179,28 @@ public class CurryController {
       return "item_detail";
     }
     return "cart-in-complete";
+  }
+
+  /**
+   * SpringSecurity実装後のログインユーザーを登録するメソッドです 一度だけこのURLを叩いてください ※2回目は絶対に叩かないでください
+   * 全員がこのメソッドを実行後、直ちにこのメソッドは削除します
+   */
+  @RequestMapping("/insert-user")
+  public String insertUser() {
+    User user = new User();
+    user.setName("test");
+    user.setEmail("t@t"); // ログインID
+    user.setPassword("ttt"); // ログインPW
+    user.setAddress("test住所");
+    user.setTelephone("テスト電話番号");
+    user.setZipcode("1111111");
+    userRipository.insert(user);
+    return "login";
+  }
+
+  @RequestMapping("/success")
+  public String success() {
+    return "item_list_curry";
   }
 
 }
