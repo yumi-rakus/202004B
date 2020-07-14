@@ -19,8 +19,9 @@ public class CurryController {
     return "login";
   }
 
-  @RequestMapping("/list")
-  public String list() {
+  @RequestMapping("/login")
+  public String login(String email, String password) {
+    System.out.println(email + "   " + password);
     return "item_list_curry";
   }
 

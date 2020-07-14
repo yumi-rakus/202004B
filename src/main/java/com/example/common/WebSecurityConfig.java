@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,20 +21,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 
 	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/favicon.ico", "/css/**", "/js/**", "/img/**", "/fonts/**");
+	}
+
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests()
-			.antMatchers("/", "/home").permitAll()
+			.antMatchers("/insert", "/", "/toInsert", "/login").permitAll()
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()
-			.loginPage("/").permitAll()
-			.defaultSuccessUrl("/list")
-			.usernameParameter("email")
-			.passwordParameter("password")
+			.loginPage("/") // 自身で作ったログインの画面のURLを設定
+			.loginProcessingUrl("/login")
+			.defaultSuccessUrl("/ok", true)
+			.failureUrl("/?error")
+			.usernameParameter("email") // formのname属性の値
+			.passwordParameter("password") // formのname属性の値
 			.and()
 		.logout()
-			.permitAll();
+			.permitAll()
+			.logoutSuccessUrl("/") // ログアウト時の遷移先URL
+			.deleteCookies();// ログアウトするとCookieのJSESSIONIDを削除
 	}
 
 	@Override

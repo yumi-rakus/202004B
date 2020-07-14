@@ -32,7 +32,7 @@ public class LoginUser extends org.springframework.security.core.userdetails.Use
    * 
    * @return 管理者情報
    */
-  public User getAdministrator() {
+  public User getUser() {
     return user;
   }
 
