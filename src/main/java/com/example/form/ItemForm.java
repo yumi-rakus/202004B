@@ -20,7 +20,7 @@ public class ItemForm {
 
 	@NotNull(message = "数量を選択してください")
 	private Integer quantity;
-	
+
 	private Integer itemId;
 
 	// getter setter
@@ -55,6 +55,12 @@ public class ItemForm {
 	public void setItemId(Integer itemId) {
 		this.itemId = itemId;
 	}
-	
+
+	// toString
+	@Override
+	public String toString() {
+		return "ItemForm [size=" + size + ", toppingIdList=" + toppingIdList + ", quantity=" + quantity + ", itemId="
+				+ itemId + "]";
+	}
 
 }
