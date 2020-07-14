@@ -27,13 +27,13 @@
 								<label for="inputName">名前:</label><label
 									class="control-label" style="color: red" for="inputError">名前を入力してください</label>
 								<input type="text" id="inputName" class="form-control"
-									placeholder="Name">
+									placeholder="Name" name="name">
 							</div>
 							<div class="form-group">
 								<label for="inputEmail">メールアドレス:</label><label
 									class="control-label" style="color: red" for="inputError">メールアドレスを入力してください</label>
 								<input type="text" id="inputEmail" class="form-control"
-									placeholder="Email">
+									placeholder="Email" name="mail">
 							</div>
 							<div class="form-group">
 								<label for="inputZipcode">郵便番号:</label>
@@ -41,7 +41,7 @@
 									class="control-label" style="color: red" for="inputError">郵便番号を入力してください</label>
 									<input type="button" value="住所検索">
 								<input type="text" id="inputZipcode" class="form-control"
-									placeholder="Zipcode">
+									placeholder="Zipcode" >
 								
 							</div>
 							<div class="form-group">
@@ -49,21 +49,21 @@
 								<label
 									class="control-label" style="color: red" for="inputError">住所を入力してください</label>
 								<input type="text" id="inputAddress" class="form-control"
-									placeholder="Address">
+									placeholder="Address" name="address">
 							</div>
 							<div class="form-group">
 								<label for="inputTel">電話番号:</label>
 								<label
 									class="control-label" style="color: red" for="inputError">電話番号を入力してください</label>
 								<input type="text" id="inputTel" class="form-control"
-									placeholder="Tel">
+									placeholder="Tel" name="telephone">
 							</div>
 							<div class="form-group">
 								<label for="inputPassword">パスワード:</label>
 								<label
 									class="control-label" style="color: red" for="inputError">パスワードを入力してください</label>
 								<input type="text" id="inputPassword" class="form-control"
-									placeholder="Password">
+									placeholder="Password" name="password">
 							</div>
 							<div class="form-group">
 								<label for="inputConfirmationPassword">確認用パスワード:</label>
@@ -73,8 +73,12 @@
 									placeholder="Confirmation Password">
 							</div>
 							<div class="form-group">
+							 <form th:href="@{/register}" method="post">
 								<button type="submit" class="btn btn-primary">登録</button>
+						     </form>
+						     <form th:href="@{/indexRegister}" method="post">
 								<button type="reset" class="btn btn-primary">クリア</button>
+						     </form>
 							</div>
 						</fieldset>
 					</form>
