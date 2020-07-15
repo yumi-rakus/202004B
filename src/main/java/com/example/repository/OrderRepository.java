@@ -45,9 +45,9 @@ public class OrderRepository {
 	 * 注文情報を挿入
 	 * @author shoya fujisawa
 	 */
-	public void insert(Order order) {
-		String sql="insert into orders (user_id,status,total_price,order_date,destination_name,destination_email,destination_zipcode,destinaton_address,destination_tel,delivery_time,payment_method)"
-				+ "values (:userId,:status,;totalPrice,:orderDate,:destinationName,:destinationEmail,:destinationZipcode,:destinationAddress,:destinatonTel,:deliveryTime,:paymentMethod)";
+	public void order(Order order) {
+		String sql="UPDATE orders SET status=:status,order_date=:orderDate,destination_name=:destinationName,destination_email=:destinationEmail"
+				+ ",destination_zipcode=:destinationZipcode,destination_address=:destinationAddress,destination_tel=:destinationTel,delivery_time=:deliveryTime,payment_method=:paymentMethod where user_id=1";
 		
 		SqlParameterSource param=new BeanPropertySqlParameterSource(order);
 		

@@ -17,7 +17,7 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 	
-	public void insert(Order order) {
-		orderRepository.insert(order);
+	public void order(Order order) {
+		orderRepository.order(order);
 	}
 }

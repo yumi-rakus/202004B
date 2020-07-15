@@ -15,20 +15,18 @@ public class OrderForm {
 	@NotBlank(message = "配達日時を入力してください")
 	private String orderDate;
 	
-	private String orderTime;
-	
 	@NotBlank(message = "名前を入力してください")
 	private String name;
 	@NotBlank(message = "メールアドレスを入力してください")
 	@Email(message = "メールアドレスの形式が不正です")
 	private String mailAddress;
 	@NotBlank(message = "郵便番号を入力してください")
-	@Pattern(regexp = "/^\\d{3}[-]\\d{4}$/")
+	@Pattern(regexp = "^[0-9]{3}-[0-9]{4}$",message = "郵便番号はXXX-XXXXの形式で入力してください")
 	private String zipCode;
 	@NotBlank(message = "住所を入力してください")
 	private String address;
-	
-	private Timestamp time;
+	@NotBlank(message = "配達日時を入力してください")
+	private String time;
 	@NotBlank(message = "電話番号を入力してください")
 	private String telephone;
 	
@@ -106,20 +104,12 @@ public class OrderForm {
 		this.telephone = telephone;
 	}
 
-	public Timestamp getTime() {
+	public String getTime() {
 		return time;
 	}
 
-	public void setTime(Timestamp time) {
+	public void setTime(String time) {
 		this.time = time;
-	}
-
-	public String getOrderTime() {
-		return orderTime;
-	}
-
-	public void setOrderTime(String orderTime) {
-		this.orderTime = orderTime;
 	}
 
 	public Integer getPaymentMethod() {
