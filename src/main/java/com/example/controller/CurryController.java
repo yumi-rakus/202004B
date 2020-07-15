@@ -13,8 +13,14 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -39,8 +45,13 @@ import com.example.repository.UserRepository;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
+
 import com.example.service.OrderToppingService;
+
+import com.example.service.SendMailService;
+
 import com.example.service.ToppingService;
+
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -52,6 +63,7 @@ import com.example.service.ToppingService;
 @Controller
 @RequestMapping("")
 public class CurryController {
+	private JavaMailSender javaMailSender;
 
 	@ModelAttribute
 	private OrderForm orderForm() {
@@ -67,6 +79,9 @@ public class CurryController {
 	@Autowired
 	private HttpSession session;
 
+	private SendMailService sendMailService;
+
+
 	@ModelAttribute
 	public UserForm setUpUserForm() {
 		return new UserForm();
@@ -79,22 +94,25 @@ public class CurryController {
 		List<Item> itemList = itemService.findAll();
 		model.addAttribute("itemList", itemList);
 
-		orderService.getOrderListByUserIdAndStatus0(30);
-
 		return "item_list_curry";
 	}
 
 	// 商品検索を行う
 	@RequestMapping("/search")
-	public String findByItemName(String name, Model model) {
+	public String findByItemName(String searchName, Model model) {
 
-		if (name == null) {
+		if (searchName == null) {
 			// 検索文字列が空なら全件検索
 			List<Item> itemList = itemService.findAll();
 			model.addAttribute("itemList", itemList);
 		} else {
 			// 検索文字列があれば曖昧検索
-			List<Item> itemList = itemService.findByItemName(name);
+			List<Item> itemList = itemService.findByItemName(searchName);
+			if (itemList.equals("")) {
+				String no = "該当する商品がありません";
+				model.addAttribute("no", no);
+			}
+
 			model.addAttribute("itemList", itemList);
 		}
 
@@ -166,7 +184,8 @@ public class CurryController {
 		try {
 			java.util.Date dTime = df.parse(delivery);
 			long diff = dTime.getTime() - nowDate.getTime();
-			if (diff / (60 * 60 * 1000) % 24 < 3) {
+
+			if (diff / (60 * 60 * 1000) < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
 				return Confirm(form);
 			}
@@ -176,8 +195,9 @@ public class CurryController {
 		}
 
 		order.setPaymentMethod(form.getPaymentMethod());
-
 		orderService.order(order);
+
+		sendMailService.sendMail(order.getDestinationEmail());
 		return "order_finished";
 	}
 

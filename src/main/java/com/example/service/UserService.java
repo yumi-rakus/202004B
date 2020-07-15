@@ -19,7 +19,11 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	// ユーザ情報を登録
 	public void insert(User user) {
+		String zip = user.getZipcode();
+		String rezip = zip.replace("-", "");
+		user.setZipcode(rezip);
 		userRepository.insert(user);
 	}
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.domain.Item;
 import com.example.domain.Order;
+
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
 import com.example.domain.Topping;
@@ -33,10 +34,9 @@ public class OrderRepository {
 	/**
 	 * Orderオブジェクトを生成するローマッパー
 	 */
-	private static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, i) -> {
 
-		Order order = new Order();
-
+	private static final RowMapper<Order> ORDER_ROW_MAPPER=(rs,i)->{
+		Order order=new Order();
 		order.setId(rs.getInt("id"));
 		order.setUserId(rs.getInt("user_id"));
 		order.setStatus(rs.getInt("status"));
