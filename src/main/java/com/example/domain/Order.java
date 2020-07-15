@@ -210,7 +210,11 @@ public class Order {
 
 	public int getCalcTotalPrice() {
 
-		int totalPrice = (int) (this.totalPrice*1.10);
+		int totalPrice = 0;
+
+		for (OrderItem orderItem : this.orderItemList) {
+			totalPrice += orderItem.getSubTotal();
+		}
 
 		return totalPrice;
 	}
