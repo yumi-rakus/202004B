@@ -20,6 +20,7 @@ import com.example.domain.User;
 import com.example.form.ItemForm;
 import com.example.form.OrderForm;
 import com.example.form.UserForm;
+import com.example.repository.UserRepository;
 import com.example.service.ItemService;
 import com.example.service.OrderService;
 import com.example.service.ToppingService;
@@ -52,7 +53,7 @@ public class CurryController {
 		return new UserForm();
 	}
 
-	// ログイン画面を表示
+	// 商品一覧を表示
 	@RequestMapping("")
 	public String index() {
 		return "item_list_curry";
@@ -168,14 +169,46 @@ public class CurryController {
 		return "item_detail";
 	}
 
-	@RequestMapping("/cart-in")
+	@RequestMapping("/cartIn")
 	public String cartIn(@Validated ItemForm form, BindingResult result) {
 
 		if (result.hasErrors()) {
 			return "item_detail";
 		}
 
-		return "cart-in-complete";
+		return "cartInComplete";
 	}
+
+//////////////////////////////////////////////
+//// ログイン・ログアウト機能
+//////////////////////////////////////////////
+	@Autowired
+	private UserRepository userRepository;
+	  /**
+   * SpringSecurity実装後のログインユーザーを登録するメソッドです 一度だけこのURLを叩いてください ※2回目は絶対に叩かないでください
+   * 全員がこのメソッドを実行後、直ちにこのメソッドは削除します
+   */
+  @RequestMapping("/insertUser")
+  public String insertUser() {
+    User user = new User();
+    user.setName("test");
+    user.setEmail("t@t"); // ログインID
+    user.setPassword("ttt"); // ログインPW
+    user.setAddress("test住所");
+    user.setTelephone("テスト電話番号");
+    user.setZipcode("1111111");
+    userRepository.insert(user);
+    return "login";
+  }
+
+	/**
+	 * ログイン画面を表示
+	 */
+  @RequestMapping("/toLogin")
+  public String toLogin() {
+    return "login";
+	}
+	
+
 
 }
