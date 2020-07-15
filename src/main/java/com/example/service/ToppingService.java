@@ -28,9 +28,23 @@ public class ToppingService {
 	 * トッピング情報を全件取得する.
 	 * 
 	 * @return トッピング情報全件
+	 * 
+	 * @author yumi takahashi
 	 */
 	public List<Topping> showToppingList() {
 		return toppingRepository.findAll();
+	}
+
+	/**
+	 * トッピング情報を取得する.
+	 * 
+	 * @param id ID
+	 * @return トッピング情報
+	 * 
+	 * @author yumi takahashi
+	 */
+	public Topping findById(Integer id) {
+		return toppingRepository.load(id);
 	}
 
 }
