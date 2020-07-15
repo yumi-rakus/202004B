@@ -23,6 +23,6 @@ $(function() {
 		var total = (itemPrice + toppingPrice * toppingQuantity) * itemQuantity;
 
 		// 合計金額の更新
-		$('#total-price-number').text(total);
+		$('#total-price-number').text(total.toLocaleString());
 	});
 });
