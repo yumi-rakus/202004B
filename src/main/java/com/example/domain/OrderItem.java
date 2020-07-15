@@ -115,7 +115,26 @@ public class OrderItem {
 	// method
 	public int getSubTotal() {
 
-		int subTotal = 0;
+		int curryPrice = 0;
+
+		if (("M").equals(String.valueOf(this.size))) {
+			curryPrice = item.getPriceM();
+		} else if (("L").equals(String.valueOf(this.size))) {
+			curryPrice = item.getPriceL();
+		}
+
+		int toppingPrice = 0;
+
+		for (OrderTopping orderTopping : this.orderToppingList) {
+
+			if (("M").equals(String.valueOf(this.size))) {
+				toppingPrice += orderTopping.getTopping().getPriceM();
+			} else if (("L").equals(String.valueOf(this.size))) {
+				toppingPrice += orderTopping.getTopping().getPriceL();
+			}
+		}
+
+		int subTotal = curryPrice + toppingPrice;
 
 		return subTotal;
 	}
