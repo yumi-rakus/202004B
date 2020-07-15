@@ -10,8 +10,14 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -33,6 +39,7 @@ import com.example.form.OrderForm;
 import com.example.repository.UserRepository;
 import com.example.service.ItemService;
 import com.example.service.OrderService;
+import com.example.service.SendMailService;
 import com.example.service.ToppingService;
 
 
@@ -46,6 +53,7 @@ import com.example.service.ToppingService;
 @Controller
 @RequestMapping("")
 public class CurryController {
+	private JavaMailSender javaMailSender;
 
 	@ModelAttribute
 	private OrderForm orderForm() {
@@ -60,6 +68,9 @@ public class CurryController {
 
 	@Autowired
 	private ItemService ItemService;
+
+	private SendMailService sendMailService;
+
 
 	@ModelAttribute
 	public UserForm setUpUserForm() {
@@ -162,7 +173,8 @@ public class CurryController {
 		try {
 			java.util.Date dTime = df.parse(delivery);
 			long diff = dTime.getTime() - nowDate.getTime();
-			if (diff / (60 * 60 * 1000) % 24 < 3) {
+
+			if (diff / (60 * 60 * 1000) < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
 				return Confirm(form);
 			}
@@ -172,8 +184,9 @@ public class CurryController {
 		}
 
 		order.setPaymentMethod(form.getPaymentMethod());
-
 		orderService.order(order);
+
+		sendMailService.sendMail(order.getDestinationEmail());
 		return "order_finished";
 	}
 
