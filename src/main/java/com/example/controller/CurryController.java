@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.naming.java.javaURLContextFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,7 +73,7 @@ public class CurryController {
 	}
 
 	@RequestMapping("/confirm")
-	public String Confirm() {
+	public String Confirm(OrderForm form) {
 		return "order_confirm";
 	}
 
@@ -87,7 +86,7 @@ public class CurryController {
 	public String insert(@Validated OrderForm form, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
-
+			return Confirm(form);
 		}
 		Order order = new Order();
 		order.setUserId(form.getUserId());
@@ -99,12 +98,6 @@ public class CurryController {
 		}
 
 		order.setTotalPrice(form.getTotalPrice());
-
-		// long dateTimeTo = orderDate.getTime();
-
-		// if ((dateTimeTo - dateTimeFrom) / (1000 * 60 * 60) <= 180) {
-		// model.addAttribute("今から3時間後の日時をご入力ください");
-		// }
 		Date orderDate = Date.valueOf(form.getOrderDate());
 		order.setOrderDate(orderDate);
 		order.setDestinationName(form.getName());
@@ -114,7 +107,6 @@ public class CurryController {
 		order.setDestinationZipcode(zipCode);
 		order.setDestinationAddress(form.getAddress());
 		order.setDestinationTel(form.getTelephone());
-		// order.setDeliveryTime(form.getTime());
 		String delivery = form.getOrderDate() + " " + form.getTime();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime time = LocalDateTime.parse(delivery, formatter);
@@ -126,9 +118,9 @@ public class CurryController {
 		try {
 			java.util.Date dTime = df.parse(delivery);
 			long diff = dTime.getTime() - nowDate.getTime();
-			if (diff / (60 * 60 * 1000) <= 3) {
+			if (diff / (60 * 60 * 1000)%24 < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
-				return insert(form, result, model);
+				return Confirm(form);
 			}
 		} catch (ParseException e) {
 			// TODO 自動生成された catch ブロック

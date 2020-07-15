@@ -21,11 +21,11 @@ public class OrderForm {
 	@Email(message = "メールアドレスの形式が不正です")
 	private String mailAddress;
 	@NotBlank(message = "郵便番号を入力してください")
-	@Pattern(regexp = "/^\\d{3}[-]\\d{4}$/")
+	@Pattern(regexp = "^[0-9]{3}-[0-9]{4}$",message = "郵便番号はXXX-XXXXの形式で入力してください")
 	private String zipCode;
 	@NotBlank(message = "住所を入力してください")
 	private String address;
-	
+	@NotBlank(message = "配達日時を入力してください")
 	private String time;
 	@NotBlank(message = "電話番号を入力してください")
 	private String telephone;

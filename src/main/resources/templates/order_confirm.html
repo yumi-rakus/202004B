@@ -148,6 +148,7 @@
 						<tbody>
 							<tr>
 								<td>
+									<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></div>
 									<div class="text-center">
 										お名前
 									</div>
@@ -158,6 +159,7 @@
 							</tr>
 							<tr>
 								<td>
+									<div th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" style="color:red"></div>
 									<div class="text-center">
 										メールアドレス
 									</div>
@@ -168,6 +170,7 @@
 							</tr>
 							<tr>
 								<td>
+									<div th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}" style="color:red"></div>
 									<div class="text-center">
 										郵便番号
 									</div>
@@ -178,6 +181,7 @@
 							</tr>
 							<tr>
 								<td>
+									<div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red"></div>
 									<div class="text-center">
 										住所
 									</div>
@@ -188,6 +192,7 @@
 							</tr>
 							<tr>
 								<td>
+									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red"></div>
 									<div class="text-center">
 										電話番号
 									</div>
@@ -205,11 +210,8 @@
 								<td>
 									<div class="form-group">
 										<div class="row">
-											<span th:text="${message}"></span>
-											<div class="col-sm-12">
-												<label
-													class="control-label" style="color: red" for="inputPeriod">配達日時を入力してください</label>
-											</div>
+											<span th:text="${message}" style="color:red"></span>
+											<div th:if="${#fields.hasErrors('orderDate')}" th:errors="*{orderDate}" style="color:red"></div>
 											<div class="col-sm-5">
 												<input type="date" name="name" id="name"
 													class="form-control input-sm" th:field="*{orderDate}"/>
@@ -217,6 +219,7 @@
 
 										</div>
 										<div class="row">
+											<div th:if="${#fields.hasErrors('time')}" th:errors="*{time}" style="color:red"></div>
 											<div class="col-sm-12">
 												<label class="radio-inline">
 													<input type="radio"
