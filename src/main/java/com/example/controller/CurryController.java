@@ -59,30 +59,22 @@ public class CurryController {
 		return "item_list_curry";
 	}
 
-	// 従業員登録画面を表示
+	// ユーザー登録画面を表示
 	@RequestMapping("/indexRegister")
 	public String indexRegister() {
 		return "register_user";
 	}
 
-	// 従業員登録をする
+	// ユーザー登録をする
 	@RequestMapping("/register")
 	public String register(@Validated UserForm userForm, BindingResult result, Model model) {
-
 		if (result.hasErrors()) {
 			return indexRegister();
 		}
-
 		User user = new User();
 		BeanUtils.copyProperties(userForm, user);
 		userService.insert(user);
 		return "redirect:/";
-	}
-	// 修正
-
-	@RequestMapping("/confirm")
-	public String Confirm() {
-		return "order_confirm";
 	}
 
 	/**
@@ -90,7 +82,7 @@ public class CurryController {
 	 * 
 	 * @author shoya fujisawa
 	 */
-	@RequestMapping("/insert")
+	@RequestMapping("/order")
 	public String insert(@Validated OrderForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 
@@ -179,36 +171,35 @@ public class CurryController {
 		return "cartInComplete";
 	}
 
-//////////////////////////////////////////////
-//// ログイン・ログアウト機能
-//////////////////////////////////////////////
+	//////////////////////////////////////////////
+	//// ログイン・ログアウト機能
+	//////////////////////////////////////////////
 	@Autowired
 	private UserRepository userRepository;
-	  /**
-   * SpringSecurity実装後のログインユーザーを登録するメソッドです 一度だけこのURLを叩いてください ※2回目は絶対に叩かないでください
-   * 全員がこのメソッドを実行後、直ちにこのメソッドは削除します
-   */
-  @RequestMapping("/insertUser")
-  public String insertUser() {
-    User user = new User();
-    user.setName("test");
-    user.setEmail("t@t"); // ログインID
-    user.setPassword("ttt"); // ログインPW
-    user.setAddress("test住所");
-    user.setTelephone("テスト電話番号");
-    user.setZipcode("1111111");
-    userRepository.insert(user);
-    return "login";
-  }
+
+	/**
+	 * SpringSecurity実装後のログインユーザーを登録するメソッドです 一度だけこのURLを叩いてください ※2回目は絶対に叩かないでください
+	 * 全員がこのメソッドを実行後、直ちにこのメソッドは削除します
+	 */
+	@RequestMapping("/insertUser")
+	public String insertUser() {
+		User user = new User();
+		user.setName("test");
+		user.setEmail("t@t"); // ログインID
+		user.setPassword("ttt"); // ログインPW
+		user.setAddress("test住所");
+		user.setTelephone("テスト電話番号");
+		user.setZipcode("1111111");
+		userRepository.insert(user);
+		return "login";
+	}
 
 	/**
 	 * ログイン画面を表示
 	 */
-  @RequestMapping("/toLogin")
-  public String toLogin() {
-    return "login";
+	@RequestMapping("/toLogin")
+	public String toLogin() {
+		return "login";
 	}
-	
-
 
 }
