@@ -44,6 +44,7 @@ import com.example.service.OrderService;
 import com.example.service.ToppingService;
 import com.example.service.UserService;
 
+
 /**
  * カレーECサイトを操作するコントローラ.
  * 
@@ -66,6 +67,9 @@ public class CurryController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private ItemService ItemService;
+
 	@ModelAttribute
 	public UserForm setUpUserForm() {
 		return new UserForm();
@@ -73,13 +77,35 @@ public class CurryController {
 
 	// 商品一覧を表示
 	@RequestMapping("")
-	public String index() {
+	public String index(Model model) {
+
+		List<Item> itemList = itemService.findAll();
+		model.addAttribute("itemList", itemList);
+
+		return "item_list_curry";
+	}
+
+	// 商品検索を行う
+	@RequestMapping("/search")
+	public String findByItemName(String name, Model model) {
+
+		if (name == null) {
+			// 検索文字列が空なら全件検索
+			List<Item> itemList = itemService.findAll();
+			model.addAttribute("itemList", itemList);
+		} else {
+			// 検索文字列があれば曖昧検索
+			List<Item> itemList = itemService.findByItemName(name);
+			model.addAttribute("itemList", itemList);
+		}
+
 		return "item_list_curry";
 	}
 
 	// ユーザー登録画面を表示
 	@RequestMapping("/indexRegister")
 	public String indexRegister() {
+
 		return "register_user";
 	}
 
@@ -92,7 +118,7 @@ public class CurryController {
 		User user = new User();
 		BeanUtils.copyProperties(userForm, user);
 		userService.insert(user);
-		return "redirect:/";
+		return "login";
 	}
 	
 	@RequestMapping("/orderConfirm")
