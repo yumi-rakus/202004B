@@ -35,6 +35,7 @@ import com.example.service.ItemService;
 import com.example.service.OrderService;
 import com.example.service.ToppingService;
 
+
 /**
  * カレーECサイトを操作するコントローラ.
  * 
@@ -71,21 +72,25 @@ public class CurryController {
 
 		List<Item> itemList = itemService.findAll();
 		model.addAttribute("itemList", itemList);
-
 		return "item_list_curry";
 	}
 
 	// 商品検索を行う
 	@RequestMapping("/search")
-	public String findByItemName(String name, Model model) {
+	public String findByItemName(String searchName, Model model) {
 
-		if (name == null) {
+		if (searchName == null) {
 			// 検索文字列が空なら全件検索
 			List<Item> itemList = itemService.findAll();
 			model.addAttribute("itemList", itemList);
 		} else {
 			// 検索文字列があれば曖昧検索
-			List<Item> itemList = itemService.findByItemName(name);
+			List<Item> itemList = itemService.findByItemName(searchName);
+			if (itemList.equals("")) {
+				String no = "該当する商品がありません";
+				model.addAttribute("no", no);
+			}
+
 			model.addAttribute("itemList", itemList);
 		}
 
