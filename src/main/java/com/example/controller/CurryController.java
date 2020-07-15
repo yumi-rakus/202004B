@@ -202,4 +202,18 @@ public class CurryController {
 		return "login";
 	}
 
+	//////////////////////////////////////////////
+	//// 注文履歴の表示
+	//////////////////////////////////////////////
+	/**
+	 * 注文履歴画面の表示
+	 */
+	@RequestMapping("/showOrderHistory")
+	public String showOrderHistory() {
+		// user情報を取得
+		// user情報をもとに注文履歴をDBから検索
+		// List<>をスコープに詰める
+		return "order_history";
+	}
+
 }
