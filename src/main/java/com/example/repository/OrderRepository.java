@@ -46,8 +46,8 @@ public class OrderRepository {
 	 * @author shoya fujisawa
 	 */
 	public void insert(Order order) {
-		String sql="insert into orders (user_id,status,total_price,order_date,destination_name,destination_email,destination_zipcode,destinaton_address,destination_tel,delivery_time,payment_method)"
-				+ "values (:userId,:status,;totalPrice,:orderDate,:destinationName,:destinationEmail,:destinationZipcode,:destinationAddress,:destinatonTel,:deliveryTime,:paymentMethod)";
+		String sql="insert into orders (user_id,status,total_price,order_date,destination_name,destination_email,destination_zipcode,destination_address,destination_tel,delivery_time,payment_method)"
+				+ "values (:userId,:status,:totalPrice,:orderDate,:destinationName,:destinationEmail,:destinationZipcode,:destinationAddress,:destinationTel,:deliveryTime,:paymentMethod)";
 		
 		SqlParameterSource param=new BeanPropertySqlParameterSource(order);
 		

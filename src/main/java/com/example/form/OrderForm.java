@@ -15,8 +15,6 @@ public class OrderForm {
 	@NotBlank(message = "配達日時を入力してください")
 	private String orderDate;
 	
-	private String orderTime;
-	
 	@NotBlank(message = "名前を入力してください")
 	private String name;
 	@NotBlank(message = "メールアドレスを入力してください")
@@ -28,7 +26,7 @@ public class OrderForm {
 	@NotBlank(message = "住所を入力してください")
 	private String address;
 	
-	private Timestamp time;
+	private String time;
 	@NotBlank(message = "電話番号を入力してください")
 	private String telephone;
 	
@@ -106,20 +104,12 @@ public class OrderForm {
 		this.telephone = telephone;
 	}
 
-	public Timestamp getTime() {
+	public String getTime() {
 		return time;
 	}
 
-	public void setTime(Timestamp time) {
+	public void setTime(String time) {
 		this.time = time;
-	}
-
-	public String getOrderTime() {
-		return orderTime;
-	}
-
-	public void setOrderTime(String orderTime) {
-		this.orderTime = orderTime;
 	}
 
 	public Integer getPaymentMethod() {
