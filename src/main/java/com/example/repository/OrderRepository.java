@@ -7,7 +7,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import com.example.domain.Item;
 import com.example.domain.Order;
+import com.example.domain.Topping;
 
 /**
  * ordersテーブルを操作するリポジトリー
@@ -21,7 +23,6 @@ public class OrderRepository {
 	 */
 	private static final RowMapper<Order> ORDER_ROW_MAPPER=(rs,i)->{
 		Order order=new Order();
-		
 		order.setId(rs.getInt("id"));
 		order.setUserId(rs.getInt("user_id"));
 		order.setStatus(rs.getInt("status"));
