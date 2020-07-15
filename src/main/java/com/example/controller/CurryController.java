@@ -1,6 +1,5 @@
 package com.example.controller;
 
-
 import java.text.SimpleDateFormat;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.domain.User;
 import com.example.form.UserForm;
 import com.example.service.UserService;
-
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -43,7 +40,6 @@ import com.example.service.ItemService;
 import com.example.service.OrderService;
 import com.example.service.ToppingService;
 import com.example.service.UserService;
-
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -81,21 +77,25 @@ public class CurryController {
 
 		List<Item> itemList = itemService.findAll();
 		model.addAttribute("itemList", itemList);
-
 		return "item_list_curry";
 	}
 
 	// 商品検索を行う
 	@RequestMapping("/search")
-	public String findByItemName(String name, Model model) {
+	public String findByItemName(String searchName, Model model) {
 
-		if (name == null) {
+		if (searchName == null) {
 			// 検索文字列が空なら全件検索
 			List<Item> itemList = itemService.findAll();
 			model.addAttribute("itemList", itemList);
 		} else {
 			// 検索文字列があれば曖昧検索
-			List<Item> itemList = itemService.findByItemName(name);
+			List<Item> itemList = itemService.findByItemName(searchName);
+			if (itemList.equals("")) {
+				String no = "該当する商品がありません";
+				model.addAttribute("no", no);
+			}
+
 			model.addAttribute("itemList", itemList);
 		}
 
@@ -120,12 +120,11 @@ public class CurryController {
 		userService.insert(user);
 		return "login";
 	}
-	
+
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form) {
 		return "order_confirm";
 	}
-
 
 	/**
 	 * 注文情報を登録
@@ -134,7 +133,6 @@ public class CurryController {
 	 */
 	@RequestMapping("/order")
 	public String insert(@Validated OrderForm form, BindingResult result, Model model) {
-
 
 		if (result.hasErrors()) {
 			return Confirm(form);
@@ -169,7 +167,7 @@ public class CurryController {
 		try {
 			java.util.Date dTime = df.parse(delivery);
 			long diff = dTime.getTime() - nowDate.getTime();
-			if (diff / (60 * 60 * 1000)%24 < 3) {
+			if (diff / (60 * 60 * 1000) % 24 < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
 				return Confirm(form);
 			}
