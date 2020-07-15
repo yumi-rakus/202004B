@@ -1,6 +1,5 @@
 package com.example.controller;
 
-
 import java.text.SimpleDateFormat;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import com.example.domain.User;
 import com.example.form.UserForm;
 import com.example.service.UserService;
 
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 
@@ -37,7 +34,6 @@ import com.example.repository.UserRepository;
 import com.example.service.ItemService;
 import com.example.service.OrderService;
 import com.example.service.ToppingService;
-
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -114,12 +110,11 @@ public class CurryController {
 		userService.insert(user);
 		return "login";
 	}
-	
+
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form) {
 		return "order_confirm";
 	}
-
 
 	/**
 	 * 注文情報を登録
@@ -128,7 +123,6 @@ public class CurryController {
 	 */
 	@RequestMapping("/order")
 	public String insert(@Validated OrderForm form, BindingResult result, Model model) {
-
 
 		if (result.hasErrors()) {
 			return Confirm(form);
@@ -163,7 +157,7 @@ public class CurryController {
 		try {
 			java.util.Date dTime = df.parse(delivery);
 			long diff = dTime.getTime() - nowDate.getTime();
-			if (diff / (60 * 60 * 1000)%24 < 3) {
+			if (diff / (60 * 60 * 1000) % 24 < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
 				return Confirm(form);
 			}
@@ -195,6 +189,8 @@ public class CurryController {
 	 * @param id    商品ID
 	 * @param model モデル
 	 * @return 商品情報詳細画面
+	 * 
+	 * @author yumi takahashi
 	 */
 	@RequestMapping("/showDetail")
 	public String showDetail(String id, Model model, ItemForm itemForm) {
@@ -210,6 +206,16 @@ public class CurryController {
 
 		return "item_detail";
 	}
+
+	/**
+	 * カートに商品を追加し、商品追加完了画面を出力する.
+	 * 
+	 * @param form   フォーム
+	 * @param result BindingResultオブジェクト
+	 * @return 商品追加完了画面
+	 * 
+	 * @author yumi takahashi
+	 */
 
 	@RequestMapping("/cartIn")
 	public String cartIn(@Validated ItemForm form, BindingResult result) {
