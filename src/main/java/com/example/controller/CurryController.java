@@ -1,30 +1,43 @@
 package com.example.controller;
 
+
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.domain.User;
+import com.example.form.UserForm;
+import com.example.service.UserService;
+
+
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 
 import com.example.domain.Item;
 import com.example.domain.Order;
 import com.example.domain.Topping;
-import com.example.domain.User;
 import com.example.form.ItemForm;
 import com.example.form.OrderForm;
-import com.example.form.UserForm;
 import com.example.repository.UserRepository;
 import com.example.service.ItemService;
 import com.example.service.OrderService;
 import com.example.service.ToppingService;
-import com.example.service.UserService;
+
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -48,6 +61,9 @@ public class CurryController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private ItemService ItemService;
+
 	@ModelAttribute
 	public UserForm setUpUserForm() {
 		return new UserForm();
@@ -55,13 +71,35 @@ public class CurryController {
 
 	// 商品一覧を表示
 	@RequestMapping("")
-	public String index() {
+	public String index(Model model) {
+
+		List<Item> itemList = itemService.findAll();
+		model.addAttribute("itemList", itemList);
+
+		return "item_list_curry";
+	}
+
+	// 商品検索を行う
+	@RequestMapping("/search")
+	public String findByItemName(String name, Model model) {
+
+		if (name == null) {
+			// 検索文字列が空なら全件検索
+			List<Item> itemList = itemService.findAll();
+			model.addAttribute("itemList", itemList);
+		} else {
+			// 検索文字列があれば曖昧検索
+			List<Item> itemList = itemService.findByItemName(name);
+			model.addAttribute("itemList", itemList);
+		}
+
 		return "item_list_curry";
 	}
 
 	// ユーザー登録画面を表示
 	@RequestMapping("/indexRegister")
 	public String indexRegister() {
+
 		return "register_user";
 	}
 
@@ -74,8 +112,14 @@ public class CurryController {
 		User user = new User();
 		BeanUtils.copyProperties(userForm, user);
 		userService.insert(user);
-		return "redirect:/";
+		return "login";
 	}
+	
+	@RequestMapping("/orderConfirm")
+	public String Confirm(OrderForm form) {
+		return "order_confirm";
+	}
+
 
 	/**
 	 * 注文情報を登録
@@ -84,8 +128,10 @@ public class CurryController {
 	 */
 	@RequestMapping("/order")
 	public String insert(@Validated OrderForm form, BindingResult result, Model model) {
-		if (result.hasErrors()) {
 
+
+		if (result.hasErrors()) {
+			return Confirm(form);
 		}
 		Order order = new Order();
 		order.setUserId(form.getUserId());
@@ -97,34 +143,38 @@ public class CurryController {
 		}
 
 		order.setTotalPrice(form.getTotalPrice());
-
-		String orderDt = form.getOrderDate() + form.getOrderTime();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		SimpleDateFormat nowDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = new Date();
-		String strDate = date.toString();
-
-		try {
-			Date orderDate = df.parse(orderDt);
-			Date nowDate = nowDateFormat.parse(strDate);
-			long dateTimeTo = orderDate.getTime();
-			long dateTimeFrom = nowDate.getTime();
-			if ((dateTimeTo - dateTimeFrom) / (1000 * 60 * 60) <= 180) {
-				model.addAttribute("今から3時間後の日時をご入力ください");
-			}
-			order.setOrderDate(orderDate);
-		} catch (java.text.ParseException e) {
-			e.printStackTrace();
-		}
+		Date orderDate = Date.valueOf(form.getOrderDate());
+		order.setOrderDate(orderDate);
 		order.setDestinationName(form.getName());
 		order.setDestinationEmail(form.getMailAddress());
-		order.setDestinationZipcode(form.getZipCode());
+		String zipCodeStr = form.getZipCode();
+		String zipCode = zipCodeStr.replace("-", "");
+		order.setDestinationZipcode(zipCode);
 		order.setDestinationAddress(form.getAddress());
 		order.setDestinationTel(form.getTelephone());
-		order.setDeliveryTime(form.getTime());
+		String delivery = form.getOrderDate() + " " + form.getTime();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime time = LocalDateTime.parse(delivery, formatter);
+		Timestamp deliveryTime = Timestamp.valueOf(time);
+		order.setDeliveryTime(deliveryTime);
+
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		java.util.Date nowDate = new java.util.Date();
+		try {
+			java.util.Date dTime = df.parse(delivery);
+			long diff = dTime.getTime() - nowDate.getTime();
+			if (diff / (60 * 60 * 1000)%24 < 3) {
+				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
+				return Confirm(form);
+			}
+		} catch (ParseException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
 		order.setPaymentMethod(form.getPaymentMethod());
 
-		orderService.insert(order);
+		orderService.order(order);
 		return "order_finished";
 	}
 

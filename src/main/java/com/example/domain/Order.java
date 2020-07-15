@@ -210,7 +210,7 @@ public class Order {
 
 	public int getCalcTotalPrice() {
 
-		int totalPrice = 0;
+		int totalPrice = (int) (this.totalPrice*1.10);
 
 		return totalPrice;
 	}
