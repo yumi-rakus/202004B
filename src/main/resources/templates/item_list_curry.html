@@ -51,48 +51,34 @@
 				<table class="table table-striped item-list-table">
 					<tbody>
 						
-						<tr>
-							<th>
-								<a href="item_detail.html">
-									<img src="../img_curry/1.jpg"
-										class="img-responsive img-rounded item-img-center" width="200" height="600">
-								</a><br>
-								<a href="item_detail.html">じゃがバターベーコン</a><br>
-								<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;1,380円(税抜)<br>
-								<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円(税抜)<br>
-							</th>
-							<th>
-								<a href="item_detail.html">
-									<img src="../static/img_curry/2.jpg"
-										class="img-responsive img-rounded item-img-center" width="200" height="600">
-								</a><br>
-								<a href="item_detail.html">じゃがバターベーコン</a><br>
-								<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;1,380円(税抜)<br>
-								<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円(税抜)<br>
-							</th>
-							<th>
-								<a href="item_detail.html">
-									<img src="../static/img_curry/3.jpg"
-										class="img-responsive img-rounded item-img-center" width="200" height="600">
-								</a><br>
-								<a href="item_detail.html">じゃがバターベーコン</a><br>
-								<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;1,380円(税抜)<br>
-								<span class="price">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円(税抜)<br>
-							</th>
-						</tr>
-						
-						<tr th:each="item : ${itemList}">
-						  <th>
-						    <a th:href="@{'showDetail?id=' + ${item.id}}">
-						    <span th:text="${item.imagePath}"></span>
-						    <br>
-						    <a th:text="${item.name}">じゃがバターベーコン</a><br>
-						    <span th:text="${item.priceM}">&nbsp;М&nbsp;</span>&nbsp;&nbsp;1,380円(税抜)<br>
-							<span th:text="${item.priceM}">&nbsp;Ｌ</span>&nbsp;&nbsp;2,380円(税抜)<br>
-						  </th>
- 
-						</tr>
-						
+    <div class="row">
+        <div0
+                class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+            <table class="table table-striped item-list-table">
+                <tbody>
+                
+
+                
+                <th:block th:each="item,status : ${itemList}">
+                    <th:block th:if="${status.index%3==0}">
+                        <tr>
+                    </th:block>
+                    <th>
+                        <a href="item_detail.html" th:href="@{'showDetail?id=' + ${item.id}}">
+                            <img th:src="${'/static/img_curry/' + item.imagePath}"
+                                 class="img-responsive img-rounded item-img-center" width="200" height="600">
+                        </a><br>
+                        <a href="item_detail.html" th:href="@{'showDetail?id=' + ${item.id}}">
+                            <span th:text="${item.name}"></span>
+                        </a><br>
+                        <span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;<span th:text="${item.priceM}"></span>円<br>
+                        <span class="price">&nbsp;L</span>&nbsp;&nbsp;<span th:text="${item.priceL}"></span>円<br>
+                    </th>
+                    <th:block th:if="${status.index%3==2}">
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
 						
 					      
 					    
