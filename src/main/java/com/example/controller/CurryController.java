@@ -129,7 +129,7 @@ public class CurryController {
 
 		order.setPaymentMethod(form.getPaymentMethod());
 
-		orderService.insert(order);
+		orderService.order(order);
 		return "order_finished";
 	}
 

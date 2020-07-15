@@ -45,7 +45,7 @@ public class OrderRepository {
 	 * 注文情報を挿入
 	 * @author shoya fujisawa
 	 */
-	public void insert(Order order) {
+	public void order(Order order) {
 		String sql="UPDATE orders SET status=:status,order_date=:orderDate,destination_name=:destinationName,destination_email=:destinationEmail"
 				+ ",destination_zipcode=:destinationZipcode,destination_address=:destinationAddress,destination_tel=:destinationTel,delivery_time=:deliveryTime,payment_method=:paymentMethod where user_id=1";
 		
