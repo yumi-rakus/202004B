@@ -29,7 +29,7 @@ public class OrderItem {
 	private Item item;
 
 	/** トッピングリスト */
-	private List<Topping> orderToppingList;
+	private List<OrderTopping> orderToppingList;
 
 	// constructor
 	public OrderItem() {
@@ -37,7 +37,7 @@ public class OrderItem {
 	}
 
 	public OrderItem(Integer id, Integer itemId, Integer orderId, Integer quantity, Character size, Item item,
-			List<Topping> orderToppingList) {
+			List<OrderTopping> orderToppingList) {
 		super();
 		this.id = id;
 		this.itemId = itemId;
@@ -97,11 +97,11 @@ public class OrderItem {
 		this.item = item;
 	}
 
-	public List<Topping> getOrderToppingList() {
+	public List<OrderTopping> getOrderToppingList() {
 		return orderToppingList;
 	}
 
-	public void setOrderToppingList(List<Topping> orderToppingList) {
+	public void setOrderToppingList(List<OrderTopping> orderToppingList) {
 		this.orderToppingList = orderToppingList;
 	}
 
