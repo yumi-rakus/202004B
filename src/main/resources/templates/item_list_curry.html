@@ -65,8 +65,8 @@
                     </th:block>
                     <th>
                         <a href="item_detail.html" th:href="@{'showDetail?id=' + ${item.id}}">
-                            <img th:src="${'/static/img_curry/' + item.imagePath}"
-                                 class="img-responsive img-rounded item-img-center" width="200" height="600">
+                            <img th:src="@{'/img_curry/' + ${item.imagePath}}"
+                                 class="img-responsive img-rounded item-img-center">
                         </a><br>
                         <a href="item_detail.html" th:href="@{'showDetail?id=' + ${item.id}}">
                             <span th:text="${item.name}"></span>
