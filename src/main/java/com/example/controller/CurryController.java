@@ -174,7 +174,7 @@ public class CurryController {
 			return Confirm(form, model);
 		}
 		Order order = new Order();
-		order.setUserId((Integer)session.getAttribute("userId"));
+		order.setUserId((Integer) session.getAttribute("userId"));
 
 		if (form.getPaymentMethod() == 1) {
 			order.setStatus(1);
@@ -386,9 +386,23 @@ public class CurryController {
 	 * @author yumi takahashi
 	 */
 	@RequestMapping("/cartInComplete")
-	public String cartInComplete() {
+	public String cartInComplete(Model model) {
 
 		// カートの中身を表示させたい
+		
+		List<Order> order = orderService.getOrderListByUserIdAndStatus0((Integer)session.getAttribute("userId"));
+		
+		Integer totalPrice = 0;
+		totalPrice = order.get(0).getCalcTotalPrice();
+
+		orderService.updateTotalPriceByUserId((Integer)session.getAttribute("userId"), totalPrice);
+
+		order = orderService.getOrderListByUserIdAndStatus0((Integer)session.getAttribute("userId"));
+
+		model.addAttribute("orderItemList", order.get(0).getOrderItemList());
+		model.addAttribute("tax", order.get(0).getTax());
+		model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
+		
 
 		return "cart-in-complete";
 	}
@@ -433,7 +447,7 @@ public class CurryController {
 				if (orderItemList.get(0).getItem().getId() == 0) {
 					// orderItemが無かったら（カートの中身が空だったら）
 
-					model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
 					model.addAttribute("tax", 0);
 					model.addAttribute("totalPrice", 0);
 				} else {
@@ -449,8 +463,9 @@ public class CurryController {
 					model.addAttribute("tax", order.get(0).getTax());
 					model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
 				}
+
 			} else {
-				model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+				model.addAttribute("notExistOrderItemList", "カートに商品がありません");
 				model.addAttribute("tax", 0);
 				model.addAttribute("totalPrice", 0);
 			}
@@ -458,7 +473,7 @@ public class CurryController {
 
 			// status0がレコードに存在しなかったら
 
-			model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+			model.addAttribute("notExistOrderItemList", "カートに商品がありません");
 			model.addAttribute("tax", 0);
 			model.addAttribute("totalPrice", 0);
 		}
