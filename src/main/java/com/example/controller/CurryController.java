@@ -76,7 +76,10 @@ public class CurryController {
 	private UserService userService;
 
 	@Autowired
+
 	private HttpSession session;
+
+	private ItemService ItemService;
 
 	private SendMailService sendMailService;
 
@@ -139,7 +142,12 @@ public class CurryController {
 	}
 
 	@RequestMapping("/orderConfirm")
-	public String Confirm(OrderForm form) {
+	public String Confirm(OrderForm form, Model model) {
+		List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
+		List<OrderItem> orderItemList = order.get(0).getOrderItemList();
+		model.addAttribute("orderItemList", orderItemList);
+		model.addAttribute("tax", order.get(0).getTax());
+		model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
 		return "order_confirm";
 	}
 
@@ -149,10 +157,10 @@ public class CurryController {
 	 * @author shoya fujisawa
 	 */
 	@RequestMapping("/order")
-	public String insert(@Validated OrderForm form, BindingResult result, Model model) {
+	public String order(@Validated OrderForm form, BindingResult result, Model model, Integer userId) {
 
 		if (result.hasErrors()) {
-			return Confirm(form);
+			return Confirm(form, model);
 		}
 		Order order = new Order();
 		order.setUserId(form.getUserId());
@@ -187,7 +195,7 @@ public class CurryController {
 
 			if (diff / (60 * 60 * 1000) < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
-				return Confirm(form);
+				return Confirm(form, model);
 			}
 		} catch (ParseException e) {
 			// TODO 自動生成された catch ブロック
@@ -261,10 +269,12 @@ public class CurryController {
 		////////////////////// orders table
 		User user = new User();
 
-		// orderにuserIdをセット
-		if (Objects.isNull((Integer) session.getAttribute("userId"))) { // ログインしていない場合
+		// userにuserIdをセット
+		if (Objects.isNull((Integer) session.getAttribute("userId"))) {
 
+			// ログインしていない場合
 			// UUIDの発行
+
 			UUID uuid = UUID.randomUUID();
 			Integer intUuid = uuid.hashCode();
 
@@ -272,8 +282,9 @@ public class CurryController {
 
 			session.setAttribute("userId", intUuid);
 
-		} else { // ログインしている場合
+		} else {
 
+			// ログインしている場合
 			user.setId((Integer) session.getAttribute("userId"));
 		}
 
@@ -398,19 +409,23 @@ public class CurryController {
 
 		List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
 
-		// if(order.isEmpty())
+		if (!order.isEmpty()) {
+			List<OrderItem> orderItemList = order.get(0).getOrderItemList();
 
-		List<OrderItem> orderItemList = order.get(0).getOrderItemList();
-
-		if (orderItemList.isEmpty()) {
-			model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+			if (orderItemList.isEmpty()) {
+				model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+			} else {
+				model.addAttribute("orderItemList", orderItemList);
+				model.addAttribute("tax", order.get(0).getTax());
+				model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
+			}
 		} else {
-			model.addAttribute("orderItemList", orderItemList);
-			model.addAttribute("tax", order.get(0).getTax());
-			model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
+			model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+			model.addAttribute("tax", 0);
+			model.addAttribute("totalPrice", 0);
 		}
 
-		return "cart-list";
+		return "cart_list";
 	}
 
 	/**
