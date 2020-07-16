@@ -3,12 +3,16 @@ package com.example.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import com.example.domain.Item;
@@ -103,7 +107,6 @@ public class OrderRepository {
 	 * 
 	 * @author shoya fujisawa
 	 */
-
 	public void order(Order order) {
 		String sql = "UPDATE orders SET status=:status,order_date=:orderDate,destination_name=:destinationName,destination_email=:destinationEmail"
 				+ ",destination_zipcode=:destinationZipcode,destination_address=:destinationAddress,destination_tel=:destinationTel,delivery_time=:deliveryTime,payment_method=:paymentMethod where user_id=1";
@@ -180,4 +183,98 @@ public class OrderRepository {
 
 		return orderList;
 	}
+
+	/**
+	 * status = 0 (未注文)のレコードが存在するかどうかを返す.
+	 * 
+	 * @param userId ユーザID
+	 * @return status = 0 (未注文)のレコードが存在していればtrue、存在していなければfalseを返す
+	 * 
+	 * @author yumi takahashi
+	 */
+	public boolean status0ExistByUserId(Integer userId) {
+
+		String sql = "SELECT count(*) FROM orders WHERE status = 0 AND user_id = :userId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId);
+
+		Integer count = template.queryForObject(sql, param, Integer.class);
+
+		if (count == 0) {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
+	/**
+	 * status = 0 （未注文）のorderIdを取得する.
+	 * 
+	 * @param userId ユーザID
+	 * @return orderId
+	 * 
+	 * @author yumi takahashi
+	 */
+	public Integer getOrderIdByUserId(Integer userId) {
+
+		String sql = "SELECT id FROM orders WHERE status = 0 AND user_id = :userId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId);
+
+		Integer orderId = template.queryForObject(sql, param, Integer.class);
+
+		return orderId;
+	}
+
+	private SimpleJdbcInsert insert;
+
+	@PostConstruct
+	public void init() {
+
+		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert((JdbcTemplate) template.getJdbcOperations());
+
+		SimpleJdbcInsert withTableName = simpleJdbcInsert.withTableName("orders");
+
+		insert = withTableName.usingGeneratedKeyColumns("id");
+
+	}
+
+	/**
+	 * status = 0 (未注文)のレコードを挿入する.
+	 * 
+	 * @param order 注文情報
+	 * @return 注文情報
+	 * 
+	 * @author yumi takahashi
+	 */
+	public Order insertOrderStatus0(Order order) {
+
+		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
+
+		Number key = insert.executeAndReturnKey(param);
+
+		order.setId(key.intValue());
+
+		return order;
+	}
+
+	/**
+	 * status = 0 (未注文)の合計金額を更新する.
+	 * 
+	 * @param userId     ユーザID
+	 * @param totalPrice 合計金額
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateTotalPrice(Integer userId, Integer totalPrice) {
+
+		String sql = "UPDATE orders SET total_price = :totalPrice WHERE status = 0 AND user_id = :userId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("totalPrice", totalPrice).addValue("userId",
+				userId);
+
+		template.update(sql, param);
+	}
+
 }
