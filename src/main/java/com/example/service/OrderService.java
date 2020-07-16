@@ -55,34 +55,31 @@ public class OrderService {
 		Map<Integer, Order> orderMap = new HashMap<>();
 
 		for (Order order : orderList) {
-			orderToppingMap.put(order.getOrderItemList().get(0).getItemId(), new ArrayList<>());
+			orderToppingMap.put(order.getOrderItemList().get(0).getId(), new ArrayList<>());
 		}
 
 		for (Order order : orderList) {
-			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getItemId());
+			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
 			orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
 		}
 
 		for (Order order : orderList) {
-			orderItemMap.put(order.getOrderItemList().get(0).getItemId(), order.getOrderItemList().get(0));
+			orderItemMap.put(order.getOrderItemList().get(0).getId(), order.getOrderItemList().get(0));
 		}
 
 		for (Order order : orderList) {
-			OrderItem orderItem = orderItemMap.get(order.getOrderItemList().get(0).getItemId());
+			OrderItem orderItem = orderItemMap.get(order.getOrderItemList().get(0).getId());
 
-			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getItemId());
+			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
 			orderItem.setOrderToppingList(orderToppingList);
 
-			orderItemMap.put(order.getOrderItemList().get(0).getItemId(), orderItem);
+			orderItemMap.put(order.getOrderItemList().get(0).getId(), orderItem);
 
-			//
-			List<OrderItem> orderItemList = order.getOrderItemList();
-			orderItemList.add(orderItem);
 		}
 
-		for (Order order : orderList) {
+		List<OrderItem> orderItemList = new ArrayList<>(orderItemMap.values());
 
-			List<OrderItem> orderItemList = new ArrayList<>(orderItemMap.values());
+		for (Order order : orderList) {
 
 			order.setOrderItemList(orderItemList);
 
