@@ -17,13 +17,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +26,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.Item;
 import com.example.domain.LoginUser;
@@ -43,7 +37,6 @@ import com.example.domain.User;
 import com.example.form.ItemForm;
 import com.example.form.OrderForm;
 import com.example.form.UserForm;
-import com.example.repository.UserRepository;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
@@ -64,63 +57,75 @@ import com.example.service.UserService;
  * @author yumi takahashi
  *
  */
-
 @Controller
 @RequestMapping("")
 public class CurryController {
-	private JavaMailSender javaMailSender;
-
-	@ModelAttribute
-	private OrderForm orderForm() {
-		return new OrderForm();
-	}
 
 	@Autowired
 	private OrderService orderService;
-
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private HttpSession session;
-
-	private ItemService ItemService;
-
 	@Autowired
 	private SendMailService sendMailService;
+	@Autowired
+	private HttpSession session;
+	@Autowired
+	private ItemService itemService;
+	@Autowired
+	private ToppingService toppingService;
+	@Autowired
+	private OrderItemService orderItemService;
+	@Autowired
+	private OrderToppingService orderToppingService;
 
+	@ModelAttribute
+	public ItemForm setUpItemForm() {
+		return new ItemForm();
+	}
 	@ModelAttribute
 	public UserForm setUpUserForm() {
 		return new UserForm();
 	}
+	@ModelAttribute
+	private OrderForm setUpOrderForm() {
+		return new OrderForm();
+	}
 
-	// 商品一覧を表示
+	//////////////////////////////////////////////
+	//// 商品一覧画面の表示
+	//////////////////////////////////////////////
+	/**
+	 * 商品一覧を表示
+	 * 
+	 * @param model
+	 * @return
+	 * @author kohei eto
+	 */
 	@RequestMapping("")
 	public String index(Model model) {
-
 		List<Item> itemList = itemService.findAll();
 		model.addAttribute("itemList", itemList);
-
-
-
 		// オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納
 		StringBuilder itemListForAutocomplete = itemService.getItemListForAutocomplete(itemList);
 		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
-
-
 		return "item_list_curry";
 	}
 
-	// 商品検索を行う
+	//////////////////////////////////////////////
+	//// 商品の検索
+	//////////////////////////////////////////////
+	/**
+	 * 商品検索を行う
+	 * @param searchName 検索する名前
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/search")
 	public String findByItemName(String searchName, Model model) {
-
-		if (searchName == null) {
-			// 検索文字列が空なら全件検索
+		if (Objects.isNull(searchName)) { // 検索文字列が空なら全件検索
 			List<Item> itemList = itemService.findAll();
 			model.addAttribute("itemList", itemList);
-		} else {
-			// 検索文字列があれば曖昧検索
+		} else { // 検索文字列があれば曖昧検索
 			List<Item> itemList = itemService.findByItemName(searchName);
 			if (itemList.equals("")) {
 				String no = "該当する商品がありません";
@@ -132,15 +137,23 @@ public class CurryController {
 
 		return "item_list_curry";
 	}
-
-	// ユーザー登録画面を表示
+	
+	//////////////////////////////////////////////
+	//// ユーザー登録
+	//////////////////////////////////////////////
+	/**
+	 * ユーザー登録画面を表示
+	 * @author kohei eto
+	 */
 	@RequestMapping("/indexRegister")
 	public String indexRegister() {
-
 		return "register_user";
 	}
 
-	// ユーザー登録をする
+	/**
+	 * ユーザー登録
+	 * @author kohei eto
+	 */
 	@RequestMapping("/register")
 	public String register(@Validated UserForm userForm, BindingResult result, Model model) {
 		if (result.hasErrors()) {
@@ -151,7 +164,9 @@ public class CurryController {
 		userService.insert(user);
 		return "login";
 	}
-	
+
+	//////////////////////////////////////////////
+	//// 注文確認画面を表示する
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form, Model model) {
 		List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
@@ -187,11 +202,11 @@ public class CurryController {
 		order.setOrderDate(orderDate);
 		order.setDestinationName(form.getName());
 		order.setDestinationEmail(form.getMailAddress());
-		//郵便番号の-を除去
+		// 郵便番号の-を除去
 		String zipCodeStr = form.getZipCode();
 		String zipCode = zipCodeStr.replace("-", "");
 		order.setDestinationZipcode(zipCode);
-		
+
 		order.setDestinationAddress(form.getAddress());
 		order.setDestinationTel(form.getTelephone());
 		String delivery = form.getOrderDate() + " " + form.getTime();
@@ -211,7 +226,6 @@ public class CurryController {
 				return Confirm(form, model);
 			}
 		} catch (ParseException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 
@@ -220,17 +234,6 @@ public class CurryController {
 
 		sendMailService.sendMail(order.getDestinationEmail());
 		return "order_finished";
-	}
-
-	@Autowired
-	private ItemService itemService;
-
-	@Autowired
-	private ToppingService toppingService;
-
-	@ModelAttribute
-	public ItemForm setUpItemForm() {
-		return new ItemForm();
 	}
 
 	/**
@@ -256,12 +259,6 @@ public class CurryController {
 
 		return "item_detail";
 	}
-
-	@Autowired
-	private OrderItemService orderItemService;
-
-	@Autowired
-	private OrderToppingService orderToppingService;
 
 	/**
 	 * カートに商品を追加し、商品追加完了画面へリダイレクト.
@@ -506,26 +503,6 @@ public class CurryController {
 	//////////////////////////////////////////////
 	//// ログイン・ログアウト機能
 	//////////////////////////////////////////////
-	@Autowired
-	private UserRepository userRepository;
-
-	/**
-	 * SpringSecurity実装後のログインユーザーを登録するメソッドです 一度だけこのURLを叩いてください ※2回目は絶対に叩かないでください
-	 * 全員がこのメソッドを実行後、直ちにこのメソッドは削除します
-	 */
-	@RequestMapping("/insertUser")
-	public String insertUser() {
-		User user = new User();
-		user.setName("test");
-		user.setEmail("t@t"); // ログインID
-		user.setPassword("ttt"); // ログインPW
-		user.setAddress("test住所");
-		user.setTelephone("テスト電話番号");
-		user.setZipcode("1111111");
-		userRepository.insert(user);
-		return "login";
-	}
-
 	/**
 	 * ログイン画面を表示
 	 */
@@ -539,6 +516,9 @@ public class CurryController {
 	//////////////////////////////////////////////
 	/**
 	 * 注文履歴画面の表示
+	 * 
+	 * @param loginUser 認証済みユーザー
+	 * @param model
 	 */
 	@RequestMapping("/showOrderHistory")
 	public String showOrderHistory(@AuthenticationPrincipal LoginUser loginUser, Model model) {
