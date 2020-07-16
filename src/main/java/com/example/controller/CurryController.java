@@ -83,6 +83,7 @@ public class CurryController {
 
 	private ItemService ItemService;
 	
+	@Autowired
 	private SendMailService sendMailService;
 
 	@ModelAttribute
@@ -165,7 +166,7 @@ public class CurryController {
 			return Confirm(form,model);
 		}
 		Order order = new Order();
-		order.setUserId(form.getUserId());
+		order.setUserId((Integer)session.getAttribute("userId"));
 
 		if (form.getPaymentMethod() == 1) {
 			order.setStatus(1);
