@@ -8,6 +8,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
@@ -34,6 +36,48 @@ public class OrderService {
 	 */
 	public void order(Order order) {
 		orderRepository.order(order);
+	}
+
+	/**
+	 * 注文履歴を検索する
+	 * 
+	 * @param userId
+	 * @return 注文履歴
+	 */
+	public List<Order> findOrderHistory(Integer userId) {
+		List<Order> orderList = orderRepository.findByUserIdAndNonStatus0(userId);
+
+		Map<Integer, List<OrderTopping>> orderToppingMap = new HashMap<>();
+		Map<Integer, OrderItem> orderItemMap = new HashMap<>();
+		Map<Integer, Order> orderMap = new HashMap<>();
+
+		for (Order order : orderList) {
+			orderToppingMap.put(order.getOrderItemList().get(0).getId(), new ArrayList<>());
+		}
+		for (Order order : orderList) {
+			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
+			orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+		}
+		for (Order order : orderList) {
+			orderItemMap.put(order.getOrderItemList().get(0).getId(), order.getOrderItemList().get(0));
+		}
+		for (Order order : orderList) {
+			OrderItem orderItem = orderItemMap.get(order.getOrderItemList().get(0).getId());
+			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
+			orderItem.setOrderToppingList(orderToppingList);
+			orderItemMap.put(order.getOrderItemList().get(0).getId(), orderItem);
+		}
+
+		List<OrderItem> orderItemList = new ArrayList<>(orderItemMap.values());
+
+		for (Order order : orderList) {
+			order.setOrderItemList(orderItemList);
+			orderMap.put(order.getId(), order);
+		}
+
+		List<Order> distinctOrderList = new ArrayList<>(orderMap.values());
+
+		return distinctOrderList;
 	}
 
 	/**
