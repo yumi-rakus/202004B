@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,7 +13,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 
 import org.omg.CORBA.PRIVATE_MEMBER;
 
@@ -52,7 +52,6 @@ import com.example.service.SendMailService;
 
 import com.example.service.ToppingService;
 
-
 /**
  * カレーECサイトを操作するコントローラ.
  * 
@@ -81,7 +80,6 @@ public class CurryController {
 
 	private SendMailService sendMailService;
 
-
 	@ModelAttribute
 	public UserForm setUpUserForm() {
 		return new UserForm();
@@ -93,6 +91,8 @@ public class CurryController {
 
 		List<Item> itemList = itemService.findAll();
 		model.addAttribute("itemList", itemList);
+
+		orderService.getOrderListByUserIdAndStatus0(30);
 
 		return "item_list_curry";
 	}
@@ -265,7 +265,12 @@ public class CurryController {
 		if (Objects.isNull((Integer) session.getAttribute("userId"))) { // ログインしていない場合
 
 			// UUIDの発行
-			// user.setId( UUID );
+			UUID uuid = UUID.randomUUID();
+			Integer intUuid = uuid.hashCode();
+
+			user.setId(intUuid);
+
+			session.setAttribute("userId", intUuid);
 
 		} else { // ログインしている場合
 
@@ -379,7 +384,12 @@ public class CurryController {
 		if (Objects.isNull((Integer) session.getAttribute("userId"))) { // ログインしていない場合
 
 			// UUIDの発行
-			// user.setId( UUID );
+			UUID uuid = UUID.randomUUID();
+			Integer intUuid = uuid.hashCode();
+
+			user.setId(intUuid);
+
+			session.setAttribute("userId", intUuid);
 
 		} else { // ログインしている場合
 
@@ -388,6 +398,8 @@ public class CurryController {
 
 		List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
 
+		//if(order.isEmpty())
+		
 		List<OrderItem> orderItemList = order.get(0).getOrderItemList();
 
 		if (orderItemList.isEmpty()) {
