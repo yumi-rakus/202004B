@@ -80,4 +80,12 @@ public class ItemRepository {
 		return itemList;
 
 	}
+
+	// オートコンプリート用に商品名情報を取得
+	public List<Item> findByName(String searchName) {
+		String sql = "select name from items where name like :name order by price_m";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + searchName + "%");
+		List<Item> itemList = template.query(sql, param, ITEM_ROW_MAPPER);
+		return itemList;
+	}
 }

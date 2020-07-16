@@ -42,4 +42,24 @@ public class ItemService {
 	public List<Item> findByItemName(String name) {
 		return itemRepository.findByItmeName(name);
 	}
+
+	// オートコンプリート用
+	public List<Item> findByName(String searcName) {
+		return itemRepository.findByItmeName(searcName);
+	}
+
+	// オートコンプリート用
+	public StringBuilder getItemListForAutocomplete(List<Item> itemList) {
+		StringBuilder itemListForAutocomplete = new StringBuilder();
+		for (int i = 0; i < itemList.size(); i++) {
+			if (i != 0) {
+				itemListForAutocomplete.append(",");
+			}
+			Item item = itemList.get(i);
+			itemListForAutocomplete.append("\"");
+			itemListForAutocomplete.append(item.getName());
+			itemListForAutocomplete.append("\"");
+		}
+		return itemListForAutocomplete;
+	}
 }

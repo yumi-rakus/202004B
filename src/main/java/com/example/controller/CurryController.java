@@ -1,40 +1,35 @@
 package com.example.controller;
 
-import java.text.SimpleDateFormat;
-
-import java.util.List;
-
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.example.domain.User;
-import com.example.form.UserForm;
-import com.example.service.UserService;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.Item;
 import com.example.domain.Order;
 import com.example.domain.Topping;
+import com.example.domain.User;
 import com.example.form.ItemForm;
 import com.example.form.OrderForm;
+import com.example.form.UserForm;
 import com.example.repository.UserRepository;
 import com.example.service.ItemService;
 import com.example.service.OrderService;
 import com.example.service.ToppingService;
-
+import com.example.service.UserService;
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -72,6 +67,11 @@ public class CurryController {
 
 		List<Item> itemList = itemService.findAll();
 		model.addAttribute("itemList", itemList);
+
+		// オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納
+		StringBuilder itemListForAutocomplete = itemService.getItemListForAutocomplete(itemList);
+		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
+
 		return "item_list_curry";
 	}
 
