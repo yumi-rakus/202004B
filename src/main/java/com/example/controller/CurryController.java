@@ -77,12 +77,12 @@ public class CurryController {
 
 	@Autowired
 
+
 	private HttpSession session;
 
 
 	private ItemService ItemService;
 	
-
 	private SendMailService sendMailService;
 
 	@ModelAttribute
@@ -144,8 +144,12 @@ public class CurryController {
 	}
 
 	@RequestMapping("/orderConfirm")
-	public String Confirm(OrderForm form) {
-		
+	public String Confirm(OrderForm form,Model model) {
+		List<Order> order=orderService.getOrderListByUserIdAndStatus0(2);
+		List<OrderItem> orderItemList=order.get(0).getOrderItemList();
+		model.addAttribute("orderItemList", orderItemList);
+		model.addAttribute("tax",order.get(0).getTax());
+		model.addAttribute("totalPrice",order.get(0).getCalcTotalPrice()+order.get(0).getTax());
 		return "order_confirm";
 	}
 
@@ -155,10 +159,10 @@ public class CurryController {
 	 * @author shoya fujisawa
 	 */
 	@RequestMapping("/order")
-	public String insert(@Validated OrderForm form, BindingResult result, Model model, Integer userId) {
+	public String order(@Validated OrderForm form, BindingResult result, Model model, Integer userId) {
 
 		if (result.hasErrors()) {
-			return Confirm(form);
+			return Confirm(form,model);
 		}
 		Order order = new Order();
 		order.setUserId(form.getUserId());
@@ -193,7 +197,7 @@ public class CurryController {
 
 			if (diff / (60 * 60 * 1000) < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
-				return Confirm(form);
+				return Confirm(form,model);
 			}
 		} catch (ParseException e) {
 			// TODO 自動生成された catch ブロック
