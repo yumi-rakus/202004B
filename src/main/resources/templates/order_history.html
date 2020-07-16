@@ -47,7 +47,7 @@
 			</div>
 		</div> -->
 		<!-- 注文履歴がない場合 -->
-		<h3 th:unless="${#lists.size(orderList)}">注文履歴がありません</h3>
+		<h3 th:if="${#lists.isEmpty(orderList)}">注文履歴がありません</h3>
 		<!-- 注文履歴がある場合 -->
 		<!-- table -->
 		<div class="row">
@@ -56,8 +56,8 @@
 					<tbody>
 						<tr th:each="order : ${orderList}" th:object="${order}">
 							<td>
-								注文情報
-								<ul>
+								<h4>注文情報</h4>
+								<ul style="list-style: none;">
 									<li>注文日時：<span th:text="*{orderDate}">2020/07/15（水）</span></li>
 									<li>お届け先：<span th:text="*{destinationAddress}">東京都新宿区1-1-1</span></li>
 									<li>注文状況：
@@ -71,23 +71,22 @@
 											<span th:case="*">NoN</span>
 										</span>
 									</li>
-
+									<li style="font-weight: bold;">合計金額：<span th:text="*{#numbers.formatInteger(totalPrice, 1, 'COMMA')}">2,380</span>円(税抜)</li>
 								</ul>
 							</td>
 							<td th:each="orderItem : *{orderItemList}" th:object="${orderItem}">
 								<a th:href="@{'/showDetail?id=' + *{item.id}}">
 									<img th:src="@{'/img_curry/' + *{item.imagePath}}" class="img-responsive img-rounded item-img-center"
 										width="150" height="450"></a><br>
-								<ul>
+								<ul style="list-style: none;">
 									<!-- 商品本体 -->
 									<li>商品名：<a th:href="@{'/showDetail?id=' + *{item.id}}"><span
-												th:text="*{item.name}">じゃがバターベーコン</span></a></li>
+												th:text="*{item.name}"></span></a></li>
 									<!-- トッピング -->
-									<span th:each="orderTopping : *{orderToppingList}" th:object="${orderTopping}">
-										<ul th:unless="*{id}==0">
-											<li th:text="*{topping.name}">ツナマヨ</li>
+									<li th:unless="*{#lists.isEmpty(orderToppingList)}">トッピング</li>
+										<ul th:each="orderTopping : *{orderToppingList}" style="list-style: none;">
+											<li th:text="${orderTopping.topping.name}">ツナマヨ</li>
 										</ul>
-									</span>
 									<li>商品サイズ：<span th:text="*{size}">M</span></li>
 									<li>商品数量：<span th:text="*{quantity}">M</span></li>
 									<li>小計：<span th:text="${#numbers.formatInteger(orderItem.getSubTotal(), 1, 'COMMA')}">2,380</span>円(税抜)</li>

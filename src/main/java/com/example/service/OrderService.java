@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,7 +111,11 @@ public class OrderService {
 		}
 		for (Order order : orderList) {
 			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
-			orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+			OrderTopping orderTopping = order.getOrderItemList().get(0).getOrderToppingList().get(0);
+			// オブジェクトが空ではない場合のみトッピングリストに追加
+			if(Objects.nonNull(orderTopping.getTopping().getName())){
+				orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+			}
 		}
 		for (Order order : orderList) {
 			orderItemMap.put(order.getOrderItemList().get(0).getId(), order.getOrderItemList().get(0));
