@@ -475,7 +475,7 @@ public class CurryController {
 	@RequestMapping("/showOrderHistory")
 	public String showOrderHistory(Model model) {
 		// user情報を取得
-		Integer userId = 3;
+		Integer userId = 5;
 		// user情報をもとに注文履歴をDBから検索
 		List<Order> orderedList = orderService.findOrderHistory(userId);
 		// List<>をスコープに詰める
