@@ -79,7 +79,7 @@
 							</td>
 							<td>
 								<div class="text-center">
-									3,280円<!-- OrderItem.javaからsubTotal()を呼び出す -->
+									<span th:text="${orderItem.getSubTotal()}">3,280円</span>円<!-- OrderItem.javaからsubTotal()を呼び出す -->
 								</div>
 							</td>
 							<td>
