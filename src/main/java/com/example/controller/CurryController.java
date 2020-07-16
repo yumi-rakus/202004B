@@ -261,10 +261,12 @@ public class CurryController {
 		////////////////////// orders table
 		User user = new User();
 
-		// orderにuserIdをセット
-		if (Objects.isNull((Integer) session.getAttribute("userId"))) { // ログインしていない場合
-
+		// userにuserIdをセット
+		if (Objects.isNull((Integer) session.getAttribute("userId"))) { 
+			
+			// ログインしていない場合
 			// UUIDの発行
+			
 			UUID uuid = UUID.randomUUID();
 			Integer intUuid = uuid.hashCode();
 
@@ -272,8 +274,9 @@ public class CurryController {
 
 			session.setAttribute("userId", intUuid);
 
-		} else { // ログインしている場合
-
+		} else { 
+			
+			// ログインしている場合
 			user.setId((Integer) session.getAttribute("userId"));
 		}
 
@@ -398,19 +401,25 @@ public class CurryController {
 
 		List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
 
-		//if(order.isEmpty())
-		
-		List<OrderItem> orderItemList = order.get(0).getOrderItemList();
+		if(!order.isEmpty()) {
+			List<OrderItem> orderItemList = order.get(0).getOrderItemList();
 
-		if (orderItemList.isEmpty()) {
-			model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+			if (orderItemList.isEmpty()) {
+				model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+			} else {
+				model.addAttribute("orderItemList", orderItemList);
+				model.addAttribute("tax", order.get(0).getTax());
+				model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
+			}
 		} else {
-			model.addAttribute("orderItemList", orderItemList);
-			model.addAttribute("tax", order.get(0).getTax());
-			model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
+			model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+			model.addAttribute("tax", 0);
+			model.addAttribute("totalPrice", 0);
 		}
+		
+		
 
-		return "cart-list";
+		return "cart_list";
 	}
 
 	/**
