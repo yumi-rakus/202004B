@@ -10,7 +10,6 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
 import org.omg.CORBA.PRIVATE_MEMBER;
 
 import org.springframework.beans.BeanUtils;
@@ -42,7 +41,6 @@ import com.example.service.OrderService;
 import com.example.service.SendMailService;
 import com.example.service.ToppingService;
 
-
 /**
  * カレーECサイトを操作するコントローラ.
  * 
@@ -70,7 +68,6 @@ public class CurryController {
 	private ItemService ItemService;
 
 	private SendMailService sendMailService;
-
 
 	@ModelAttribute
 	public UserForm setUpUserForm() {
@@ -283,10 +280,13 @@ public class CurryController {
 	 * 注文履歴画面の表示
 	 */
 	@RequestMapping("/showOrderHistory")
-	public String showOrderHistory() {
+	public String showOrderHistory(Model model) {
 		// user情報を取得
+		Integer userId = 3;
 		// user情報をもとに注文履歴をDBから検索
+		List<Order> orderedList = orderService.findOrderHistory(userId);
 		// List<>をスコープに詰める
+		model.addAttribute("orderList", orderedList);
 		return "order_history";
 	}
 
