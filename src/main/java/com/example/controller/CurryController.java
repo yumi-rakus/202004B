@@ -68,7 +68,7 @@ public class CurryController {
 
 	@Autowired
 	private ItemService ItemService;
-
+	
 	private SendMailService sendMailService;
 
 
@@ -129,6 +129,7 @@ public class CurryController {
 
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form) {
+		
 		return "order_confirm";
 	}
 
@@ -138,7 +139,7 @@ public class CurryController {
 	 * @author shoya fujisawa
 	 */
 	@RequestMapping("/order")
-	public String insert(@Validated OrderForm form, BindingResult result, Model model) {
+	public String insert(@Validated OrderForm form, BindingResult result, Model model, Integer userId) {
 
 		if (result.hasErrors()) {
 			return Confirm(form);

@@ -169,7 +169,7 @@ public class OrderRepository {
 		sql.append("ON toppings.id = ordtop.topping_id ");
 		sql.append("WHERE ");
 		sql.append("ord.user_id = :userId ");
-		sql.append("AND");
+		sql.append("AND ");
 		sql.append("ord.status = 0 ");
 		sql.append("ORDER BY ");
 		sql.append("orditem.id;");
