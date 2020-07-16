@@ -359,7 +359,8 @@ public class CurryController {
 		// ordersテーブルのtotalPriceをupdate (where:status=0, userId)
 		List<Order> orderList = orderService.getOrderListByUserIdAndStatus0(user.getId());
 
-		Integer totalPrice = orderList.get(0).getTotalPrice();
+		Integer totalPrice = 0;
+		totalPrice = orderList.get(0).getCalcTotalPrice();
 
 		orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
 
@@ -417,6 +418,14 @@ public class CurryController {
 			if (orderItemList.isEmpty()) {
 				model.addAttribute("notExistOrderItemList", "カートの中身は空です");
 			} else {
+				
+				Integer totalPrice = 0;
+				totalPrice = order.get(0).getCalcTotalPrice();
+
+				orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
+				
+				order = orderService.getOrderListByUserIdAndStatus0(user.getId());
+				
 				model.addAttribute("orderItemList", orderItemList);
 				model.addAttribute("tax", order.get(0).getTax());
 				model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
@@ -426,6 +435,9 @@ public class CurryController {
 			model.addAttribute("tax", 0);
 			model.addAttribute("totalPrice", 0);
 		}
+		
+		
+				
 
 		return "cart_list";
 	}
@@ -449,7 +461,7 @@ public class CurryController {
 
 		orderItemService.deleteByOrderItemId(Integer.parseInt(orderItemId));
 
-		return showCartList(model);
+		return "forward:/showCartList";//showCartList(model);
 	}
 
 	//////////////////////////////////////////////
