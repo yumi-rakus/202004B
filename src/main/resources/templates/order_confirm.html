@@ -49,29 +49,29 @@
 						<tr th:each="orderItem:${orderItemList}">
 							<td>
 								<div class="center">
-									<img src="@{'../img_curry/'+${order.item.imagePath}}"
+									<img th:src="@{'/img_curry/'+${orderItem.item.imagePath}}"
 										class="img-responsive img-rounded item-img-center" width="100" height="300"><br>
-									<span th:text="${orderItem.item.name}"></span>じゃがバターベーコン
+									<span th:text="${orderItem.item.name}">じゃがバターベーコン</span>
 								</div>
 							</td>
 							<td>
 								<span class="price" th:text="'&nbsp;'+${orderItem.size}">&nbsp;Ｌ</span>
-								<span th:if="${orderItem.size}=='M'" th:text="${orderItem.item.priceM}+'円'"></span>&nbsp;&nbsp;2,380円
-								<span th:if="${orderItem.size}=='L'" th:text="${orderItem.item.priceL}+'円'"></span>&nbsp;&nbsp;2,380円
-								<span th:text="'&nbsp;&nbsp;' + ${orderItem.quantity} + '個'"></span>&nbsp;&nbsp;1個
+								<span th:if="${orderItem.size}=='M'" th:text="${orderItem.item.priceM}+'円'">&nbsp;&nbsp;2,380円</span>
+								<span th:if="${orderItem.size}=='L'" th:text="${orderItem.item.priceL}+'円'">&nbsp;&nbsp;2,380円</span>
+								<span th:text="'&nbsp;&nbsp;' + ${orderItem.quantity} + '個'">&nbsp;&nbsp;1個</span>
 							</td>
 							<td>
 								<ul>
 									<li th:each="orderTopping : ${orderItem.orderToppingList}">
 										<span th:text="${orderTopping.topping.name}"></span>
-										<span th:if="${orderItem.size} == 'M'" th:text="${orderTopping.topping.priceM}"></span>
-										<span th:if="${orderItem.size} == 'L'" th:text="${orderTopping.topping.priceL}"></span>
+										<span th:if="${orderItem.size} == 'M'" th:text="${orderTopping.topping.priceM}+'円'"></span>
+										<span th:if="${orderItem.size} == 'L'" th:text="${orderTopping.topping.priceL}+'円'"></span>
 									</li>
 								</ul>
 							</td>
 							<td>
 								<div class="text-center">
-									<span th:text="${orderItem.getSubTotal()}"></span>3,280円
+									<span th:text="${orderItem.getSubTotal()}+'円'">3,280円</span>
 								</div>
 							</td>
 						</tr>

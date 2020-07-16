@@ -69,7 +69,7 @@
 							<td>
 								<span class="price" th:text="'&nbsp;' + ${orderItem.size}">&nbsp;Ｌ</span>
 								<span th:if="${orderItem.size.toString() == 'M'}" th:text="${#numbers.formatInteger(orderItem.item.priceM, 1, 'COMMA')} + '円'">&nbsp;&nbsp;2,380円</span>
-								<span th:if="${orderItem.size.toString() == 'L'}" th:text="${#numbers.formatInteger(orderItem.item.priceL, 1, 'COMMA')}　+ '円'">&nbsp;&nbsp;2,380円</span>
+								<span th:if="${orderItem.size.toString() == 'L'}" th:text="${#numbers.formatInteger(orderItem.item.priceL, 1, 'COMMA')} + '円'">&nbsp;&nbsp;2,380円</span>
 								<span th:text="'&nbsp;&nbsp;' + ${orderItem.quantity} + '個'">&nbsp;&nbsp;1個</span>
 							</td>
 							<td>
