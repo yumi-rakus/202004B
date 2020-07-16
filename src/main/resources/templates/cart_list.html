@@ -12,7 +12,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body style="text-align: center">
 	<div class="container">
 		
 		<span th:include="fragment-part::frag_nav"></span>
@@ -23,9 +23,9 @@
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<h3 class="text-center">ショッピングカート</h3>
 				
-				<span th:text="${notExistOrderItemList}"></span>
+				<span th:text="${notExistOrderItemList}" style="text-align: center"></span>
 				
-				<table class="table table-striped item-list-table">
+				<table class="table table-striped item-list-table" th:if="${orderItemList}">
 					<tbody>
 						<tr>
 							<th>
@@ -63,16 +63,16 @@
 							</td>
 							<td>
 								<span class="price" th:text="'&nbsp;' + ${orderItem.size}">&nbsp;Ｌ</span>
-								<span th:if="${orderItem.size} == 'M'" th:text="${orderItem.item.priceM} + '円'">&nbsp;&nbsp;2,380円</span>
-								<span th:if="${orderItem.size} == 'L'" th:text="${orderItem.item.priceL}　+ '円'">&nbsp;&nbsp;2,380円</span>
+								<span th:if="${orderItem.size.toString() == 'M'}" th:text="${orderItem.item.priceM} + '円'">&nbsp;&nbsp;2,380円</span>
+								<span th:if="${orderItem.size.toString() == 'L'}" th:text="${orderItem.item.priceL}　+ '円'">&nbsp;&nbsp;2,380円</span>
 								<span th:text="'&nbsp;&nbsp;' + ${orderItem.quantity} + '個'">&nbsp;&nbsp;1個</span>
 							</td>
 							<td>
 								<ul>
 									<li th:each="orderTopping : ${orderItem.orderToppingList}">
 										<span th:text="${orderTopping.topping.name}"></span>
-										<span th:if="${orderItem.size} == 'M'" th:text="${orderTopping.topping.priceM}"></span>
-										<span th:if="${orderItem.size} == 'L'" th:text="${orderTopping.topping.priceL}"></span>
+										<span th:if="${orderItem.size.toString() == 'M'}" th:text="${orderTopping.topping.priceM}"></span>
+										<span th:if="${orderItem.size.toString() == 'L'}" th:text="${orderTopping.topping.priceL}"></span>
 									</li>
 								
 								</ul>
