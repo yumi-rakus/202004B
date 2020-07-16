@@ -3,6 +3,8 @@ package com.example.service;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.servlet.http.HttpSession;
+
 import com.example.domain.LoginUser;
 import com.example.domain.User;
 import com.example.repository.UserRepository;
@@ -20,6 +22,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Autowired
   private UserRepository userRepository;
+  
+  @Autowired
+  private HttpSession session;
 
   /*
    * (non-Javadoc)
@@ -30,8 +35,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     User user = userRepository.findByEmail(email);
+    
+    
+    
     if (user == null) {
       throw new UsernameNotFoundException("そのEmailは登録されていません。");
+    } else {
+    	session.setAttribute("userId", user.getId());
     }
     // 権限付与の例
     Collection<GrantedAuthority> authorityList = new ArrayList<>();
