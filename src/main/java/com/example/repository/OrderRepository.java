@@ -2,6 +2,7 @@ package com.example.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
@@ -56,7 +57,10 @@ public class OrderRepository {
 		orderItem.setItemId(rs.getInt("item_id"));
 		orderItem.setOrderId(rs.getInt("order_id"));
 		orderItem.setQuantity(rs.getInt("quantity"));
-		orderItem.setSize(rs.getString("size").charAt(0));
+
+		if (Objects.nonNull(rs.getString("size"))) {
+			orderItem.setSize(rs.getString("size").charAt(0));
+		}
 
 		Item item = new Item();
 
