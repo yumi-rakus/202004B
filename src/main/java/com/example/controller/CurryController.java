@@ -179,9 +179,11 @@ public class CurryController {
 		order.setOrderDate(orderDate);
 		order.setDestinationName(form.getName());
 		order.setDestinationEmail(form.getMailAddress());
+		//郵便番号の-を除去
 		String zipCodeStr = form.getZipCode();
 		String zipCode = zipCodeStr.replace("-", "");
 		order.setDestinationZipcode(zipCode);
+		
 		order.setDestinationAddress(form.getAddress());
 		order.setDestinationTel(form.getTelephone());
 		String delivery = form.getOrderDate() + " " + form.getTime();
