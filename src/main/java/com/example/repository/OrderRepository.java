@@ -107,7 +107,7 @@ public class OrderRepository {
 	 */
 	public void order(Order order) {
 		String sql = "UPDATE orders SET status=:status,order_date=:orderDate,destination_name=:destinationName,destination_email=:destinationEmail"
-				+ ",destination_zipcode=:destinationZipcode,destination_address=:destinationAddress,destination_tel=:destinationTel,delivery_time=:deliveryTime,payment_method=:paymentMethod where user_id=:userId";
+				+ ",destination_zipcode=:destinationZipcode,destination_address=:destinationAddress,destination_tel=:destinationTel,delivery_time=:deliveryTime,payment_method=:paymentMethod where user_id=:userId and status=0";
 
 		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
 
