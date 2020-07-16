@@ -298,4 +298,23 @@ public class OrderRepository {
 		template.update(sql, param);
 	}
 
+	/**
+	 * order_itemsのorder_idをログインユーザのstatus = 0のものに変更する.
+	 * 
+	 * @param uuidOrderId UUIDのorder_id
+	 * @param userOrderId ログインユーザのorder_id
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateOrderId(Integer uuidOrderId, Integer userOrderId) {
+
+		String sql = "UPDATE order_items SET order_id = :userOrderId WHERE order_id = :uuidOrderId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("userOrderId", userOrderId)
+				.addValue("uuidOrderId", uuidOrderId);
+
+		template.update(sql, param);
+
+	}
+
 }
