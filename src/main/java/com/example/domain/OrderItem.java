@@ -134,7 +134,7 @@ public class OrderItem {
 			}
 		}
 
-		int subTotal = curryPrice + toppingPrice;
+		int subTotal = (curryPrice + toppingPrice) * this.quantity;
 
 		return subTotal;
 	}
