@@ -104,7 +104,7 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row" th:if="${orderItemList}">
 			<div class="col-xs-offset-2 col-xs-8">
 				<div class="form-group text-center">
 					<span id="total-price" th:text="'消費税：' + ${#numbers.formatInteger(tax, 1, 'COMMA')} + '円'">消費税：8,000円</span><br>
@@ -113,7 +113,7 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row" th:if="${orderItemList}">
 			<div class="col-xs-offset-5 col-xs-3">
 				<div class="form-group">
 					<form action="order_confirm.html" th:action="@{/orderConfirm}">
