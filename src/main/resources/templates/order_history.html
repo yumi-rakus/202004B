@@ -47,7 +47,7 @@
 			</div>
 		</div> -->
 		<!-- 注文履歴がない場合 -->
-		<h3 th:if="${#lists.size(orderList)} == 0">注文履歴がありません</h3>
+		<h3 th:unless="${#lists.size(orderList)}">注文履歴がありません</h3>
 		<!-- 注文履歴がある場合 -->
 		<!-- table -->
 		<div class="row">
@@ -71,6 +71,7 @@
 											<span th:case="*">NoN</span>
 										</span>
 									</li>
+
 								</ul>
 							</td>
 							<td th:each="orderItem : *{orderItemList}" th:object="${orderItem}">
@@ -82,14 +83,14 @@
 									<li>商品名：<a th:href="@{'/showDetail?id=' + *{item.id}}"><span
 												th:text="*{item.name}">じゃがバターベーコン</span></a></li>
 									<!-- トッピング -->
-									<ul>
-										<li th:each="orderTopping : *{orderToppingList}" th:object="${orderTopping}">
-											<span th:text="*{topping.name}">ツナマヨ</span>
-										</li>
-									</ul>
+									<span th:each="orderTopping : *{orderToppingList}" th:object="${orderTopping}">
+										<ul th:unless="*{id}==0">
+											<li th:text="*{topping.name}">ツナマヨ</li>
+										</ul>
+									</span>
 									<li>商品サイズ：<span th:text="*{size}">M</span></li>
 									<li>商品数量：<span th:text="*{quantity}">M</span></li>
-									<li>小計：<span th:text="${orderItem.getSubTotal()}">2,380</span>円(税抜)</li>
+									<li>小計：<span th:text="${#numbers.formatInteger(orderItem.getSubTotal(), 1, 'COMMA')}">2,380</span>円(税抜)</li>
 								</ul>
 							</td>
 						</tr>
