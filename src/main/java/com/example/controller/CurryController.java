@@ -409,14 +409,20 @@ public class CurryController {
 		}
 
 		if (orderService.status0ExistByUserId(user.getId())) {
+			// status0がレコードに存在したら
 
 			List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
 
-			if (!order.isEmpty()) {
+			if (!order.get(0).getOrderItemList().isEmpty()) {
+
 				List<OrderItem> orderItemList = order.get(0).getOrderItemList();
 
-				if (orderItemList.isEmpty()) {
+				if (orderItemList.get(0).getItem().getId() == 0) {
+					// orderItemが無かったら（カートの中身が空だったら）
+
 					model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+					model.addAttribute("tax", 0);
+					model.addAttribute("totalPrice", 0);
 				} else {
 
 					Integer totalPrice = 0;
@@ -436,6 +442,9 @@ public class CurryController {
 				model.addAttribute("totalPrice", 0);
 			}
 		} else {
+
+			// status0がレコードに存在しなかったら
+
 			model.addAttribute("notExistOrderItemList", "カートの中身は空です");
 			model.addAttribute("tax", 0);
 			model.addAttribute("totalPrice", 0);
