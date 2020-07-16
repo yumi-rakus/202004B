@@ -151,4 +151,16 @@ public class OrderService {
 	public void updateUserId(Integer userId, Integer uuid) {
 		orderRepository.updateUserId(userId, uuid);
 	}
+
+	/**
+	 * order_itemsのorder_idをログインユーザのstatus = 0のものに変更する.
+	 * 
+	 * @param uuidOrderId UUIDのorder_id
+	 * @param userOrderId ログインユーザのorder_id
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateOrderId(Integer uuidOrderId, Integer userOrderId) {
+		orderRepository.updateOrderId(uuidOrderId, userOrderId);
+	}
 }
