@@ -1,34 +1,31 @@
 package com.example.controller;
 
-import java.text.SimpleDateFormat;
 
-import java.util.List;
+
+
 import java.util.Objects;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.example.domain.User;
-import com.example.form.UserForm;
-import com.example.service.UserService;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Item;
 import com.example.domain.LoginUser;
@@ -36,17 +33,23 @@ import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
 import com.example.domain.Topping;
+import com.example.domain.User;
 import com.example.form.ItemForm;
 import com.example.form.OrderForm;
+import com.example.form.UserForm;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
+
 
 import com.example.service.OrderToppingService;
 
 import com.example.service.SendMailService;
 
 import com.example.service.ToppingService;
+
+import com.example.service.UserService;
+
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -102,6 +105,9 @@ public class CurryController {
 	public String index(Model model) {
 		List<Item> itemList = itemService.findAll();
 		model.addAttribute("itemList", itemList);
+		// オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納
+		StringBuilder itemListForAutocomplete = itemService.getItemListForAutocomplete(itemList);
+		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
 		return "item_list_curry";
 	}
 
@@ -161,7 +167,6 @@ public class CurryController {
 
 	//////////////////////////////////////////////
 	//// 注文確認画面を表示する
-	//////////////////////////////////////////////
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form, Model model) {
 		List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
@@ -378,9 +383,23 @@ public class CurryController {
 	 * @author yumi takahashi
 	 */
 	@RequestMapping("/cartInComplete")
-	public String cartInComplete() {
+	public String cartInComplete(Model model) {
 
 		// カートの中身を表示させたい
+		
+		List<Order> order = orderService.getOrderListByUserIdAndStatus0((Integer)session.getAttribute("userId"));
+		
+		Integer totalPrice = 0;
+		totalPrice = order.get(0).getCalcTotalPrice();
+
+		orderService.updateTotalPriceByUserId((Integer)session.getAttribute("userId"), totalPrice);
+
+		order = orderService.getOrderListByUserIdAndStatus0((Integer)session.getAttribute("userId"));
+
+		model.addAttribute("orderItemList", order.get(0).getOrderItemList());
+		model.addAttribute("tax", order.get(0).getTax());
+		model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
+		
 
 		return "cart-in-complete";
 	}
@@ -425,7 +444,7 @@ public class CurryController {
 				if (orderItemList.get(0).getItem().getId() == 0) {
 					// orderItemが無かったら（カートの中身が空だったら）
 
-					model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
 					model.addAttribute("tax", 0);
 					model.addAttribute("totalPrice", 0);
 				} else {
@@ -441,8 +460,9 @@ public class CurryController {
 					model.addAttribute("tax", order.get(0).getTax());
 					model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
 				}
+
 			} else {
-				model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+				model.addAttribute("notExistOrderItemList", "カートに商品がありません");
 				model.addAttribute("tax", 0);
 				model.addAttribute("totalPrice", 0);
 			}
@@ -450,7 +470,7 @@ public class CurryController {
 
 			// status0がレコードに存在しなかったら
 
-			model.addAttribute("notExistOrderItemList", "カートの中身は空です");
+			model.addAttribute("notExistOrderItemList", "カートに商品がありません");
 			model.addAttribute("tax", 0);
 			model.addAttribute("totalPrice", 0);
 		}

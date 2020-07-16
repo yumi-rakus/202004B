@@ -56,22 +56,22 @@
 							</td>
 							<td>
 								<span class="price" th:text="'&nbsp;'+${orderItem.size}">&nbsp;Ｌ</span>
-								<span th:if="${orderItem.size}=='M'" th:text="${orderItem.item.priceM}+'円'">&nbsp;&nbsp;2,380円</span>
-								<span th:if="${orderItem.size}=='L'" th:text="${orderItem.item.priceL}+'円'">&nbsp;&nbsp;2,380円</span>
+								<span th:if="${orderItem.size}=='M'" th:text="${#numbers.formatInteger(orderItem.item.priceM, 1, 'COMMA')}+'円'">&nbsp;&nbsp;2,380円</span>
+								<span th:if="${orderItem.size}=='L'" th:text="${#numbers.formatInteger(orderItem.item.priceL, 1, 'COMMA')}+'円'">&nbsp;&nbsp;2,380円</span>
 								<span th:text="'&nbsp;&nbsp;' + ${orderItem.quantity} + '個'">&nbsp;&nbsp;1個</span>
 							</td>
 							<td>
 								<ul>
 									<li th:each="orderTopping : ${orderItem.orderToppingList}">
 										<span th:text="${orderTopping.topping.name}"></span>
-										<span th:if="${orderItem.size} == 'M'" th:text="${orderTopping.topping.priceM}+'円'"></span>
-										<span th:if="${orderItem.size} == 'L'" th:text="${orderTopping.topping.priceL}+'円'"></span>
+										<span th:if="${orderItem.size} == 'M'" th:text="${#numbers.formatInteger(orderTopping.topping.priceM, 1, 'COMMA')}+'円'"></span>
+										<span th:if="${orderItem.size} == 'L'" th:text="${#numbers.formatInteger(orderTopping.topping.priceL, 1, 'COMMA')}+'円'"></span>
 									</li>
 								</ul>
 							</td>
 							<td>
 								<div class="text-center">
-									<span th:text="${orderItem.getSubTotal()}+'円'">3,280円</span>
+									<span th:text="${#numbers.formatInteger(orderItem.getSubTotal(), 1, 'COMMA')}+'円'">3,280円</span>
 								</div>
 							</td>
 						</tr>
@@ -83,8 +83,8 @@
 		<div class="row">
 			<div class="col-xs-offset-2 col-xs-8">
 				<div class="form-group text-center">
-					<span id="total-price" th:text="'消費税：' + ${tax} + '円'">消費税：8,000円</span><br>
-					<span id="total-price" th:text="'ご注文金額合計：' + ${totalPrice} + '円'">ご注文金額合計：38,000円 (税込)</span>
+					<span id="total-price" th:text="'消費税：' + ${#numbers.formatInteger(tax, 1, 'COMMA')} + '円'">消費税：8,000円</span><br>
+					<span id="total-price" th:text="'ご注文金額合計：' + ${#numbers.formatInteger(totalPrice, 1, 'COMMA')} + '円'">ご注文金額合計：38,000円 (税込)</span>
 				</div>
 			</div>
 		</div>
