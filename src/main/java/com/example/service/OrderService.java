@@ -139,4 +139,16 @@ public class OrderService {
 	public void updateTotalPriceByUserId(Integer userId, Integer totalPrice) {
 		orderRepository.updateTotalPrice(userId, totalPrice);
 	}
+
+	/**
+	 * UUID(仮UserId)をログイン後のUserIdに更新する.
+	 * 
+	 * @param userId ユーザID
+	 * @param uuid   UUID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateUserId(Integer userId, Integer uuid) {
+		orderRepository.updateUserId(userId, uuid);
+	}
 }

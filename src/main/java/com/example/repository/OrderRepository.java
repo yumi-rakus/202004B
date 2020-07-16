@@ -35,8 +35,8 @@ public class OrderRepository {
 	 * Orderオブジェクトを生成するローマッパー
 	 */
 
-	private static final RowMapper<Order> ORDER_ROW_MAPPER=(rs,i)->{
-		Order order=new Order();
+	private static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, i) -> {
+		Order order = new Order();
 		order.setId(rs.getInt("id"));
 		order.setUserId(rs.getInt("user_id"));
 		order.setStatus(rs.getInt("status"));
@@ -273,6 +273,23 @@ public class OrderRepository {
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("totalPrice", totalPrice).addValue("userId",
 				userId);
+
+		template.update(sql, param);
+	}
+
+	/**
+	 * UUID(仮UserId)をログイン後のUserIdに更新する.
+	 * 
+	 * @param userId ユーザID
+	 * @param uuid   UUID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateUserId(Integer userId, Integer uuid) {
+
+		String sql = "UPDATE orders SET user_id = :userId WHERE user_id = :uuid";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId).addValue("uuid", uuid);
 
 		template.update(sql, param);
 	}
