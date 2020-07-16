@@ -45,7 +45,7 @@ public class OrderService {
 	 * @return 注文履歴
 	 */
 	public List<Order> findOrderHistory(Integer userId) {
-		List<Order> orderList = orderRepository.findByUserIdAndStatus4(userId);
+		List<Order> orderList = orderRepository.findByUserIdAndNonStatus0(userId);
 
 		Map<Integer, List<OrderTopping>> orderToppingMap = new HashMap<>();
 		Map<Integer, OrderItem> orderItemMap = new HashMap<>();

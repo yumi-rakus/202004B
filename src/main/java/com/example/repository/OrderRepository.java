@@ -51,7 +51,6 @@ public class OrderRepository {
 		order.setPaymentMethod(rs.getInt("payment_method"));
 
 		OrderItem orderItem = new OrderItem();
-
 		orderItem.setId(rs.getInt("order_item_id"));
 		orderItem.setItemId(rs.getInt("item_id"));
 		orderItem.setOrderId(rs.getInt("order_id"));
@@ -59,29 +58,24 @@ public class OrderRepository {
 		orderItem.setSize(rs.getString("size").charAt(0));
 
 		Item item = new Item();
-
 		item.setId(rs.getInt("item_id"));
 		item.setName(rs.getString("item_name"));
 		item.setDescription(rs.getString("item_description"));
 		item.setPriceM(rs.getInt("item_pricem"));
 		item.setPriceL(rs.getInt("item_pricel"));
 		item.setImagePath(rs.getString("item_imagepath"));
-
 		orderItem.setItem(item);
 
 		OrderTopping orderTopping = new OrderTopping();
-
 		orderTopping.setId(rs.getInt("order_topping_id"));
 		orderTopping.setToppingId(rs.getInt("topping_id"));
 		orderTopping.setOrderItemId(rs.getInt("order_item_id"));
 
 		Topping topping = new Topping();
-
 		topping.setId(rs.getInt("topping_id"));
 		topping.setName(rs.getString("topping_name"));
 		topping.setPriceM(rs.getInt("topping_pricem"));
 		topping.setPriceL(rs.getInt("topping_pricel"));
-
 		orderTopping.setTopping(topping);
 
 		List<OrderTopping> orderToppingList = new ArrayList<>();
@@ -192,7 +186,7 @@ public class OrderRepository {
 	 * 
 	 * @author moritasoshi
 	 */
-	public List<Order> findByUserIdAndStatus4(Integer userId) {
+	public List<Order> findByUserIdAndNonStatus0(Integer userId) {
 
 		StringBuilder sql = new StringBuilder();
 
@@ -240,15 +234,14 @@ public class OrderRepository {
 		sql.append("ON toppings.id = ordtop.topping_id ");
 		sql.append("WHERE ");
 		sql.append("ord.user_id = :userId ");
-		sql.append("AND");
-		sql.append("ord.status = 4 ");
+		sql.append("AND ");
+		sql.append("ord.status != 0 ");
 		sql.append("ORDER BY ");
 		sql.append("orditem.id;");
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId);
 
 		List<Order> orderList = template.query(sql.toString(), param, ORDER_ROW_MAPPER);
-
 		return orderList;
 	}
 
