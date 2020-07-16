@@ -383,6 +383,8 @@ public class CurryController {
 	public String showCartList(Model model) {
 
 		User user = new User();
+		
+		System.out.println(session.getAttribute("userId"));
 
 		if (Objects.isNull((Integer) session.getAttribute("userId"))) { // ログインしていない場合
 
@@ -395,6 +397,8 @@ public class CurryController {
 			session.setAttribute("userId", intUuid);
 
 		} else { // ログインしている場合
+			
+			
 
 			user.setId((Integer) session.getAttribute("userId"));
 		}
