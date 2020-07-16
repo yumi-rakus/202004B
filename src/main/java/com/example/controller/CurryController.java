@@ -1,18 +1,21 @@
 package com.example.controller;
 
-import java.text.SimpleDateFormat;
 
-import java.util.List;
+
+
 import java.util.Objects;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.omg.CORBA.PRIVATE_MEMBER;
 
@@ -24,16 +27,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.example.domain.User;
-import com.example.form.UserForm;
-import com.example.service.UserService;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.Item;
 import com.example.domain.LoginUser;
@@ -41,18 +39,24 @@ import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
 import com.example.domain.Topping;
+import com.example.domain.User;
 import com.example.form.ItemForm;
 import com.example.form.OrderForm;
+import com.example.form.UserForm;
 import com.example.repository.UserRepository;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
+
 
 import com.example.service.OrderToppingService;
 
 import com.example.service.SendMailService;
 
 import com.example.service.ToppingService;
+
+import com.example.service.UserService;
+
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -97,7 +101,12 @@ public class CurryController {
 		List<Item> itemList = itemService.findAll();
 		model.addAttribute("itemList", itemList);
 
-		orderService.getOrderListByUserIdAndStatus0(30);
+
+
+		// オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納
+		StringBuilder itemListForAutocomplete = itemService.getItemListForAutocomplete(itemList);
+		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
+
 
 		return "item_list_curry";
 	}
