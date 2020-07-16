@@ -143,7 +143,7 @@ public class CurryController {
 		userService.insert(user);
 		return "login";
 	}
-
+	
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form,Model model) {
 		List<Order> order=orderService.getOrderListByUserIdAndStatus0(2);
