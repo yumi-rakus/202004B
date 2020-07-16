@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -35,6 +36,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 
 import com.example.domain.Item;
+import com.example.domain.LoginUser;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
@@ -76,7 +78,6 @@ public class CurryController {
 	private UserService userService;
 
 	@Autowired
-
 	private HttpSession session;
 
 	private ItemService ItemService;
@@ -516,9 +517,9 @@ public class CurryController {
 	 * 注文履歴画面の表示
 	 */
 	@RequestMapping("/showOrderHistory")
-	public String showOrderHistory(Model model) {
+	public String showOrderHistory(@AuthenticationPrincipal LoginUser loginUser, Model model) {
 		// user情報を取得
-		Integer userId = 5;
+		Integer userId = loginUser.getUser().getId();
 		// user情報をもとに注文履歴をDBから検索
 		List<Order> orderedList = orderService.findOrderHistory(userId);
 		// List<>をスコープに詰める

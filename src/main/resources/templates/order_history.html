@@ -19,6 +19,7 @@
 		<span th:include="fragment-part::frag_nav"></span>
 
 		<h2>注文履歴</h2>
+
 		<!-- search form 今のところ不要-->
 		<!-- <div class="row">
 			<div
@@ -45,7 +46,9 @@
 				</div>
 			</div>
 		</div> -->
-
+		<!-- 注文履歴がない場合 -->
+		<h3 th:if="${#lists.size(orderList)} == 0">注文履歴がありません</h3>
+		<!-- 注文履歴がある場合 -->
 		<!-- table -->
 		<div class="row">
 			<div class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
