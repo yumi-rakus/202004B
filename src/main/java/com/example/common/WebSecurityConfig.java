@@ -30,16 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests()
-
 			.antMatchers("/toLogin", "/insertUser", "/", "/showDetail", "/order", "/indexRegister", "/register", "/showCartList", "/deleteOrderItem", "/cartIn", "/cartInComplete", "/ajax/**").permitAll()
-
-
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()
 			.loginPage("/toLogin").permitAll() // ログイン画面を表示するurl
 			.loginProcessingUrl("/login") // ここへリクエストされるとログイン処理を開始する
-			.defaultSuccessUrl("/", true)
+			.defaultSuccessUrl("/")
 			.failureUrl("/?error")
 			.usernameParameter("email")
 			.passwordParameter("password")
