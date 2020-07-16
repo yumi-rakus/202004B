@@ -77,12 +77,10 @@ public class CurryController {
 
 	@Autowired
 
-
 	private HttpSession session;
 
-
 	private ItemService ItemService;
-	
+
 	private SendMailService sendMailService;
 
 	@ModelAttribute
@@ -144,12 +142,12 @@ public class CurryController {
 	}
 
 	@RequestMapping("/orderConfirm")
-	public String Confirm(OrderForm form,Model model) {
-		List<Order> order=orderService.getOrderListByUserIdAndStatus0(2);
-		List<OrderItem> orderItemList=order.get(0).getOrderItemList();
+	public String Confirm(OrderForm form, Model model) {
+		List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
+		List<OrderItem> orderItemList = order.get(0).getOrderItemList();
 		model.addAttribute("orderItemList", orderItemList);
-		model.addAttribute("tax",order.get(0).getTax());
-		model.addAttribute("totalPrice",order.get(0).getCalcTotalPrice()+order.get(0).getTax());
+		model.addAttribute("tax", order.get(0).getTax());
+		model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
 		return "order_confirm";
 	}
 
@@ -162,7 +160,7 @@ public class CurryController {
 	public String order(@Validated OrderForm form, BindingResult result, Model model, Integer userId) {
 
 		if (result.hasErrors()) {
-			return Confirm(form,model);
+			return Confirm(form, model);
 		}
 		Order order = new Order();
 		order.setUserId(form.getUserId());
@@ -197,7 +195,7 @@ public class CurryController {
 
 			if (diff / (60 * 60 * 1000) < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
-				return Confirm(form,model);
+				return Confirm(form, model);
 			}
 		} catch (ParseException e) {
 			// TODO 自動生成された catch ブロック
@@ -411,6 +409,7 @@ public class CurryController {
 		}
 
 		if (orderService.status0ExistByUserId(user.getId())) {
+
 			List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
 
 			if (!order.isEmpty()) {
@@ -419,6 +418,13 @@ public class CurryController {
 				if (orderItemList.isEmpty()) {
 					model.addAttribute("notExistOrderItemList", "カートの中身は空です");
 				} else {
+
+					Integer totalPrice = 0;
+					totalPrice = order.get(0).getCalcTotalPrice();
+
+					orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
+
+					order = orderService.getOrderListByUserIdAndStatus0(user.getId());
 
 					model.addAttribute("orderItemList", orderItemList);
 					model.addAttribute("tax", order.get(0).getTax());
@@ -429,7 +435,6 @@ public class CurryController {
 				model.addAttribute("tax", 0);
 				model.addAttribute("totalPrice", 0);
 			}
-
 		} else {
 			model.addAttribute("notExistOrderItemList", "カートの中身は空です");
 			model.addAttribute("tax", 0);
@@ -458,7 +463,7 @@ public class CurryController {
 
 		orderItemService.deleteByOrderItemId(Integer.parseInt(orderItemId));
 
-		return "forward:/showCartList";//showCartList(model);
+		return "forward:/showCartList";// showCartList(model);
 	}
 
 	//////////////////////////////////////////////
