@@ -57,9 +57,9 @@ $(function(){
 </script>
 </head>
 <body>
+ 
 	<div class="container">
 		<span th:include="fragment-part::frag_nav"></span>
-
 		<!-- search form -->
 		<div class="row">
 			<div
@@ -90,6 +90,17 @@ $(function(){
 			</div>
 		</div>
 
+		
+          <form th:action="@{/}" method="post" th:object="${itemForm}">
+            <select th:field="*{id}" name="id">  
+             <option th:each="item : ${itemMap}" th:value="${item.key}" 
+				th:text="${item.value}" >カレー順
+			 </option>
+            </select>
+            <button>並び替え</button>
+          </form>  
+           
+		
 		<!-- table -->
 		<div class="row">
 			<div
@@ -98,14 +109,16 @@ $(function(){
 					<tbody>
 						
     <div class="row">
-        <div0
-                class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+        <div0 class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+          
             <table class="table table-striped item-list-table">
+                
+                
                 <tbody>
                 
-
+				 
                 
-                <th:block th:each="item,status : ${itemList}">
+                <th:block th:each="item,status : ${itemPage.content}">
                     <th:block th:if="${status.index%3==0}">
                         <tr>
                     </th:block>
@@ -132,6 +145,20 @@ $(function(){
 					    
 					</tbody>
 				</table>
+                
+                 <!-- ページング機能 -->
+				<div align="center">
+				<div th:if="${itemPage.totalPages > 0}" class="pagination"
+				    th:each="pageNumber : ${pageNumbers}">
+				    <a th:href="@{/(size=${itemPage.size}, page=${pageNumber}, searchName=${searchName})}"
+				        th:text=${pageNumber}
+				        th:class="${pageNumber==itemPage.number + 1} ? active"></a>
+				</div>
+				</div>
+
+
+
+
 
 			</div>
 		</div>
