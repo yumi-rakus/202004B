@@ -33,22 +33,37 @@ public class ItemService {
 		return itemRepository.load(id);
 	}
 
-	// 全商品情報を取得
+	/**
+	 * 全商品情報を取得する.
+	 * 
+	 * @return 商品情報一覧
+	 * 
+	 * @author kohei eto
+	 */
 	public List<Item> findAll() {
 		return itemRepository.findAll();
 	}
 
-	// 商品の名前で曖昧検索
+	/**
+	 * 商品の名前で曖昧検索する.
+	 * 
+	 * @param name 検索キー
+	 * @return 検索された商品情報一覧
+	 * 
+	 * @author kohei eto
+	 */
 	public List<Item> findByItemName(String name) {
-		return itemRepository.findByItmeName(name);
+		return itemRepository.findByItemName(name);
 	}
 
-	// オートコンプリート用
-	public List<Item> findByName(String searcName) {
-		return itemRepository.findByItmeName(searcName);
-	}
-
-	// オートコンプリート用
+	/**
+	 * 商品名の文字列を取得する.
+	 * 
+	 * @param itemList 商品情報リスト
+	 * @return 商品名の文字列
+	 * 
+	 * @author kohei eto
+	 */
 	public StringBuilder getItemListForAutocomplete(List<Item> itemList) {
 		StringBuilder itemListForAutocomplete = new StringBuilder();
 		for (int i = 0; i < itemList.size(); i++) {
