@@ -1,6 +1,7 @@
 package com.example.domain;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 注文商品を表すドメイン.
@@ -125,13 +126,17 @@ public class OrderItem {
 
 		int toppingPrice = 0;
 
-		for (OrderTopping orderTopping : this.orderToppingList) {
+		if (Objects.nonNull(this.orderToppingList)) {
 
-			if (("M").equals(String.valueOf(this.size))) {
-				toppingPrice += orderTopping.getTopping().getPriceM();
-			} else if (("L").equals(String.valueOf(this.size))) {
-				toppingPrice += orderTopping.getTopping().getPriceL();
+			for (OrderTopping orderTopping : this.orderToppingList) {
+
+				if (("M").equals(String.valueOf(this.size))) {
+					toppingPrice += orderTopping.getTopping().getPriceM();
+				} else if (("L").equals(String.valueOf(this.size))) {
+					toppingPrice += orderTopping.getTopping().getPriceL();
+				}
 			}
+
 		}
 
 		int subTotal = (curryPrice + toppingPrice) * this.quantity;
