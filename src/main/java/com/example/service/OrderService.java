@@ -69,7 +69,11 @@ public class OrderService {
 
 		for (Order order : orderList) {
 			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
-			orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+			OrderTopping orderTopping = order.getOrderItemList().get(0).getOrderToppingList().get(0);
+			// オブジェクトが空ではない場合のみトッピングリストに追加
+			if (Objects.nonNull(orderTopping.getTopping().getName())) {
+				orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+			}
 		}
 		// Map1完成 （order_item_id１つに対して１つの注文トッピングリストorderToppingList(中身は0~複数)）
 
@@ -249,5 +253,16 @@ public class OrderService {
 	 */
 	public void updateOrderId(Integer uuidOrderId, Integer userOrderId) {
 		orderRepository.updateOrderId(uuidOrderId, userOrderId);
+	}
+
+	/**
+	 * ログイン前まで利用していたショッピングカートを削除する.
+	 * 
+	 * @param uuid UUID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void deleteUuidRecordByUuid(Integer uuid) {
+		orderRepository.deleteUuidRecordByUuid(uuid);
 	}
 }
