@@ -33,6 +33,7 @@
 						<span sec:authorize="isAuthenticated()">
 							<span sec:authentication="principal.user.name"></span>さん&nbsp;ようこそ&nbsp;&nbsp;
 						</span>
+						<a href="item_list_curry.html" th:href="@{/}" class="navbar-link">商品一覧</a>&nbsp;&nbsp;
 						<a href="cart_list.html" th:href="@{/showCartList}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
 						<a href="order_history.html" th:href="@{/showOrderHistory}" class="navbar-link">注文履歴</a>&nbsp;&nbsp;
 						<span sec:authorize="isAnonymous()">
