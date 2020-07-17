@@ -23,6 +23,16 @@ public class ItemForm {
 
 	private Integer itemId;
 
+	private Integer id;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	// getter setter
 	public String getSize() {
 		return size;

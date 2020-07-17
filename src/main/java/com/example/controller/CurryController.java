@@ -1,21 +1,23 @@
 package com.example.controller;
 
-import java.util.Objects;
-import java.util.UUID;
-
-import javax.servlet.http.HttpSession;
-
-import java.util.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,13 +39,9 @@ import com.example.form.UserForm;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
-
 import com.example.service.OrderToppingService;
-
 import com.example.service.SendMailService;
-
 import com.example.service.ToppingService;
-
 import com.example.service.UserService;
 
 /**
@@ -72,6 +70,8 @@ public class CurryController {
 	private OrderToppingService orderToppingService;
 	@Autowired
 	private HttpSession session;
+	@Autowired
+	private static final int VIEW_SIZE = 9;
 
 	@ModelAttribute
 	public UserForm setUpUserForm() {
@@ -88,6 +88,11 @@ public class CurryController {
 		return new OrderForm();
 	}
 
+	@ModelAttribute
+	public ItemForm setUpForm() {
+		return new ItemForm();
+	}
+
 	//////////////////////////////////////////////
 	//// 商品一覧画面の表示
 	//////////////////////////////////////////////
@@ -100,13 +105,83 @@ public class CurryController {
 	 * @author kohei eto
 	 */
 	@RequestMapping("")
-	public String index(Model model) {
-		List<Item> itemList = itemService.findAll();
-		model.addAttribute("itemList", itemList);
-		// オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納
-		StringBuilder itemListForAutocomplete = itemService.getItemListForAutocomplete(itemList);
-		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
+	public String index(Model model, Integer page, ItemForm form) {
+		/*
+		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
+		 * itemList); // オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納 StringBuilder
+		 * itemListForAutocomplete = itemService.getItemListForAutocomplete(itemList);
+		 * model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
+		 */
+
+		Map<Integer, String> itemMap = new LinkedHashMap<>();
+		itemMap.put(1, "価格安い順");
+		itemMap.put(2, "価格高い順");
+		itemMap.put(3, "人気順");
+
+		model.addAttribute("itemMap", itemMap);
+
+		/*
+		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
+		 * itemList);
+		 */
+
+		// ページング機能追加
+		if (page == null) {
+			// ページ数の指定が無い場合は1ページ目を表示させる
+			page = 1;
+		}
+		/* List<Item> itemList = null; */
+
+		try {
+			if (form.getId() == 1) {
+				List<Item> itemList = itemService.findAllByPrice();
+				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+				model.addAttribute("itemPage", itemPage);
+				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+				model.addAttribute("pageNumbers", pageNumbers);
+			} else if (form.getId() == 2) {
+				List<Item> itemList = itemService.findAllByPrice2();
+				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+				model.addAttribute("itemPage", itemPage);
+				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+				model.addAttribute("pageNumbers", pageNumbers);
+			} else if (form.getId() == 3) {
+				List<Item> itemList = itemService.findAllByPrice3();
+				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+				model.addAttribute("itemPage", itemPage);
+				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+				model.addAttribute("pageNumbers", pageNumbers);
+			}
+
+		} catch (NullPointerException e) {
+			List<Item> itemList = itemService.findAllByPrice3();
+			// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+			Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+			model.addAttribute("itemPage", itemPage);
+			// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+			List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+			model.addAttribute("pageNumbers", pageNumbers);
+		}
+
 		return "item_list_curry";
+	}
+
+	private List<Integer> calcPageNumbers(Model model, Page<Item> itemPage) {
+		int totalPages = itemPage.getTotalPages();
+		List<Integer> pageNumbers = null;
+		if (totalPages > 0) {
+			pageNumbers = new ArrayList<Integer>();
+			for (int i = 1; i <= totalPages; i++) {
+				pageNumbers.add(i);
+			}
+		}
+		return pageNumbers;
 	}
 
 	//////////////////////////////////////////////
@@ -174,13 +249,13 @@ public class CurryController {
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form, Model model) {
 		try {
-		List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
-		List<OrderItem> orderItemList = order.get(0).getOrderItemList();
-		model.addAttribute("orderItemList", orderItemList);
-		model.addAttribute("tax", order.get(0).getTax());
-		model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
-		return "order_confirm";
-		}catch(IndexOutOfBoundsException e) {
+			List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
+			List<OrderItem> orderItemList = order.get(0).getOrderItemList();
+			model.addAttribute("orderItemList", orderItemList);
+			model.addAttribute("tax", order.get(0).getTax());
+			model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
+			return "order_confirm";
+		} catch (IndexOutOfBoundsException e) {
 			return showCartList(model);
 		}
 	}
@@ -247,6 +322,7 @@ public class CurryController {
 
 	/**
 	 * 注文完了画面を表示
+	 * 
 	 * @author shoya fujisawa
 	 */
 	@RequestMapping("/orderFinished")
@@ -391,7 +467,7 @@ public class CurryController {
 	 * @author yumi takahashi
 	 */
 	@RequestMapping("/cartInComplete")
-	public String cartInComplete(Model model) {
+	public String cartInComplete(Model model,Integer page, ItemForm form) {
 
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
@@ -408,10 +484,10 @@ public class CurryController {
 					model.addAttribute("cartInComplete", "cartInComplete");
 				}
 			} else {
-				return index(model);
+				return index(model, page, form);
 			}
 		} else {
-			return index(model);
+			return index(model, page, form);
 		}
 
 		return "cart_list";
