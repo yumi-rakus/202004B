@@ -17,7 +17,6 @@ import com.example.domain.Item;
  * @author yumi takahashi
  *
  */
-
 @Repository
 public class ItemRepository {
 
@@ -59,7 +58,13 @@ public class ItemRepository {
 		return item;
 	}
 
-	// 全商品情報を取得
+	/**
+	 * 全商品情報を取得する.
+	 * 
+	 * @return 商品情報一覧
+	 * 
+	 * @author kohei eto
+	 */
 	public List<Item> findAll() {
 
 		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items order by price_m";
@@ -69,8 +74,15 @@ public class ItemRepository {
 		return itemlist;
 	}
 
-	// 商品名から検索する
-	public List<Item> findByItmeName(String name) {
+	/**
+	 * 商品情報を商品名で曖昧検索し、検索された商品情報を取得する.
+	 * 
+	 * @param name 検索キー
+	 * @return 検索された商品情報
+	 * 
+	 * @author kohei eto
+	 */
+	public List<Item> findByItemName(String name) {
 		String sql = "select * from items where name like :name order by price_m";
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
@@ -81,11 +93,4 @@ public class ItemRepository {
 
 	}
 
-	// オートコンプリート用に商品名情報を取得
-	public List<Item> findByName(String searchName) {
-		String sql = "select name from items where name like :name order by price_m";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + searchName + "%");
-		List<Item> itemList = template.query(sql, param, ITEM_ROW_MAPPER);
-		return itemList;
-	}
 }
