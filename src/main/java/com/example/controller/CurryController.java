@@ -1,13 +1,9 @@
 package com.example.controller;
 
-
-
-
 import java.util.Objects;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
-
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -15,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -41,7 +38,6 @@ import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
 
-
 import com.example.service.OrderToppingService;
 
 import com.example.service.SendMailService;
@@ -49,7 +45,6 @@ import com.example.service.SendMailService;
 import com.example.service.ToppingService;
 
 import com.example.service.UserService;
-
 
 /**
  * カレーECサイトを操作するコントローラ.
@@ -62,30 +57,32 @@ import com.example.service.UserService;
 public class CurryController {
 
 	@Autowired
-	private OrderService orderService;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private SendMailService sendMailService;
-	@Autowired
-	private HttpSession session;
 	@Autowired
 	private ItemService itemService;
 	@Autowired
 	private ToppingService toppingService;
 	@Autowired
+	private OrderService orderService;
+	@Autowired
 	private OrderItemService orderItemService;
 	@Autowired
 	private OrderToppingService orderToppingService;
+	@Autowired
+	private HttpSession session;
+
+	@ModelAttribute
+	public UserForm setUpUserForm() {
+		return new UserForm();
+	}
 
 	@ModelAttribute
 	public ItemForm setUpItemForm() {
 		return new ItemForm();
 	}
-	@ModelAttribute
-	public UserForm setUpUserForm() {
-		return new UserForm();
-	}
+
 	@ModelAttribute
 	private OrderForm setUpOrderForm() {
 		return new OrderForm();
@@ -97,8 +94,9 @@ public class CurryController {
 	/**
 	 * 商品一覧を表示
 	 * 
-	 * @param model
-	 * @return
+	 * @param model モデル
+	 * @return 商品一覧画面
+	 * 
 	 * @author kohei eto
 	 */
 	@RequestMapping("")
@@ -116,9 +114,12 @@ public class CurryController {
 	//////////////////////////////////////////////
 	/**
 	 * 商品検索を行う
+	 * 
 	 * @param searchName 検索する名前
-	 * @param model
-	 * @return
+	 * @param model      モデル
+	 * @return 検索された商品一覧画面
+	 * 
+	 * @author kohei eto
 	 */
 	@RequestMapping("/search")
 	public String findByItemName(String searchName, Model model) {
@@ -137,12 +138,13 @@ public class CurryController {
 
 		return "item_list_curry";
 	}
-	
+
 	//////////////////////////////////////////////
 	//// ユーザー登録
 	//////////////////////////////////////////////
 	/**
 	 * ユーザー登録画面を表示
+	 * 
 	 * @author kohei eto
 	 */
 	@RequestMapping("/indexRegister")
@@ -152,6 +154,7 @@ public class CurryController {
 
 	/**
 	 * ユーザー登録
+	 * 
 	 * @author kohei eto
 	 */
 	@RequestMapping("/register")
@@ -167,6 +170,7 @@ public class CurryController {
 
 	//////////////////////////////////////////////
 	//// 注文確認画面を表示する
+	//////////////////////////////////////////////
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form, Model model) {
 		List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
@@ -236,6 +240,9 @@ public class CurryController {
 		return "order_finished";
 	}
 
+	//////////////////////////////////////////////
+	//// 商品詳細画面の表示
+	//////////////////////////////////////////////
 	/**
 	 * 商品情報詳細画面を出力する.
 	 * 
@@ -250,9 +257,9 @@ public class CurryController {
 
 		Item item = itemService.showDetail(Integer.parseInt(id));
 		List<Topping> toppingList = toppingService.showToppingList();
+		item.setToppingList(toppingList);
 
 		model.addAttribute("item", item);
-		model.addAttribute("toppingList", toppingList);
 
 		itemForm.setSize("M");
 		itemForm.setQuantity(1);
@@ -260,6 +267,9 @@ public class CurryController {
 		return "item_detail";
 	}
 
+	//////////////////////////////////////////////
+	//// ショッピングカートに商品を追加する
+	//////////////////////////////////////////////
 	/**
 	 * カートに商品を追加し、商品追加完了画面へリダイレクト.
 	 * 
@@ -276,76 +286,60 @@ public class CurryController {
 			return "item_detail";
 		}
 
-		////////////////////// orders table
-		User user = new User();
+		Integer userId;
 
-		// userにuserIdをセット
+		// userIdにセット
 		if (Objects.isNull((Integer) session.getAttribute("userId"))) {
-
 			// ログインしていない場合
 			// UUIDの発行
-
 			UUID uuid = UUID.randomUUID();
-			Integer intUuid = uuid.hashCode();
+			userId = uuid.hashCode();
 
-			user.setId(intUuid);
-
-			session.setAttribute("userId", intUuid);
-
+			session.setAttribute("userId", userId);
 		} else {
-
 			// ログインしている場合
-			user.setId((Integer) session.getAttribute("userId"));
+			userId = (Integer) session.getAttribute("userId");
 		}
 
+		////////////////////// orders table getId or insert
 		Integer orderId;
 
-		if (orderService.status0ExistByUserId(user.getId())) {
+		if (orderService.status0ExistByUserId(userId)) {
 			// status0がレコードに存在したらオーダーIDをとってくる
-			orderId = orderService.getOrderIdByUserId(user.getId());
-
+			orderId = orderService.getOrderIdByUserId(userId);
 		} else {
 			// status0がレコードに存在しなかったらordersテーブルにinsert(where:userId, status=0)
-
 			Order order = new Order();
-
-			order.setUserId(user.getId());
+			order.setUserId(userId);
 			order.setStatus(0);
 
-			Item item = itemService.showDetail(form.getItemId());
+			// totalPriceの計算
+			OrderItem orderItem = new OrderItem();
+			orderItem.setItem(itemService.showDetail(form.getItemId()));
+			orderItem.setSize(form.getSize().charAt(0));
+			orderItem.setQuantity(form.getQuantity());
 
-			Integer price = 0;
+			List<OrderTopping> orderToppingList = new ArrayList<>();
 
-			if (form.getSize().equals("M")) {
-				price += item.getPriceM();
-			} else if (form.getSize().equals("L")) {
-				price += item.getPriceL();
+			for (Integer toppingId : form.getToppingIdList()) {
+				Topping topping = toppingService.findById(toppingId);
+				OrderTopping orderTopping = new OrderTopping();
+				orderTopping.setTopping(topping);
+				orderToppingList.add(orderTopping);
 			}
 
-			if (!Objects.isNull(form.getToppingIdList())) {
+			orderItem.setOrderToppingList(orderToppingList);
 
-				for (Integer toppingId : form.getToppingIdList()) {
-					Topping topping = toppingService.findById(toppingId);
-
-					if (form.getSize().equals("M")) {
-						price += topping.getPriceM();
-					} else if (form.getSize().equals("L")) {
-						price += topping.getPriceL();
-					}
-				}
-			}
-
-			order.setTotalPrice(price);
+			Integer subTotal = orderItem.getSubTotal();
+			order.setTotalPrice(subTotal);
 
 			// insertで自動採番されたorder_IdをorderIdに代入
 			order = orderService.insertOrderStatus0(order);
-
 			orderId = order.getId();
 		}
 
 		////////////////////// order_items table insert
 		OrderItem orderItem = new OrderItem();
-
 		orderItem.setItemId(form.getItemId());
 		orderItem.setOrderId(orderId);
 		orderItem.setQuantity(form.getQuantity());
@@ -357,7 +351,6 @@ public class CurryController {
 		for (Integer toppingId : form.getToppingIdList()) {
 
 			OrderTopping orderTopping = new OrderTopping();
-
 			orderTopping.setToppingId(toppingId);
 			orderTopping.setOrderItemId(orderItem.getId());
 
@@ -365,12 +358,11 @@ public class CurryController {
 		}
 
 		// ordersテーブルのtotalPriceをupdate (where:status=0, userId)
-		List<Order> orderList = orderService.getOrderListByUserIdAndStatus0(user.getId());
-
+		List<Order> orderList = orderService.getOrderListByUserIdAndStatus0(userId);
 		Integer totalPrice = 0;
 		totalPrice = orderList.get(0).getCalcTotalPrice();
 
-		orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
+		orderService.updateTotalPriceByUserId(userId, totalPrice);
 
 		return "redirect:/cartInComplete";
 	}
@@ -378,6 +370,7 @@ public class CurryController {
 	/**
 	 * 商品追加完了画面を出力する.
 	 * 
+	 * @param model モデル
 	 * @return 商品追加完了画面
 	 * 
 	 * @author yumi takahashi
@@ -385,25 +378,33 @@ public class CurryController {
 	@RequestMapping("/cartInComplete")
 	public String cartInComplete(Model model) {
 
-		// カートの中身を表示させたい
-		
-		List<Order> order = orderService.getOrderListByUserIdAndStatus0((Integer)session.getAttribute("userId"));
-		
-		Integer totalPrice = 0;
-		totalPrice = order.get(0).getCalcTotalPrice();
+		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
-		orderService.updateTotalPriceByUserId((Integer)session.getAttribute("userId"), totalPrice);
+			if (orderService.status0ExistByUserId((Integer) session.getAttribute("userId"))) {
+				List<Order> order = orderService
+						.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
 
-		order = orderService.getOrderListByUserIdAndStatus0((Integer)session.getAttribute("userId"));
+				if (order.get(0).getOrderItemList().get(0).getItem().getId() == 0) {
+					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
+				} else {
+					model.addAttribute("orderItemList", order.get(0).getOrderItemList());
+					model.addAttribute("tax", order.get(0).getTax());
+					model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
+					model.addAttribute("cartInComplete", "cartInComplete");
+				}
+			} else {
+				return index(model);
+			}
+		} else {
+			return index(model);
+		}
 
-		model.addAttribute("orderItemList", order.get(0).getOrderItemList());
-		model.addAttribute("tax", order.get(0).getTax());
-		model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
-		
-
-		return "cart-in-complete";
+		return "cart_list";
 	}
 
+	//////////////////////////////////////////////
+	//// ショッピングカートの中身を表示する
+	//////////////////////////////////////////////
 	/**
 	 * ショッピングカート画面を出力する.
 	 * 
@@ -415,69 +416,38 @@ public class CurryController {
 	@RequestMapping("/showCartList")
 	public String showCartList(Model model) {
 
-		User user = new User();
+		if (Objects.isNull((Integer) session.getAttribute("userId"))) {
 
-		if (Objects.isNull((Integer) session.getAttribute("userId"))) { // ログインしていない場合
+			model.addAttribute("notExistOrderItemList", "カートに商品がありません");
+		} else {
+			// ログインまたはUUIDを発行している場合
+			Integer userId = (Integer) session.getAttribute("userId");
 
-			// UUIDの発行
-			UUID uuid = UUID.randomUUID();
-			Integer intUuid = uuid.hashCode();
+			if (orderService.status0ExistByUserId(userId)) {
+				// status0がレコードに存在したら
+				List<Order> order = orderService.getOrderListByUserIdAndStatus0(userId);
 
-			user.setId(intUuid);
-
-			session.setAttribute("userId", intUuid);
-
-		} else { // ログインしている場合
-
-			user.setId((Integer) session.getAttribute("userId"));
-		}
-
-		if (orderService.status0ExistByUserId(user.getId())) {
-			// status0がレコードに存在したら
-
-			List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
-
-			if (!order.get(0).getOrderItemList().isEmpty()) {
-
-				List<OrderItem> orderItemList = order.get(0).getOrderItemList();
-
-				if (orderItemList.get(0).getItem().getId() == 0) {
-					// orderItemが無かったら（カートの中身が空だったら）
-
+				if (order.get(0).getOrderItemList().get(0).getItem().getId() == 0) {
+					// orderItemが無かったら（カートの中身が空だったら)
 					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
-					model.addAttribute("tax", 0);
-					model.addAttribute("totalPrice", 0);
 				} else {
 
-					Integer totalPrice = 0;
-					totalPrice = order.get(0).getCalcTotalPrice();
-
-					orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
-
-					order = orderService.getOrderListByUserIdAndStatus0(user.getId());
-
-					model.addAttribute("orderItemList", orderItemList);
+					model.addAttribute("orderItemList", order.get(0).getOrderItemList());
 					model.addAttribute("tax", order.get(0).getTax());
 					model.addAttribute("totalPrice", order.get(0).getTotalPrice() + order.get(0).getTax());
 				}
-
 			} else {
+				// status0がレコードに存在しなかったら
 				model.addAttribute("notExistOrderItemList", "カートに商品がありません");
-				model.addAttribute("tax", 0);
-				model.addAttribute("totalPrice", 0);
 			}
-		} else {
-
-			// status0がレコードに存在しなかったら
-
-			model.addAttribute("notExistOrderItemList", "カートに商品がありません");
-			model.addAttribute("tax", 0);
-			model.addAttribute("totalPrice", 0);
 		}
 
 		return "cart_list";
 	}
 
+	//////////////////////////////////////////////
+	//// ショッピングカートから商品を削除する
+	//////////////////////////////////////////////
 	/**
 	 * ショッピングカートから商品を削除する.
 	 * 
@@ -488,16 +458,17 @@ public class CurryController {
 	 * @author yumi takahashi
 	 */
 	@RequestMapping("/deleteOrderItem")
-	public String deleteOrderItem(Model model, String orderItemId) {
-
-		// order_itemsテーブルから削除(where:orderItemId)
-		// order_toppingsテーブルから削除(where:orderItemId)
-		// transactionで begin commit
-		// window.confirmで確認させたい
+	public String deleteOrderItem(String orderItemId) {
 
 		orderItemService.deleteByOrderItemId(Integer.parseInt(orderItemId));
 
-		return "forward:/showCartList";// showCartList(model);
+		Integer userId = (Integer) session.getAttribute("userId");
+
+		List<Order> order = orderService.getOrderListByUserIdAndStatus0(userId);
+		Integer totalPrice = order.get(0).getCalcTotalPrice();
+		orderService.updateTotalPriceByUserId(userId, totalPrice);
+
+		return "redirect:/showCartList";
 	}
 
 	//////////////////////////////////////////////
@@ -505,6 +476,8 @@ public class CurryController {
 	//////////////////////////////////////////////
 	/**
 	 * ログイン画面を表示
+	 * 
+	 * @author soshi morita
 	 */
 	@RequestMapping("/toLogin")
 	public String toLogin() {
@@ -519,6 +492,8 @@ public class CurryController {
 	 * 
 	 * @param loginUser 認証済みユーザー
 	 * @param model
+	 * 
+	 * @author soshi morita
 	 */
 	@RequestMapping("/showOrderHistory")
 	public String showOrderHistory(@AuthenticationPrincipal LoginUser loginUser, Model model) {
