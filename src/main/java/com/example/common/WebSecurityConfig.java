@@ -21,32 +21,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 
-  @Override
+	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/favicon.ico", "/css/**", "/js/**", "/img_curry/**", "/fonts/**", "/error");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.authorizeRequests()
-			.antMatchers("/toLogin", "/insertUser", "/", "/search","/showDetail", "/order", "/indexRegister", "/register", "/showCartList", "/deleteOrderItem", "/cartIn", "/cartInComplete", "/ajax/**").permitAll()
-			.anyRequest().authenticated()
-			.and()
-		.formLogin()
-			.loginPage("/toLogin").permitAll() // ログイン画面を表示するurl
-			.loginProcessingUrl("/login") // ここへリクエストされるとログイン処理を開始する
-			.defaultSuccessUrl("/")
-			.failureUrl("/toLogin?error")
-			.usernameParameter("email")
-			.passwordParameter("password")
-			.and()
-		.logout()
-			.logoutUrl("/logout").permitAll()
-			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-			.logoutSuccessUrl("/")
-			.deleteCookies("JSESSIONID")
-			.invalidateHttpSession(true).permitAll();
+		http.authorizeRequests()
+				.antMatchers("/toLogin", "/insertUser", "/", "/search", "/showDetail", "/order", "/indexRegister",
+						"/register", "/showCartList", "/deleteOrderItem", "/cartIn", "/cartInComplete", "/ajax/**")
+				.permitAll().anyRequest().authenticated().and().formLogin().loginPage("/toLogin").permitAll() // ログイン画面を表示するurl
+				.loginProcessingUrl("/login") // ここへリクエストされるとログイン処理を開始する
+				.defaultSuccessUrl("/").failureUrl("/toLogin?error").usernameParameter("email")
+				.passwordParameter("password").and().logout().logoutUrl("/logout").permitAll()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
+				.deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll();
 	}
 
 	@Override

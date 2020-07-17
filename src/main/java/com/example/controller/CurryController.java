@@ -105,7 +105,7 @@ public class CurryController {
 	 * @author kohei eto
 	 */
 	@RequestMapping("")
-	public String index(Model model, Integer page, ItemForm form) {
+	public String index(Model model, Integer page, ItemForm form, String searchName) {
 		/*
 		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
 		 * itemList); // オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納 StringBuilder
@@ -130,43 +130,61 @@ public class CurryController {
 			// ページ数の指定が無い場合は1ページ目を表示させる
 			page = 1;
 		}
+
 		/* List<Item> itemList = null; */
 
-		try {
-			if (form.getId() == 1) {
-				List<Item> itemList = itemService.findAllByPrice();
-				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-				model.addAttribute("itemPage", itemPage);
-				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-				model.addAttribute("pageNumbers", pageNumbers);
-			} else if (form.getId() == 2) {
-				List<Item> itemList = itemService.findAllByPrice2();
-				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-				model.addAttribute("itemPage", itemPage);
-				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-				model.addAttribute("pageNumbers", pageNumbers);
-			} else if (form.getId() == 3) {
-				List<Item> itemList = itemService.findAllByPrice3();
-				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-				model.addAttribute("itemPage", itemPage);
-				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-				model.addAttribute("pageNumbers", pageNumbers);
-			}
+		if (searchName == null) {
+			// 検索文字列が空なら全件検索
+			List<Item> itemList = itemService.findAll();
 
-		} catch (NullPointerException e) {
-			List<Item> itemList = itemService.findAllByPrice3();
 			// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
 			Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
 			model.addAttribute("itemPage", itemPage);
 			// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
 			List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
 			model.addAttribute("pageNumbers", pageNumbers);
+
+		} else {
+			// 検索文字列があれば曖昧検索
+
+			try {
+				if (form.getId() == 1) {
+
+					List<Item> itemList = itemService.findByItemName(searchName);
+
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+
+				} else if (form.getId() == 2) {
+					List<Item> itemList = itemService.findByItemName2(searchName);
+
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+
+				} else if (form.getId() == 3) {
+					List<Item> itemList = itemService.findByItemName3(searchName);
+
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+
+				}
+
+			} catch (NullPointerException e) {
+				List<Item> itemList = itemService.findAllByPrice3();
+
+			}
 		}
 
 		return "item_list_curry";
@@ -469,7 +487,8 @@ public class CurryController {
 	 * @author yumi takahashi
 	 */
 	@RequestMapping("/cartInComplete")
-	public String cartInComplete(Model model, Integer page, ItemForm form) {
+
+	public String cartInComplete(Model model, Integer page, ItemForm form, String searchname) {
 
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
@@ -486,10 +505,10 @@ public class CurryController {
 					model.addAttribute("cartInComplete", "cartInComplete");
 				}
 			} else {
-				return index(model, page, form);
+				return index(model, page, form, searchname);
 			}
 		} else {
-			return index(model, page, form);
+			return index(model, page, form, searchname);
 		}
 
 		return "cart_list";

@@ -68,9 +68,13 @@
 						<tr th:each="orderItem : ${orderItemList}">
 							<td>
 								<div class="center">
-									<img th:src="@{'/img_curry/' + ${orderItem.item.imagePath}}"
-										class="img-responsive img-rounded item-img-center" width="100" height="300"><br>
-									<span th:text="${orderItem.item.name}">じゃがバターカレー</span>
+									<a th:href="@{'/showDetail?id=' + ${orderItem.item.id}}">
+										<img th:src="@{'/img_curry/' + ${orderItem.item.imagePath}}"
+										class="img-responsive img-rounded item-img-center" width="100" height="300">
+									</a>
+								
+									<br>
+									<a th:href="@{'/showDetail?id=' + ${orderItem.item.id}}" th:text="${orderItem.item.name}"></a>
 								</div>
 							</td>
 							<td>

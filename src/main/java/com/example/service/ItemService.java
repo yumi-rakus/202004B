@@ -79,10 +79,6 @@ public class ItemService {
 		return itemPage;
 	}
 
-	public List<Item> findByItemName(String name) {
-		return itemRepository.findByItemName(name);
-	}
-
 	public List<Item> findAllByPrice() {
 		return itemRepository.findAllByPrice();
 	}
@@ -93,6 +89,18 @@ public class ItemService {
 
 	public List<Item> findAllByPrice3() {
 		return itemRepository.findAllByPrice3();
+	}
+
+	public List<Item> findByItemName(String searchName) {
+		return itemRepository.findByItemName(searchName);
+	}
+
+	public List<Item> findByItemName2(String searchName) {
+		return itemRepository.findByItemName2(searchName);
+	}
+
+	public List<Item> findByItemName3(String searchName) {
+		return itemRepository.findByItemName3(searchName);
 	}
 
 	/**
