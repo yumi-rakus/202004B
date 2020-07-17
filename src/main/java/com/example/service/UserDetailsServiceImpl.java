@@ -44,6 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("そのEmailは登録されていません。");
 		} else {
 
+			// ログインーログアウトでカートの中身を統合する処理
 			if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
 				Integer uuid = (Integer) session.getAttribute("userId");
