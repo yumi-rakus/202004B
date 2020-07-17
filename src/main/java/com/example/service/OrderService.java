@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,22 +116,31 @@ public class OrderService {
 
 		Map<Integer, List<OrderTopping>> orderToppingMap = new HashMap<>();
 		Map<Integer, OrderItem> orderItemMap = new HashMap<>();
-		Map<Integer, Order> orderMap = new HashMap<>();
+		// キーがオーダーID、バリューがオーダーアイテムリストのマップを作成
+		Map<Integer, List<OrderItem>> orderItemListMap = new HashMap<>();
 
+		//// トッピングの詰め替え
+		// キーがorder_item_id、バリューを空のリストとする
 		for (Order order : orderList) {
 			orderToppingMap.put(order.getOrderItemList().get(0).getId(), new ArrayList<>());
 		}
+
+		// orderItemIdをキー、トッピングリストをバリューとするマップが完成
 		for (Order order : orderList) {
 			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
 			OrderTopping orderTopping = order.getOrderItemList().get(0).getOrderToppingList().get(0);
 			// オブジェクトが空ではない場合のみトッピングリストに追加
-			if(Objects.nonNull(orderTopping.getTopping().getName())){
+			if (Objects.nonNull(orderTopping.getTopping().getName())) {
 				orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
 			}
 		}
+
+		//// 商品本体の詰め替え
+		// orderItemIdをキー、オーダーアイテムとするマップを作成
 		for (Order order : orderList) {
 			orderItemMap.put(order.getOrderItemList().get(0).getId(), order.getOrderItemList().get(0));
 		}
+		// オーダーアイテムごとにトッピングリストを追加をバリューとするマップが完成
 		for (Order order : orderList) {
 			OrderItem orderItem = orderItemMap.get(order.getOrderItemList().get(0).getId());
 			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
@@ -138,16 +148,34 @@ public class OrderService {
 			orderItemMap.put(order.getOrderItemList().get(0).getId(), orderItem);
 		}
 
-		List<OrderItem> orderItemList = new ArrayList<>(orderItemMap.values());
-
+		//// 注文番号ごとにオーダーアイテムのリストを作成
 		for (Order order : orderList) {
-			order.setOrderItemList(orderItemList);
-			orderMap.put(order.getId(), order);
+			orderItemListMap.put(order.getId(), new ArrayList<>());
+		}
+		for (OrderItem orderItem : orderItemMap.values()) {
+			List<OrderItem> list = orderItemListMap.get(orderItem.getOrderId());
+			list.add(orderItem);
 		}
 
-		List<Order> distinctOrderList = new ArrayList<>(orderMap.values());
+		// オーダーIDをキー、オーダーをバリューとするマップを作成
+		// オーダーのオーダーアイテムリストは空にする
+		Map<Integer, Order> distinctOrderMap = new HashMap<>();
+		for (Order order : orderList) {
+			Integer key = order.getId();
+			Order value = order;
+			order.getOrderItemList().clear();
+			distinctOrderMap.put(key, value);
+		}
 
-		return distinctOrderList;
+		for (Order order : distinctOrderMap.values()) {
+			Integer key = order.getId();
+			distinctOrderMap.get(key).setOrderItemList(orderItemListMap.get(key));
+		}
+		List<Order> oList = new ArrayList<>(distinctOrderMap.values());
+
+		// 最新の注文順に並び替え
+		Collections.reverse(oList);
+		return oList;
 	}
 
 	/**
