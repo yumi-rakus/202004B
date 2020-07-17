@@ -16,6 +16,13 @@
 	<div class="container">
 		
 		<span th:include="fragment-part::frag_nav"></span>
+		
+		<div th:if="${cartInComplete}">
+			<h1 style="font-weight: bold">商品をカートに入れました</h1>
+			<div>引き続きお買い物をお楽しみください😌</div><br>
+		
+			<a th:href="@{/}">商品一覧へ戻る</a>
+		</div>
 
 		<!-- table -->
 		<div class="row">

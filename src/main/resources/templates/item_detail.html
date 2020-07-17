@@ -76,12 +76,12 @@
 									</label>
 								</div>
 								<div class="col-sm-12">
-									<div th:each="topping : ${toppingList}">
-										<div th:object="${topping}">
+									<div th:each="topping : ${item.toppingList}">
+										
 											<label class="checkbox-inline">
-												<input class="topping" type="checkbox" th:field="${itemForm.toppingIdList}" th:value="*{id}" th:text="*{name}">
+												<input class="topping" type="checkbox" th:field="${itemForm.toppingIdList}" th:value="${topping.id}" th:text="${topping.name}">
 											</label>
-										</div>
+										
 									</div>
 								</div>
 							</div>
@@ -133,7 +133,7 @@
 							<p>
 								<input type="hidden" name="itemId" th:value="${item.id}">
 								<input class="form-control btn btn-warning btn-block"
-									type="submit" value="カートに入れる">
+									type="submit" id="cartInButton" value="カートに入れる">
 							</p>
 
 						</div>
@@ -149,5 +149,13 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+	$(function() {
+		  $('#cartInButton').on('click', function() {
+		     $(this).prop('disabled', true);
+		     $('form').submit();
+		  });
+		});
+	</script>
 </body>
 </html>

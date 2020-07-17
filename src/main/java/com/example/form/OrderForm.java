@@ -30,6 +30,7 @@ public class OrderForm {
 
 	private Integer paymentMethod;
 
+	// getter setter
 	public Integer getUserId() {
 		return userId;
 	}
@@ -116,6 +117,14 @@ public class OrderForm {
 
 	public void setPaymentMethod(Integer paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	// toString
+	@Override
+	public String toString() {
+		return "OrderForm [userId=" + userId + ", status=" + status + ", totalPrice=" + totalPrice + ", orderDate="
+				+ orderDate + ", name=" + name + ", mailAddress=" + mailAddress + ", zipCode=" + zipCode + ", address="
+				+ address + ", time=" + time + ", telephone=" + telephone + ", paymentMethod=" + paymentMethod + "]";
 	}
 
 }

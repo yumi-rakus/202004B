@@ -24,18 +24,17 @@ import com.example.domain.OrderTopping;
 import com.example.domain.Topping;
 
 /**
- * ordersテーブルを操作するリポジトリー
+ * ordersテーブルを操作するリポジトリー.
  * 
- * @author shoya
+ * @author shoya fijisawa
  *
  */
 @Repository
 public class OrderRepository {
 
 	/**
-	 * Orderオブジェクトを生成するローマッパー
+	 * Orderオブジェクトを生成するローマッパー.
 	 */
-
 	private static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, i) -> {
 		Order order = new Order();
 		order.setId(rs.getInt("id"));
@@ -101,7 +100,9 @@ public class OrderRepository {
 	private NamedParameterJdbcTemplate template;
 
 	/**
-	 * 注文情報を挿入
+	 * 注文情報を挿入.
+	 * 
+	 * @param 注文情報
 	 * 
 	 * @author shoya fujisawa
 	 */
@@ -190,7 +191,7 @@ public class OrderRepository {
 	 * @param userId ユーザID
 	 * @return 注文済みの注文リスト
 	 * 
-	 * @author moritasoshi
+	 * @author soshi morita
 	 */
 	public List<Order> findByUserIdAndNonStatus0(Integer userId) {
 

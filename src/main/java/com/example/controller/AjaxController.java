@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,20 +17,20 @@ public class AjaxController {
 	@Autowired
 	private ItemService itemService;
 
+	/**
+	 * 検索において商品名オートコンプリートする.
+	 * 
+	 * @param searchName 検索キー
+	 * @return 商品名リスト
+	 * 
+	 * @author kohei eto
+	 */
 	@RequestMapping("/findName")
 	public List<String> findName(String searchName) {
 
-		List<Item> itemList = itemService.findByName(searchName);
-
-		//		List<String> nameList = new ArrayList<String>();
-//		
-//		for ( : nameList) {
-//			nameList.add(itemList.get(i).getName());
-//		}
-	    
+		List<Item> itemList = itemService.findByItemName(searchName);
 		List<String> nameList = itemList.stream().map(item -> item.getName()).collect(Collectors.toList());
 
-		
 		return nameList;
 	}
 }
