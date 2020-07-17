@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
@@ -20,24 +21,25 @@ import com.example.repository.OrderRepository;
  *
  */
 @Service
+@Transactional
 public class OrderService {
 
 	@Autowired
 	private OrderRepository orderRepository;
 
 	/**
-	 * 
+	 * ショッピングカートの中身を注文する.
 	 * 
 	 * @param order 注文情報
 	 * 
-	 * @author shoya
+	 * @author shoya fujisawa
 	 */
 	public void order(Order order) {
 		orderRepository.order(order);
 	}
 
 	/**
-	 * カートリストを取得する.
+	 * ショッピングカートリストを取得する.
 	 * 
 	 * @param userId ユーザID
 	 * @return カートの商品一覧
@@ -48,12 +50,16 @@ public class OrderService {
 
 		List<Order> orderList = orderRepository.findByUserIdAndStatus0(userId);
 
+		// Map1 … キー：order_item_id、バリュー:注文トッピングリストのマップ
 		Map<Integer, List<OrderTopping>> orderToppingMap = new HashMap<>();
 
+		// Map2 … キー：order_item_id、バリュー:注文商品のマップ
 		Map<Integer, OrderItem> orderItemMap = new HashMap<>();
 
+		// Map3 … キー：order_id、バリュー:注文のマップ
 		Map<Integer, Order> orderMap = new HashMap<>();
 
+		// Map1を完成させる
 		for (Order order : orderList) {
 			orderToppingMap.put(order.getOrderItemList().get(0).getId(), new ArrayList<>());
 		}
@@ -62,7 +68,9 @@ public class OrderService {
 			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
 			orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
 		}
+		// Map1完成 （order_item_id１つに対して１つの注文トッピングリストorderToppingList(中身は0~複数)）
 
+		// Map2を完成させる
 		for (Order order : orderList) {
 			orderItemMap.put(order.getOrderItemList().get(0).getId(), order.getOrderItemList().get(0));
 		}
@@ -74,29 +82,32 @@ public class OrderService {
 			orderItem.setOrderToppingList(orderToppingList);
 
 			orderItemMap.put(order.getOrderItemList().get(0).getId(), orderItem);
-
 		}
+		// Map2完成 （order_item_id１つに対して１つの注文商品orderItem(先程作成したorderToppingListがセットされたもの)）
 
+		// 注文商品リストのリストを作る（サイズは注文商品の数と一致）
 		List<OrderItem> orderItemList = new ArrayList<>(orderItemMap.values());
 
+		// Map3を完成させる
 		for (Order order : orderList) {
-
 			order.setOrderItemList(orderItemList);
-
 			orderMap.put(order.getId(), order);
-
 		}
+		// Map3完成 （注文商品リスト(サイズは注文商品の数と一致)を注文にセット）（Map3の中身は１件になるはず）
 
+		// サイズ１件の注文
 		List<Order> distinctOrderList = new ArrayList<>(orderMap.values());
 
 		return distinctOrderList;
 	}
 
 	/**
-	 * 注文履歴を検索する
+	 * 注文履歴を検索する.
 	 * 
-	 * @param userId
+	 * @param userId ユーザID
 	 * @return 注文履歴
+	 * 
+	 * @author soshi morita
 	 */
 	public List<Order> findOrderHistory(Integer userId) {
 		List<Order> orderList = orderRepository.findByUserIdAndNonStatus0(userId);
