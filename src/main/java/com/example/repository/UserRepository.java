@@ -19,7 +19,6 @@ import com.example.domain.User;
  * @author yumi takahashi
  *
  */
-
 @Repository
 public class UserRepository {
 
@@ -29,6 +28,9 @@ public class UserRepository {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
+	/**
+	 * Userオブジェクトを生成するローマッパー.
+	 */
 	private static final RowMapper<User> USER_ROW_MAPPER = (rs, i) -> {
 		User user = new User();
 		user.setId(rs.getInt("id"));
@@ -41,6 +43,14 @@ public class UserRepository {
 		return user;
 	};
 
+	/**
+	 * ユーザ情報をメールアドレスから取得する.
+	 * 
+	 * @param email メールアドレス
+	 * @return ユーザ情報
+	 * 
+	 * @author kohei eto
+	 */
 	public User findByEmail(String email) {
 		String sql = "select id,name,email,password,zipcode,address,telephone from users where email=:email";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
@@ -51,6 +61,14 @@ public class UserRepository {
 		return userList.get(0);
 	}
 
+	/**
+	 * ユーザ情報を挿入する.
+	 * 
+	 * @param user ユーザ情報
+	 * @return true
+	 * 
+	 * @author soshi morita
+	 */
 	public boolean insert(User user) {
 		// パスワードをハッシュ化
 		String password = user.getPassword();
