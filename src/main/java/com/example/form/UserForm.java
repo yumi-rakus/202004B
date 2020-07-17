@@ -35,6 +35,7 @@ public class UserForm {
 	@NotBlank(message = "確認用パスワードを入力してください")
 	private String conpassword;
 
+	// getter setter
 	public String getConpassword() {
 		return conpassword;
 	}
@@ -99,6 +100,7 @@ public class UserForm {
 		this.telephone = telephone;
 	}
 
+	// toString
 	@Override
 	public String toString() {
 		return "UserForm [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", zipcode="
