@@ -36,7 +36,7 @@
 						<a href="cart_list.html" th:href="@{/showCartList}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
 						<a href="order_history.html" th:href="@{/showOrderHistory}" class="navbar-link">注文履歴</a>&nbsp;&nbsp;
 						<span sec:authorize="isAnonymous()">
-							<a href="login.html" th:href="@{/toLogin}" class="navbar-link">ログイン</a>&nbsp;&nbsp;
+							<a href="login.html" th:href="@{/toLogin}" class="btn btn-warning" role="button">ログイン</a>&nbsp;&nbsp;
 						</span>
 						<span sec:authorize="isAuthenticated()">
 							<a href="item_list_pizza.html" th:href="@{/logout}" class="navbar-link">ログアウト</a>
