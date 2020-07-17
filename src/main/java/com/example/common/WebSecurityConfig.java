@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginPage("/toLogin").permitAll() // ログイン画面を表示するurl
 			.loginProcessingUrl("/login") // ここへリクエストされるとログイン処理を開始する
 			.defaultSuccessUrl("/")
-			.failureUrl("/?error")
+			.failureUrl("/toLogin?error")
 			.usernameParameter("email")
 			.passwordParameter("password")
 			.and()
