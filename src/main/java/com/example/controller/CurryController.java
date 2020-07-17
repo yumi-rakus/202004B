@@ -173,12 +173,16 @@ public class CurryController {
 	//////////////////////////////////////////////
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form, Model model) {
+		try {
 		List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
 		List<OrderItem> orderItemList = order.get(0).getOrderItemList();
 		model.addAttribute("orderItemList", orderItemList);
 		model.addAttribute("tax", order.get(0).getTax());
 		model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
 		return "order_confirm";
+		}catch(IndexOutOfBoundsException e) {
+			return showCartList(model);
+		}
 	}
 
 	/**
@@ -242,8 +246,7 @@ public class CurryController {
 	}
 
 	/**
-	 * 注文完了
-	 * 
+	 * 注文完了画面を表示
 	 * @author shoya fujisawa
 	 */
 	@RequestMapping("/orderFinished")
