@@ -9,7 +9,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -198,17 +198,18 @@ public class CurryController {
 		}
 
 		order.setTotalPrice(form.getTotalPrice());
-		Date orderDate = Date.valueOf(form.getOrderDate());
-		order.setOrderDate(orderDate);
+		Date nowDate = new Date();
+		order.setOrderDate(nowDate);
 		order.setDestinationName(form.getName());
 		order.setDestinationEmail(form.getMailAddress());
-		// 郵便番号の-を除去
+		// 郵便番号のハイフンを除去
 		String zipCodeStr = form.getZipCode();
 		String zipCode = zipCodeStr.replace("-", "");
 		order.setDestinationZipcode(zipCode);
 
 		order.setDestinationAddress(form.getAddress());
 		order.setDestinationTel(form.getTelephone());
+		
 		String delivery = form.getOrderDate() + " " + form.getTime();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime time = LocalDateTime.parse(delivery, formatter);
@@ -216,9 +217,9 @@ public class CurryController {
 		order.setDeliveryTime(deliveryTime);
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		java.util.Date nowDate = new java.util.Date();
+		
 		try {
-			java.util.Date dTime = df.parse(delivery);
+			Date dTime = df.parse(delivery);
 			long diff = dTime.getTime() - nowDate.getTime();
 
 			if (diff / (60 * 60 * 1000) < 3) {
@@ -233,9 +234,18 @@ public class CurryController {
 		orderService.order(order);
 
 		sendMailService.sendMail(order.getDestinationEmail());
+		return "redirect:/orderFinished";
+	}
+	
+	/**
+	 * 注文完了
+	 * @author shoya fujisawa
+	 */
+	@RequestMapping("/orderFinished")
+	public String finished() {
 		return "order_finished";
 	}
-
+	
 	/**
 	 * 商品情報詳細画面を出力する.
 	 * 

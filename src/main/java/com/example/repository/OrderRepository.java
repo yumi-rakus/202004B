@@ -109,8 +109,10 @@ public class OrderRepository {
 		String sql = "UPDATE orders SET status=:status,order_date=:orderDate,destination_name=:destinationName,destination_email=:destinationEmail"
 				+ ",destination_zipcode=:destinationZipcode,destination_address=:destinationAddress,destination_tel=:destinationTel,delivery_time=:deliveryTime,payment_method=:paymentMethod where user_id=:userId and status=0";
 
-		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
-
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("status", order.getStatus()).addValue("orderDate", order.getOrderDate()).addValue("destinationName", order.getDestinationName()).addValue("destinationEmail", order.getDestinationEmail())
+								   .addValue("destinationZipcode", order.getDestinationZipcode()).addValue("destinationAddress", order.getDestinationAddress()).addValue("destinationTel", order.getDestinationTel()).addValue("deliveryTime", order.getDeliveryTime())
+								   .addValue("paymentMethod", order.getPaymentMethod()).addValue("userId", order.getUserId());
 		template.update(sql, param);
 	}
 
