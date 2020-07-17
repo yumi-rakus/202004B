@@ -44,8 +44,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("そのEmailは登録されていません。");
 		} else {
 
-			System.out.println((Integer) session.getAttribute("userId"));
-
 			if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
 				Integer uuid = (Integer) session.getAttribute("userId");
@@ -53,17 +51,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				if (orderService.status0ExistByUserId(user.getId())) {
 
 					if (orderService.status0ExistByUserId(uuid)) {
-						// 仮UUID存在してたら
+
 						Integer uuidOrderId = orderService.getOrderIdByUserId(uuid);
 						Integer userOrderId = orderService.getOrderIdByUserId(user.getId());
 
 						orderService.updateOrderId(uuidOrderId, userOrderId);
 					}
-
 				} else {
+
 					orderService.updateUserId(user.getId(), uuid);
 				}
-
 			}
 
 			session.setAttribute("userId", user.getId());
