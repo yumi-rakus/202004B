@@ -1,8 +1,12 @@
 package com.example.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,8 +56,51 @@ public class ItemService {
 	 * 
 	 * @author kohei eto
 	 */
-	public List<Item> findByItemName(String name) {
-		return itemRepository.findByItemName(name);
+
+	public Page<Item> showListPaging(int page, int size, List<Item> itemList) {
+		// 表示させたいページ数を-1しなければうまく動かない
+		page--;
+		// どの商品から表示させるかと言うカウント値
+		int startItemCount = page * size;
+		// 絞り込んだ後の商品リストが入る変数
+		List<Item> list = new ArrayList<>();
+
+		if (itemList.size() < startItemCount) {
+			// (ありえないが)もし表示させたい商品カウントがサイズよりも大きい場合は空のリストを返す list = Collections.emptyList();
+
+		} else {
+			// 該当ページに表示させる商品一覧を作成
+			int toIndex = Math.min(startItemCount + size, itemList.size());
+			list = itemList.subList(startItemCount, toIndex);
+		}
+
+		// 上記で作成した該当ページに表示させる商品一覧をページングできる形に変換して返す
+		Page<Item> itemPage = new PageImpl<Item>(list, PageRequest.of(page, size), itemList.size());
+		return itemPage;
+	}
+
+	public List<Item> findAllByPrice() {
+		return itemRepository.findAllByPrice();
+	}
+
+	public List<Item> findAllByPrice2() {
+		return itemRepository.findAllByPrice2();
+	}
+
+	public List<Item> findAllByPrice3() {
+		return itemRepository.findAllByPrice3();
+	}
+
+	public List<Item> findByItemName(String searchName) {
+		return itemRepository.findByItemName(searchName);
+	}
+
+	public List<Item> findByItemName2(String searchName) {
+		return itemRepository.findByItemName2(searchName);
+	}
+
+	public List<Item> findByItemName3(String searchName) {
+		return itemRepository.findByItemName3(searchName);
 	}
 
 	/**
@@ -77,4 +124,5 @@ public class ItemService {
 		}
 		return itemListForAutocomplete;
 	}
+
 }

@@ -292,5 +292,13 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{../js/bootstrap.min.js}"></script>
 	<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+	<script type="text/javascript">
+	$(function() {
+		  $('#cartInButton').on('click', function() {
+		     $(this).prop('disabled', true);
+		     $('form').submit();
+		  });
+		});
+	</script>
 </body>
 </html>

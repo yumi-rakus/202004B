@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 
-  @Override
+	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/favicon.ico", "/css/**", "/js/**", "/img_curry/**", "/fonts/**", "/error");
 	}

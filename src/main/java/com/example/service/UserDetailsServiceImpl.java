@@ -2,11 +2,13 @@ package com.example.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 
 import com.example.domain.LoginUser;
+import com.example.domain.Order;
 import com.example.domain.User;
 import com.example.repository.UserRepository;
 
@@ -57,6 +59,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 						Integer userOrderId = orderService.getOrderIdByUserId(user.getId());
 
 						orderService.updateOrderId(uuidOrderId, userOrderId);
+						orderService.deleteUuidRecordByUuid(uuid);
+
+						List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
+						Integer totalPrice = order.get(0).getCalcTotalPrice();
+						orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
 					}
 				} else {
 

@@ -3,6 +3,7 @@ package com.example.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,13 +54,13 @@ public class OrderService {
 		List<Order> orderList = orderRepository.findByUserIdAndStatus0(userId);
 
 		// Map1 … キー：order_item_id、バリュー:注文トッピングリストのマップ
-		Map<Integer, List<OrderTopping>> orderToppingMap = new HashMap<>();
+		Map<Integer, List<OrderTopping>> orderToppingMap = new LinkedHashMap<>();
 
 		// Map2 … キー：order_item_id、バリュー:注文商品のマップ
-		Map<Integer, OrderItem> orderItemMap = new HashMap<>();
+		Map<Integer, OrderItem> orderItemMap = new LinkedHashMap<>();
 
 		// Map3 … キー：order_id、バリュー:注文のマップ
-		Map<Integer, Order> orderMap = new HashMap<>();
+		Map<Integer, Order> orderMap = new LinkedHashMap<>();
 
 		// Map1を完成させる
 		for (Order order : orderList) {
@@ -68,7 +69,11 @@ public class OrderService {
 
 		for (Order order : orderList) {
 			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
-			orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+			OrderTopping orderTopping = order.getOrderItemList().get(0).getOrderToppingList().get(0);
+			// オブジェクトが空ではない場合のみトッピングリストに追加
+			if (Objects.nonNull(orderTopping.getTopping().getName())) {
+				orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+			}
 		}
 		// Map1完成 （order_item_id１つに対して１つの注文トッピングリストorderToppingList(中身は0~複数)）
 
@@ -248,5 +253,16 @@ public class OrderService {
 	 */
 	public void updateOrderId(Integer uuidOrderId, Integer userOrderId) {
 		orderRepository.updateOrderId(uuidOrderId, userOrderId);
+	}
+
+	/**
+	 * ログイン前まで利用していたショッピングカートを削除する.
+	 * 
+	 * @param uuid UUID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void deleteUuidRecordByUuid(Integer uuid) {
+		orderRepository.deleteUuidRecordByUuid(uuid);
 	}
 }

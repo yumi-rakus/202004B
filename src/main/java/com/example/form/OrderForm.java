@@ -27,7 +27,7 @@ public class OrderForm {
 	private String time;
 	@NotBlank(message = "電話番号を入力してください")
 	private String telephone;
-
+	
 	private Integer paymentMethod;
 
 	// getter setter
