@@ -3,6 +3,7 @@ package com.example.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,13 +54,13 @@ public class OrderService {
 		List<Order> orderList = orderRepository.findByUserIdAndStatus0(userId);
 
 		// Map1 … キー：order_item_id、バリュー:注文トッピングリストのマップ
-		Map<Integer, List<OrderTopping>> orderToppingMap = new HashMap<>();
+		Map<Integer, List<OrderTopping>> orderToppingMap = new LinkedHashMap<>();
 
 		// Map2 … キー：order_item_id、バリュー:注文商品のマップ
-		Map<Integer, OrderItem> orderItemMap = new HashMap<>();
+		Map<Integer, OrderItem> orderItemMap = new LinkedHashMap<>();
 
 		// Map3 … キー：order_id、バリュー:注文のマップ
-		Map<Integer, Order> orderMap = new HashMap<>();
+		Map<Integer, Order> orderMap = new LinkedHashMap<>();
 
 		// Map1を完成させる
 		for (Order order : orderList) {
