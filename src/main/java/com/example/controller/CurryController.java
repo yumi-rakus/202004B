@@ -430,14 +430,16 @@ public class CurryController {
 
 			List<OrderTopping> orderToppingList = new ArrayList<>();
 
-			for (Integer toppingId : form.getToppingIdList()) {
-				Topping topping = toppingService.findById(toppingId);
-				OrderTopping orderTopping = new OrderTopping();
-				orderTopping.setTopping(topping);
-				orderToppingList.add(orderTopping);
-			}
+			if (!form.getToppingIdList().isEmpty()) {
+				for (Integer toppingId : form.getToppingIdList()) {
+					Topping topping = toppingService.findById(toppingId);
+					OrderTopping orderTopping = new OrderTopping();
+					orderTopping.setTopping(topping);
+					orderToppingList.add(orderTopping);
+				}
 
-			orderItem.setOrderToppingList(orderToppingList);
+				orderItem.setOrderToppingList(orderToppingList);
+			}
 
 			Integer subTotal = orderItem.getSubTotal();
 			order.setTotalPrice(subTotal);
@@ -485,6 +487,7 @@ public class CurryController {
 	 * @author yumi takahashi
 	 */
 	@RequestMapping("/cartInComplete")
+
 	public String cartInComplete(Model model, Integer page, ItemForm form, String searchname) {
 
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {

@@ -68,9 +68,13 @@
 						<tr th:each="orderItem : ${orderItemList}">
 							<td>
 								<div class="center">
-									<img th:src="@{'/img_curry/' + ${orderItem.item.imagePath}}"
-										class="img-responsive img-rounded item-img-center" width="100" height="300"><br>
-									<span th:text="${orderItem.item.name}">じゃがバターカレー</span>
+									<a th:href="@{'/showDetail?id=' + ${orderItem.item.id}}">
+										<img th:src="@{'/img_curry/' + ${orderItem.item.imagePath}}"
+										class="img-responsive img-rounded item-img-center" width="100" height="300">
+									</a>
+								
+									<br>
+									<a th:href="@{'/showDetail?id=' + ${orderItem.item.id}}" th:text="${orderItem.item.name}"></a>
 								</div>
 							</td>
 							<td>
@@ -81,13 +85,15 @@
 							</td>
 							<td>
 								<ul>
-									<li th:each="orderTopping : ${orderItem.orderToppingList}">
+									<li th:unless="${#lists.isEmpty(orderItem.orderToppingList)}" th:each="orderTopping : ${orderItem.orderToppingList}">
 										<span th:text="${orderTopping.topping.name}"></span>
 										<span th:if="${orderItem.size.toString() == 'M'}" th:text="${#numbers.formatInteger(orderTopping.topping.priceM, 1, 'COMMA')} + '円'"></span>
 										<span th:if="${orderItem.size.toString() == 'L'}" th:text="${#numbers.formatInteger(orderTopping.topping.priceL, 1, 'COMMA')} + '円'"></span>
 									</li>
+									
 								
 								</ul>
+								<span th:if="${#lists.isEmpty(orderItem.orderToppingList)}">---</span>
 							</td>
 							<td>
 								<div class="text-center">
