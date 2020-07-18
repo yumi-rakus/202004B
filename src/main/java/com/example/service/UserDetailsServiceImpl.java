@@ -62,8 +62,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 						orderService.deleteUuidRecordByUuid(uuid);
 
 						List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
-						Integer totalPrice = order.get(0).getCalcTotalPrice();
-						orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
+
+						if (!(order.get(0).getOrderItemList().get(0).getItem().getId() == 0)) {
+
+							Integer totalPrice = order.get(0).getCalcTotalPrice();
+							orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
+						}
+
 					}
 				} else {
 

@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests()
-			.antMatchers("/", "/ajax/**", "/cartIn", "/cartInComplete", "/deleteOrderItem", "/indexRegister", "/insertUser", "/order", "/register", "/showCartList", "/search", "/showDetail", "/toLogin").permitAll()
+			.antMatchers("/", "/ajax/**", "/cartIn", "/cartInComplete", "/deleteOrderItem", "/indexRegister", "/insertUser", "/order", "/register", "/showCartList", "/search", "/showDetail", "/toLogin", "/deleteAll").permitAll()
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()

@@ -116,6 +116,12 @@
 				</table>
 			</div>
 		</div>
+		
+		<div th:if="${orderItemList}">
+			<br>
+			<a th:href="@{/deleteAll}" id="deleteAll" class="btn btn-default">ショッピングカートの中身を全て消す</a><br>
+			<br>
+		</div>
 
 		<div class="row" th:if="${orderItemList}">
 			<div class="col-xs-offset-2 col-xs-8">
@@ -127,7 +133,8 @@
 		</div>
 
 		<div class="row" th:if="${orderItemList}">
-			<div class="col-xs-offset-5 col-xs-3">
+		
+			<div class="col-md-4 col-md-offset-4">
 				<div class="form-group">
 					<form action="order_confirm.html" th:action="@{/orderConfirm}">
 						<input class="form-control btn btn-warning btn-block"
@@ -135,11 +142,26 @@
 					</form>
 				</div>
 			</div>
+					
 		</div>
 	</div>
 	<!-- end container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+	$(function() {
+		  $('#deleteAll').on('click', function() {
+		     if(window.confirm('ショッピングカートの中身を全件削除してよろしいですか？')){
+		    	 return true;
+		     } else {
+		    	 return false;
+		     }
+		  });
+		  
+		});
+	
+	
+	</script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.example.repository;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +82,57 @@ public class OrderItemRepository {
 
 		template.update(sql.toString(), param);
 
+	}
+
+	/**
+	 * order_idの注文商品を全件削除する.
+	 * 
+	 * @param orderId 注文ID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void deleteOrderItemAll(Integer orderId) {
+
+		String sql = "DELETE FROM order_items WHERE order_id = :orderId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("orderId", orderId);
+
+		template.update(sql, param);
+	}
+
+	/**
+	 * order_idからorder_item_idのリストを取得する.
+	 * 
+	 * @param orderId 注文ID
+	 * @return 注文商品IDリスト
+	 * 
+	 * @author yumi takahashi
+	 */
+	public List<Integer> getOrderItemIdByOrderId(Integer orderId) {
+
+		String sql = "SELECT id FROM order_items WHERE order_id = :orderId ORDER BY id";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("orderId", orderId);
+
+		List<Integer> orderItemIdList = template.queryForList(sql, param, Integer.class);
+
+		return orderItemIdList;
+	}
+
+	/**
+	 * order_item_idから注文トッピング情報を削除する.
+	 * 
+	 * @param orderItemId 注文商品ID
+	 * 
+	 * @author yumi takahahsi
+	 */
+	public void deleteOrderToppingsByOrderItemId(Integer orderItemId) {
+
+		String sql = "DELETE FROM order_toppings WHERE order_item_id = :orderItemId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("orderItemId", orderItemId);
+
+		template.update(sql, param);
 	}
 
 }
