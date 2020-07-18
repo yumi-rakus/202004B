@@ -249,7 +249,8 @@ public class CurryController {
 	@RequestMapping("/orderConfirm")
 	public String Confirm(OrderForm form, Model model) {
 		try {
-			List<Order> order = orderService.getOrderListByUserIdAndStatus0(2);
+			Integer userId = (Integer) session.getAttribute("userId");
+			List<Order> order = orderService.getOrderListByUserIdAndStatus0(userId);
 			List<OrderItem> orderItemList = order.get(0).getOrderItemList();
 			model.addAttribute("orderItemList", orderItemList);
 			model.addAttribute("tax", order.get(0).getTax());
@@ -560,6 +561,20 @@ public class CurryController {
 		List<Order> order = orderService.getOrderListByUserIdAndStatus0(userId);
 		Integer totalPrice = order.get(0).getCalcTotalPrice();
 		orderService.updateTotalPriceByUserId(userId, totalPrice);
+
+		return "redirect:/showCartList";
+	}
+
+	//////////////////////////////////////////////
+	//// ショッピングカートの中身を全て削除する
+	//////////////////////////////////////////////
+	@RequestMapping("/deleteAll")
+	public String deleteOrderItemAll() {
+
+		Integer userId = (Integer) session.getAttribute("userId");
+
+		orderItemService.deleteOrderItemsAndOrderToppingsAll(userId);
+		orderService.updateTotalPriceByUserId(userId, 0);
 
 		return "redirect:/showCartList";
 	}
