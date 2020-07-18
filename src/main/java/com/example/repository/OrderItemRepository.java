@@ -87,7 +87,7 @@ public class OrderItemRepository {
 	/**
 	 * order_idの注文商品を全件削除する.
 	 * 
-	 * @param orderId order_id
+	 * @param orderId 注文ID
 	 * 
 	 * @author yumi takahashi
 	 */
@@ -100,6 +100,14 @@ public class OrderItemRepository {
 		template.update(sql, param);
 	}
 
+	/**
+	 * order_idからorder_item_idのリストを取得する.
+	 * 
+	 * @param orderId 注文ID
+	 * @return 注文商品IDリスト
+	 * 
+	 * @author yumi takahashi
+	 */
 	public List<Integer> getOrderItemIdByOrderId(Integer orderId) {
 
 		String sql = "SELECT id FROM order_items WHERE order_id = :orderId ORDER BY id";
@@ -111,6 +119,13 @@ public class OrderItemRepository {
 		return orderItemIdList;
 	}
 
+	/**
+	 * order_item_idから注文トッピング情報を削除する.
+	 * 
+	 * @param orderItemId 注文商品ID
+	 * 
+	 * @author yumi takahahsi
+	 */
 	public void deleteOrderToppingsByOrderItemId(Integer orderItemId) {
 
 		String sql = "DELETE FROM order_toppings WHERE order_item_id = :orderItemId";
