@@ -48,60 +48,56 @@
 		</div> -->
 		<!-- 注文履歴がない場合 -->
 		<h3 th:if="${#lists.isEmpty(orderList)}">注文履歴がありません</h3>
-		<!-- 注文履歴がある場合 -->
-		<!-- table -->
-		<div class="row">
-			<div class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-				<table class="table table-striped item-list-table">
-					<tbody>
-						<tr th:each="order : ${orderList}" th:object="${order}">
-							<td>
-								<h4>注文情報</h4>
-								<ul style="list-style: none;">
-									<li>注文日時：<span th:text="*{orderDate}">2020/07/15（水）</span></li>
-									<li>お届け先：<span th:text="*{destinationAddress}">東京都新宿区1-1-1</span></li>
-									<li>注文状況：
-										<span th:switch="*{status}">
+    <!-- 注文履歴がある場合 -->
+    <div class="row">
+      <div class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+        <table class="table table-striped item-list-table" th:each="order : ${orderList}" th:object="${order}">
+          <tbody>
+            <tr>
+              <td>
+                <ul class="list-group">
+                  <li class="list-group-item">注文日時：<span th:text="*{orderDate}">2020/07/15（水）</span></li>
+                  <li class="list-group-item">お届け先：<span th:text="*{destinationAddress}">東京都新宿区1-1-1</span></li>
+                  <li class="list-group-item">注文状況：
+                    <span th:switch="*{status}">
 											<span th:case="0" th:text="注文前"></span>
-											<span th:case="1" th:text="未入金"></span>
-											<span th:case="2" th:text="入金済"></span>
-											<span th:case="3" th:text="発送済"></span>
-											<span th:case="4" th:text="配送完了"></span>
-											<span th:case="9" th:text="キャンセル"></span>
-											<span th:case="*">NoN</span>
-										</span>
-									</li>
-									<li style="font-weight: bold;">合計金額：<span th:text="*{#numbers.formatInteger(totalPrice, 1, 'COMMA')}">2,380</span>円(税抜)</li>
-								</ul>
-							</td>
-							<td th:each="orderItem : *{orderItemList}" th:object="${orderItem}">
-								<a th:href="@{'/showDetail?id=' + *{item.id}}">
+                    <span th:case="1" th:text="未入金"></span>
+                    <span th:case="2" th:text="入金済"></span>
+                    <span th:case="3" th:text="発送済"></span>
+                    <span th:case="4" th:text="配送完了"></span>
+                    <span th:case="9" th:text="キャンセル"></span>
+                    <span th:case="*">NoN</span>
+                    </span>
+                  </li>
+                  <li class="list-group-item">合計金額：<span th:text="*{#numbers.formatInteger(totalPrice, 1, 'COMMA')}">2,380</span>円(税抜)</li>
+                </ul>
+              </td>
+              <td th:each="orderItem : *{orderItemList}" th:object="${orderItem}">
+                <a th:href="@{'/showDetail?id=' + *{item.id}}">
 									<img th:src="@{'/img_curry/' + *{item.imagePath}}" class="img-responsive img-rounded item-img-center"
 										width="150" height="450"></a><br>
-								<ul style="list-style: none;">
-									<!-- 商品本体 -->
-									<li>商品名：<a th:href="@{'/showDetail?id=' + *{item.id}}"><span
+                <ul class="list-group">
+                  <!-- 商品本体 -->
+                  <li class="list-group-item">商品名：<a th:href="@{'/showDetail?id=' + *{item.id}}"><span
 												th:text="*{item.name}"></span></a></li>
-									<!-- トッピング -->
-									<li th:unless="*{#lists.isEmpty(orderToppingList)}">トッピング</li>
-										<ul th:each="orderTopping : *{orderToppingList}" style="list-style: none;">
-											<li th:text="${orderTopping.topping.name}">ツナマヨ</li>
-										</ul>
-									<li>商品サイズ：<span th:text="*{size}">M</span></li>
-									<li>商品数量：<span th:text="*{quantity}">M</span></li>
-									<li>小計：<span th:text="${#numbers.formatInteger(orderItem.getSubTotal(), 1, 'COMMA')}">2,380</span>円(税抜)</li>
-								</ul>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-
-			</div>
-		</div>
-	</div>
-	<!-- end container -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+                  <!-- トッピング -->
+                  <li class="list-group-item" th:unless="*{#lists.isEmpty(orderToppingList)}">トッピング：
+										<div style="padding-left: 10px;" th:each="orderTopping : *{orderToppingList}"  th:text="${orderTopping.topping.name}"></div>
+									</li>
+                  <li class="list-group-item">商品サイズ：<span th:text="*{size}">M</span></li>
+                  <li class="list-group-item">商品数量：<span th:text="*{quantity}">M</span></li>
+                  <li class="list-group-item">小計：<span th:text="${#numbers.formatInteger(orderItem.getSubTotal(), 1, 'COMMA')}">2,380</span>円(税抜)</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- end container -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 
 </html>

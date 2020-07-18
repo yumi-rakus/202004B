@@ -31,3 +31,8 @@ span#total-price {
 th{
 	text-align: center;
 }
+/* 背景と枠を削除 履歴表示で使用 */
+.list-group-item {
+  background-color: transparent;
+  border: 0;
+}
