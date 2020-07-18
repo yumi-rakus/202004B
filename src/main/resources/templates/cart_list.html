@@ -27,7 +27,7 @@
 		<!-- table -->
 		<div class="row">
 			<div
-				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				class="table-responsive col-lg-offset-0 col-lg-12 col-md-offset-1 col-md-10 col-sm-10 col-xs-15">
 				<h3 class="text-center">ショッピングカート</h3>
 				
 				<div th:if="${notExistOrderItemList}">
@@ -84,15 +84,27 @@
 								<span th:text="'&nbsp;&nbsp;' + ${orderItem.quantity} + '個'">&nbsp;&nbsp;1個</span>
 							</td>
 							<td>
-								<ul>
+							<table th:unless="${#lists.isEmpty(orderItem.orderToppingList)}" class="text-left" style="table-layout:fixed">
+								<tr th:each="orderTopping : ${orderItem.orderToppingList}">
+									<td style="width:190px" class="text-center">
+										<ul class="col-sm-12">
+											<li class="text-left" th:text="${orderTopping.topping.name}"></li>
+										</ul>
+										
+									</td>
+									<td style="width:40px" class="text-left">
+										<span th:if="${orderItem.size.toString() == 'M'}" th:text="${#numbers.formatInteger(orderTopping.topping.priceM, 1, 'COMMA')} + '円'"></span>
+										<span th:if="${orderItem.size.toString() == 'L'}" th:text="${#numbers.formatInteger(orderTopping.topping.priceL, 1, 'COMMA')} + '円'"></span>
+									</td>
+								</tr>
+							</table>
+								<!-- <ul>		
 									<li th:unless="${#lists.isEmpty(orderItem.orderToppingList)}" th:each="orderTopping : ${orderItem.orderToppingList}">
 										<span th:text="${orderTopping.topping.name}"></span>
 										<span th:if="${orderItem.size.toString() == 'M'}" th:text="${#numbers.formatInteger(orderTopping.topping.priceM, 1, 'COMMA')} + '円'"></span>
 										<span th:if="${orderItem.size.toString() == 'L'}" th:text="${#numbers.formatInteger(orderTopping.topping.priceL, 1, 'COMMA')} + '円'"></span>
 									</li>
-									
-								
-								</ul>
+								</ul> -->
 								<span th:if="${#lists.isEmpty(orderItem.orderToppingList)}">---</span>
 							</td>
 							<td>

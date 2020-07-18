@@ -64,45 +64,9 @@ $(function(){
 
 	<div class="container">
 		<span th:include="fragment-part::frag_nav"></span>
-		<!-- search form -->
-		<div class="row">
-			<div
-				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<div class="panel-title">商品を検索する</div>
-					</div>
-					<div class="panel-body">
-						<form method="post" action="#" class="form-horizontal"
-							th:object="${itemForm}" th:action="@{/}">
-							<div class="form-group">
+		
 
-								<label for="code" class="control-label col-sm-2">商品名</label>
-								<div class="col-sm-9">
-									<input type="text" name="searchName" id="searchName"
-										class="form-control" autocomplete="on" list="itemList">
-									<datalist id="itemList"></datalist>
-								</div>
-
-							</div>
-							<div class="text-center">
-								<button type="submit" value="検索" class="btn btn-primary">検索</button>
-								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
-								<span th:text="${no}"></span>
-							</div>
-							<select th:field="*{id}" name="id">
-								<option th:each="item : ${itemMap}" th:value="${item.key}"
-									th:text="${item.value}">カレー順</option>
-							</select>
-							<button>並び替え</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-		<form th:action="@{/}" method="post" th:object="${itemForm}"></form>
+		
 
 		<div class="row">
 			<div
@@ -148,6 +112,50 @@ $(function(){
 			}
 		});
 		</script>
+		
+		<!-- search form -->
+		<p></p>
+		<form method="post" action="#" class="form-horizontal" th:object="${itemForm}" th:action="@{/}">
+		<div class="row">
+			<div
+				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="panel-title">商品を検索する</div>
+					</div>
+					<div class="panel-body">
+
+							<div class="form-group">
+
+								<label for="code" class="control-label col-sm-2">商品名</label>
+								<div class="col-sm-9">
+									<input type="text" name="searchName" id="searchName"
+										class="form-control" autocomplete="on" list="itemList">
+									<datalist id="itemList"></datalist>
+								</div>
+
+							</div>
+							<div class="text-center">
+								<button type="submit" value="検索" class="btn btn-primary">検索</button>
+								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
+								<span th:text="${no}"></span>
+							</div>
+							
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="text-center">
+			<select th:field="*{id}" name="id">
+				<option th:each="item : ${itemMap}" th:value="${item.key}"
+						th:text="${item.value}">カレー順</option>
+			</select>
+			<button>並び替え</button>
+		</div>
+		
+		</form>
+		
 
 		<!-- table -->
 		<div class="row">
