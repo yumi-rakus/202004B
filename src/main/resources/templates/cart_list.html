@@ -19,18 +19,19 @@
 
 		<span th:include="fragment-part::frag_nav"></span>
 
-		<!-- 購入ステップ -->
-		<div id="stepHeader">
-			<div class="header-inner">
-				<div class="header-step-border"></div>
-				<ul class="header-step">
-					<li class="on">ショッピングカート</li>
-					<li class="">ログイン</li>
-					<li class="off">注文内容確認</li>
-				</ul>
+		<!-- 注文ステップ カートが空の時は非表示-->
+		<div th:unless="${notExistOrderItemList}">
+			<div id="stepHeader">
+				<div class="header-inner">
+					<div class="header-step-border"></div>
+					<ul class="header-step">
+						<li class="on">ショッピングカート</li>
+						<li class="">ログイン</li>
+						<li class="off">注文内容確認</li>
+					</ul>
+				</div>
 			</div>
 		</div>
-	</div>
 
 	<div th:if="${cartInComplete}">
 		<h1 style="font-weight: bold">商品をカートに入れました</h1>
