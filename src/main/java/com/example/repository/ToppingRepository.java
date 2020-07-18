@@ -30,7 +30,7 @@ public class ToppingRepository {
 		topping.setId(rs.getInt("id"));
 		topping.setName(rs.getString("name"));
 		topping.setPriceM(rs.getInt("price_m"));
-		topping.setPriceM(rs.getInt("price_l"));
+		topping.setPriceL(rs.getInt("price_l"));
 
 		return topping;
 	};
