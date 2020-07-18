@@ -13,8 +13,11 @@
     <![endif]-->
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="/js/autocomplete.js"></script>
 
 
@@ -70,7 +73,8 @@ $(function(){
 						<div class="panel-title">商品を検索する</div>
 					</div>
 					<div class="panel-body">
-						<form method="post" action="#" class="form-horizontal" th:object="${itemForm}" th:action="@{/}">
+						<form method="post" action="#" class="form-horizontal"
+							th:object="${itemForm}" th:action="@{/}">
 							<div class="form-group">
 
 								<label for="code" class="control-label col-sm-2">商品名</label>
@@ -100,6 +104,50 @@ $(function(){
 
 		<form th:action="@{/}" method="post" th:object="${itemForm}"></form>
 
+		<div class="row">
+			<div
+				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				<!-- Swiper START -->
+				<div class="swiper-container">
+					<!-- メイン表示部分 -->
+					<div class="swiper-wrapper">
+						<!-- 各スライド -->
+						<div class="swiper-slide">
+							<img src="../img_curry/img01.png">
+						</div>
+						<div class="swiper-slide">
+							<img src="../img_curry/img02.png">
+						</div>
+						<div class="swiper-slide">
+							<img src="../img_curry/img03.png">
+						</div>
+					</div>
+					<div class="swiper-button-prev"></div>
+					<div class="swiper-button-next"></div>
+					<div class="swiper-pagination"></div>
+				</div>
+				<!-- Swiper END -->
+			</div>
+		</div>
+		<script type="text/javascript">
+		var mySwiper = new Swiper('.swiper-container', {
+			autoplay: {
+				delay: 3000,
+				stopOnLastSlide: false,
+				disableOnInteraction: false,
+				reverseDirection: false
+			},
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev'
+			},
+			pagination: {
+				el: '.swiper-pagination',
+				type: 'bullets',
+				clickable: true
+			}
+		});
+		</script>
 
 		<!-- table -->
 		<div class="row">

@@ -2,6 +2,7 @@ package com.example.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class OrderForm {
@@ -27,7 +28,7 @@ public class OrderForm {
 	private String time;
 	@NotBlank(message = "電話番号を入力してください")
 	private String telephone;
-	
+	@NotNull(message = "支払い方法を選択してください")
 	private Integer paymentMethod;
 
 	// getter setter
