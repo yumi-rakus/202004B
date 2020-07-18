@@ -177,12 +177,15 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 
+
+
 	<script type="text/javascript">
 	$(function() {
 		  $('#cartInButton').on('click', function() {
 		     $(this).prop('disabled', true);
 		     $('form').submit();
 		  });
+
 		  
 		 /*  $('#on').on('click', function(){
 			  $('.topping').attr('checked', true).prop('checked', true).change();
@@ -193,7 +196,7 @@
 		  });
 		  
 		});
-
+	
 	</script>
 
 </body>
