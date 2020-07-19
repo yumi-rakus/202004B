@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,12 +15,20 @@
 	href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
+<link th:href="@{/css/drawer.css}" rel="stylesheet">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/js/swiper.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="/js/autocomplete.js"></script>
 
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
 <!-- 
 $( function() {
   var availableTags = [ [(${itemListForAutocomplete})] ];
@@ -58,15 +66,40 @@ $(function(){
     });
 });
 
+jQuery(function($){
+	$(document).ready(function() {			
+		$('.drawer').drawer();			
+	});
+});
 </script>
 </head>
-<body>
+<body class="drawer drawer--left">
 
 	<div class="container">
+		<button type="button" class="drawer-toggle drawer-hamburger">
+			<span class="sr-only">toggle navigation</span> 
+			<span class="drawer-hamburger-icon"></span>
+		</button>
+		<nav class="drawer-nav" role="navigation">
+			<ul class="drawer-menu">
+				<li class="side-menu"><span style="font-weight: bold"> <span
+							sec:authorize="isAuthenticated()"> <span
+								sec:authentication="principal.user.name"></span>さん&nbsp;
+						</span> <span sec:authorize="isAnonymous()"> <span>ゲストさん&nbsp;</span>
+						</span>
+						</span> </li>
+				<li class="side-menu"><a href="item_list_curry.html" th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;</li>
+				<li class="side-menu"><a href="cart_list.html" th:href="@{/showCartList}"
+							class="side-content">ショッピングカート</a>&nbsp;&nbsp; </li>
+				<li class="side-menu"><a href="order_history.html" th:href="@{/showOrderHistory}"
+							class="side-content">注文履歴</a>&nbsp;&nbsp; </li>
+			</ul>
+		</nav> 
+		
 		<span th:include="fragment-part::frag_nav"></span>
-		
 
-		
+
+
 
 		<div class="row">
 			<div
@@ -112,18 +145,19 @@ $(function(){
 			}
 		});
 		</script>
-		
+
 		<!-- search form -->
 		<p></p>
-		<form method="post" action="#" class="form-horizontal" th:object="${itemForm}" th:action="@{/}">
-		<div class="row">
-			<div
-				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<div class="panel-title">商品を検索する</div>
-					</div>
-					<div class="panel-body">
+		<form method="post" action="#" class="form-horizontal"
+			th:object="${itemForm}" th:action="@{/}">
+			<div class="row">
+				<div
+					class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="panel-title">商品を検索する</div>
+						</div>
+						<div class="panel-body">
 
 							<div class="form-group">
 
@@ -140,22 +174,22 @@ $(function(){
 								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
 								<span th:text="${no}"></span>
 							</div>
-							
-						
+
+
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="text-center">
-			<select th:field="*{id}" name="id">
-				<option th:each="item : ${itemMap}" th:value="${item.key}"
+			<div class="text-center">
+				<select th:field="*{id}" name="id">
+					<option th:each="item : ${itemMap}" th:value="${item.key}"
 						th:text="${item.value}">カレー順</option>
-			</select>
-			<button>並び替え</button>
-		</div>
-		
+				</select>
+				<button>並び替え</button>
+			</div>
+
 		</form>
-		
+
 
 		<!-- table -->
 		<div class="row">
