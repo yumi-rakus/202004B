@@ -184,6 +184,13 @@ public class CurryController {
 			} catch (NullPointerException e) {
 				List<Item> itemList = itemService.findAllByPrice3();
 
+				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+				model.addAttribute("itemPage", itemPage);
+				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+				model.addAttribute("pageNumbers", pageNumbers);
+
 			}
 		}
 
