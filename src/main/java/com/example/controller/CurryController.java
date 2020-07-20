@@ -644,4 +644,25 @@ public class CurryController {
 		return "order_history";
 	}
 
+	//////////////////////////////////////////////
+	//// マイページの表示
+	//////////////////////////////////////////////
+	/**
+	 * @author soshi morita
+	 */
+	@RequestMapping("/mypage")
+	public String mypage(){
+		return "mypage";
+	}
+	
+	//////////////////////////////////////////////
+	//// お気に入り商品の一覧画面
+	//////////////////////////////////////////////
+	/**
+	 * @author soshi morita
+	 */
+	@RequestMapping("/favorite")
+	public String favorite(){
+		return "favorite";
+	}
 }
