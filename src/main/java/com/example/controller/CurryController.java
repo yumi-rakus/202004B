@@ -346,7 +346,7 @@ public class CurryController {
 		order.setPaymentMethod(form.getPaymentMethod());
 		orderService.order(order);
 
-		sendMailService.sendMail(order.getDestinationEmail());
+		sendMailService.sendMail();
 		return "redirect:/orderFinished";
 	}
 
