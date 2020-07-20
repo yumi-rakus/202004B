@@ -254,6 +254,7 @@ public class OrderService {
 		orderRepository.deleteUuidRecordByUuid(uuid);
 	}
 
+
 	/**
 	 * 注文商品の合計金額を更新する.
 	 * 
@@ -265,5 +266,68 @@ public class OrderService {
 		List<Order> order = getOrderListByUserIdAndStatus0(userId);
 		Integer totalPrice = order.get(0).getCalcTotalPrice();
 		orderRepository.updateTotalPrice(userId, totalPrice);
+	}
+	
+	/**
+	 * 
+	 * @param userId
+	 * @return shoya fujisawa
+	 */
+	public List<Order> getLatestOrderList(Integer userId) {
+		List<Order> orderList = orderRepository.findByUserIdAndMaxId(userId);
+
+		// Map1 … キー：order_item_id、バリュー:注文トッピングリストのマップ
+		Map<Integer, List<OrderTopping>> orderToppingMap = new LinkedHashMap<>();
+
+		// Map2 … キー：order_item_id、バリュー:注文商品のマップ
+		Map<Integer, OrderItem> orderItemMap = new LinkedHashMap<>();
+
+		// Map3 … キー：order_id、バリュー:注文のマップ
+		Map<Integer, Order> orderMap = new LinkedHashMap<>();
+
+		// Map1を完成させる
+		for (Order order : orderList) {
+			orderToppingMap.put(order.getOrderItemList().get(0).getId(), new ArrayList<>());
+		}
+
+		for (Order order : orderList) {
+			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
+			OrderTopping orderTopping = order.getOrderItemList().get(0).getOrderToppingList().get(0);
+			// オブジェクトが空ではない場合のみトッピングリストに追加
+			if (Objects.nonNull(orderTopping.getTopping().getName())) {
+				orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+			}
+		}
+		// Map1完成 （order_item_id１つに対して１つの注文トッピングリストorderToppingList(中身は0~複数)）
+
+		// Map2を完成させる
+		for (Order order : orderList) {
+			orderItemMap.put(order.getOrderItemList().get(0).getId(), order.getOrderItemList().get(0));
+		}
+
+		for (Order order : orderList) {
+			OrderItem orderItem = orderItemMap.get(order.getOrderItemList().get(0).getId());
+
+			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
+			orderItem.setOrderToppingList(orderToppingList);
+
+			orderItemMap.put(order.getOrderItemList().get(0).getId(), orderItem);
+		}
+		// Map2完成 （order_item_id１つに対して１つの注文商品orderItem(先程作成したorderToppingListがセットされたもの)）
+
+		// 注文商品リストのリストを作る（サイズは注文商品の数と一致）
+		List<OrderItem> orderItemList = new ArrayList<>(orderItemMap.values());
+
+		// Map3を完成させる
+		for (Order order : orderList) {
+			order.setOrderItemList(orderItemList);
+			orderMap.put(order.getId(), order);
+		}
+		// Map3完成 （注文商品リスト(サイズは注文商品の数と一致)を注文にセット）（Map3の中身は１件になるはず）
+
+		// サイズ１件の注文
+		List<Order> distinctOrderList = new ArrayList<>(orderMap.values());
+
+		return distinctOrderList;
 	}
 }
