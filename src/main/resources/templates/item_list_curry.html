@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,37 +77,35 @@ jQuery(function($){
 <body class="drawer drawer--left">
 
 	<div class="container">
-<<<<<<< HEAD
+
 		<button type="button" class="drawer-toggle drawer-hamburger">
-			<span class="sr-only">toggle navigation</span> 
-			<span class="drawer-hamburger-icon"></span>
+			<span class="sr-only">toggle navigation</span> <span
+				class="drawer-hamburger-icon"></span>
 		</button>
 		<nav class="drawer-nav" role="navigation">
 			<ul class="drawer-menu">
 				<li class="side-menu"><span style="font-weight: bold"> <span
-							sec:authorize="isAuthenticated()"> <span
-								sec:authentication="principal.user.name"></span>さん&nbsp;
-						</span> <span sec:authorize="isAnonymous()"> <span>ゲストさん&nbsp;</span>
-						</span>
-						</span> </li>
-				<li class="side-menu"><a href="item_list_curry.html" th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;</li>
-				<li class="side-menu"><a href="cart_list.html" th:href="@{/showCartList}"
-							class="side-content">ショッピングカート</a>&nbsp;&nbsp; </li>
-				<li class="side-menu"><a href="order_history.html" th:href="@{/showOrderHistory}"
-							class="side-content">注文履歴</a>&nbsp;&nbsp; </li>
+						sec:authorize="isAuthenticated()"> <span
+							sec:authentication="principal.user.name"></span>さん&nbsp;
+					</span> <span sec:authorize="isAnonymous()"> <span>ゲストさん&nbsp;</span>
+					</span>
+				</span></li>
+				<li class="side-menu"><a href="item_list_curry.html"
+					th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;</li>
+				<li class="side-menu"><a href="cart_list.html"
+					th:href="@{/showCartList}" class="side-content">ショッピングカート</a>&nbsp;&nbsp;
+				</li>
+				<li class="side-menu"><a href="order_history.html"
+					th:href="@{/showOrderHistory}" class="side-content">注文履歴</a>&nbsp;&nbsp;
+				</li>
 			</ul>
-		</nav> 
-		
+		</nav>
+
 		<span th:include="fragment-part::frag_nav"></span>
 
 
 
-=======
-		<span th:include="fragment-part::frag_nav"></span>
 
-
-
->>>>>>> feature/kohei
 
 		<div class="row">
 			<div
@@ -181,34 +180,24 @@ jQuery(function($){
 								<button type="submit" value="検索" class="btn btn-primary">検索</button>
 								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
 							</div>
-<<<<<<< HEAD
 
 
-=======
->>>>>>> feature/kohei
 						</div>
 					</div>
 				</div>
 			</div>
-<<<<<<< HEAD
-=======
 
 
->>>>>>> feature/kohei
 			<div class="text-center">
 				<select th:field="*{id}" name="id">
 					<option th:each="item : ${itemMap}" th:value="${item.key}"
 						th:text="${item.value}">カレー順</option>
 				</select>
-<<<<<<< HEAD
+
 				<button>並び替え</button>
 			</div>
 
-=======
-				<!-- <input type="submit" value="並び替え" style="width: 70px; height: 25px"> -->
-				<button type="submit">並び替え</button>
-			</div>
->>>>>>> feature/kohei
+
 		</form>
 
 

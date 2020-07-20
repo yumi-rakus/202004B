@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -311,6 +312,7 @@ public class CurryController {
 	 */
 	@RequestMapping("/indexRegister")
 	public String indexRegister() {
+
 		return "register_user";
 	}
 
@@ -320,7 +322,7 @@ public class CurryController {
 	 * @author kohei eto
 	 */
 	@RequestMapping("/register")
-	public String register(@Validated UserForm userForm, BindingResult result, Model model) {
+	public String register(@Validated UserForm userForm, BindingResult result) {
 		if (result.hasErrors()) {
 			return indexRegister();
 		}
@@ -342,7 +344,7 @@ public class CurryController {
 			model.addAttribute("orderItemList", orderItemList);
 			model.addAttribute("tax", order.get(0).getTax());
 			model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
-			Map<String, String> orderTimeMap=new LinkedHashMap<>();
+			Map<String, String> orderTimeMap = new LinkedHashMap<>();
 			orderTimeMap.put("10:59:59", "10時");
 			orderTimeMap.put("11:59:59", "11時");
 			orderTimeMap.put("12:59:59", "12時");
@@ -352,7 +354,7 @@ public class CurryController {
 			orderTimeMap.put("16:59:59", "16時");
 			orderTimeMap.put("17:59:59", "17時");
 			orderTimeMap.put("18:59:59", "18時");
-			model.addAttribute("orderTime",orderTimeMap);
+			model.addAttribute("orderTime", orderTimeMap);
 			return "order_confirm";
 		} catch (IndexOutOfBoundsException e) {
 			return showCartList(model);

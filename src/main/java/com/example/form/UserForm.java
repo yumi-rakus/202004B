@@ -27,10 +27,7 @@ public class UserForm {
 	@NotBlank(message = "住所を入力してください")
 	private String address;
 	@NotBlank(message = "電話番号を入力してください")
-	/*
-	 * @Pattern(message = "電話番号はXXXX-XXXX-XXXXの形式で入力してください", regexp =
-	 * "[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]")
-	 */
+	@Pattern(message = "電話番号はXXXX-XXXX-XXXXの形式で入力してください", regexp = "\\d{1,4}-\\d{1,4}-\\d{1,4}")
 	private String telephone;
 	@NotBlank(message = "確認用パスワードを入力してください")
 	private String conpassword;
