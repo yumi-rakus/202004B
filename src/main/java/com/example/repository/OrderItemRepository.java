@@ -108,7 +108,7 @@ public class OrderItemRepository {
 	 * 
 	 * @author yumi takahashi
 	 */
-	public List<Integer> getOrderItemIdByOrderId(Integer orderId) {
+	public List<Integer> getOrderItemIdListByOrderId(Integer orderId) {
 
 		String sql = "SELECT id FROM order_items WHERE order_id = :orderId ORDER BY id";
 
@@ -135,4 +135,51 @@ public class OrderItemRepository {
 		template.update(sql, param);
 	}
 
+	/**
+	 * 注文ID、商品ID、サイズから注文商品IDを取得する.
+	 * 
+	 * @param orderId 注文ID
+	 * @param itemId  商品ID
+	 * @param size    サイズ
+	 * @return 同じ商品・同じサイズの注文商品があればその注文商品IDを、なければ0を返す
+	 * 
+	 * @author yumi takahashi
+	 */
+	public Integer getOrderItemIdByOrderIdAndItemIdAndSize(Integer orderId, Integer itemId, String size) {
+
+		String sql1 = "SELECT count(*) FROM order_items WHERE order_id = :orderId AND item_id = :itemId AND size = :size";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("orderId", orderId).addValue("itemId", itemId)
+				.addValue("size", size);
+
+		Integer count = template.queryForObject(sql1, param, Integer.class);
+
+		if (count == 0) {
+			return 0;
+		} else {
+
+			String sql2 = "SELECT id FROM order_items WHERE order_id = :orderId AND item_id = :itemId AND size = :size";
+
+			Integer orderItemId = template.queryForObject(sql2, param, Integer.class);
+			return orderItemId;
+		}
+	}
+
+	/**
+	 * 注文商品IDから個数を加算する.
+	 * 
+	 * @param plusQuantity 新たに加える個数
+	 * @param orderItemId  注文商品ID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateQuantityByOrderItemId(Integer plusQuantity, Integer orderItemId) {
+
+		String sql = "UPDATE order_items SET quantity = quantity + :plusQuantity WHERE id = :orderItemId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("plusQuantity", plusQuantity)
+				.addValue("orderItemId", orderItemId);
+
+		template.update(sql, param);
+	}
 }
