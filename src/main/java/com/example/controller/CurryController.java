@@ -30,7 +30,6 @@ import com.example.domain.Item;
 import com.example.domain.LoginUser;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
-import com.example.domain.OrderTopping;
 import com.example.domain.Topping;
 import com.example.domain.User;
 import com.example.form.ItemForm;
@@ -39,7 +38,6 @@ import com.example.form.UserForm;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
-import com.example.service.OrderToppingService;
 import com.example.service.SendMailService;
 import com.example.service.ToppingService;
 import com.example.service.UserService;
@@ -66,8 +64,6 @@ public class CurryController {
 	private OrderService orderService;
 	@Autowired
 	private OrderItemService orderItemService;
-	@Autowired
-	private OrderToppingService orderToppingService;
 	@Autowired
 	private HttpSession session;
 	@Autowired
@@ -411,70 +407,10 @@ public class CurryController {
 			userId = (Integer) session.getAttribute("userId");
 		}
 
-		////////////////////// orders table getId or insert
-		Integer orderId;
-
-		if (orderService.status0ExistByUserId(userId)) {
-			// status0がレコードに存在したらオーダーIDをとってくる
-			orderId = orderService.getOrderIdByUserId(userId);
-		} else {
-			// status0がレコードに存在しなかったらordersテーブルにinsert(where:userId, status=0)
-			Order order = new Order();
-			order.setUserId(userId);
-			order.setStatus(0);
-
-			// totalPriceの計算
-			OrderItem orderItem = new OrderItem();
-			orderItem.setItem(itemService.showDetail(form.getItemId()));
-			orderItem.setSize(form.getSize().charAt(0));
-			orderItem.setQuantity(form.getQuantity());
-
-			List<OrderTopping> orderToppingList = new ArrayList<>();
-
-			if (!form.getToppingIdList().isEmpty()) {
-				for (Integer toppingId : form.getToppingIdList()) {
-					Topping topping = toppingService.findById(toppingId);
-					OrderTopping orderTopping = new OrderTopping();
-					orderTopping.setTopping(topping);
-					orderToppingList.add(orderTopping);
-				}
-
-				orderItem.setOrderToppingList(orderToppingList);
-			}
-
-			Integer subTotal = orderItem.getSubTotal();
-			order.setTotalPrice(subTotal);
-
-			// insertで自動採番されたorder_IdをorderIdに代入
-			order = orderService.insertOrderStatus0(order);
-			orderId = order.getId();
-		}
-
-		////////////////////// order_items table insert
-		OrderItem orderItem = new OrderItem();
-		orderItem.setItemId(form.getItemId());
-		orderItem.setOrderId(orderId);
-		orderItem.setQuantity(form.getQuantity());
-		orderItem.setSize(form.getSize().charAt(0));
-
-		orderItem = orderItemService.insertOrderItem(orderItem);
-
-		////////////////////// order_toppings table insert
-		for (Integer toppingId : form.getToppingIdList()) {
-
-			OrderTopping orderTopping = new OrderTopping();
-			orderTopping.setToppingId(toppingId);
-			orderTopping.setOrderItemId(orderItem.getId());
-
-			orderToppingService.insertOrderTopping(orderTopping);
-		}
+		orderItemService.cartIn(form, userId);
 
 		// ordersテーブルのtotalPriceをupdate (where:status=0, userId)
-		List<Order> orderList = orderService.getOrderListByUserIdAndStatus0(userId);
-		Integer totalPrice = 0;
-		totalPrice = orderList.get(0).getCalcTotalPrice();
-
-		orderService.updateTotalPriceByUserId(userId, totalPrice);
+		orderService.updateTotalPrice(userId);
 
 		return "redirect:/cartInComplete";
 	}
@@ -577,9 +513,7 @@ public class CurryController {
 
 		Integer userId = (Integer) session.getAttribute("userId");
 
-		List<Order> order = orderService.getOrderListByUserIdAndStatus0(userId);
-		Integer totalPrice = order.get(0).getCalcTotalPrice();
-		orderService.updateTotalPriceByUserId(userId, totalPrice);
+		orderService.updateTotalPrice(userId);
 
 		return "redirect:/showCartList";
 	}
