@@ -1,8 +1,6 @@
 package com.example.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,15 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
-import com.example.domain.User;
 
 /**
  * 注文時にメールをユーザに送信するサービス.
@@ -35,9 +28,6 @@ public class SendMailService {
 	private OrderService orderService;
 	
 	@Autowired
-	private UserService userService;
-	
-	@Autowired
 	private HttpSession session;
 	/**
 	 * 注文時にメールをユーザに送信する.
@@ -48,7 +38,6 @@ public class SendMailService {
 	 */
 	public void sendMail() {
 		Integer userId=(Integer)session.getAttribute("userId");
-		User user=userService.getUser(userId);
 		List<Order> order=orderService.getLatestOrderList(userId);
 		List<OrderItem> itemList=order.get(0).getOrderItemList();
 		SimpleMailMessage msg = new SimpleMailMessage();
@@ -91,27 +80,6 @@ public class SendMailService {
 		mailContent.append("またのご利用をお待ちしております。");
 		msg.setText(mailContent.toString());
 		
-		
-//		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-//		
-//		templateResolver.setTemplateMode(TemplateMode.TEXT);
-//		
-//		templateResolver.setCharacterEncoding("UTF-8");
-//		
-//		SpringTemplateEngine engine = new SpringTemplateEngine();
-//	    engine.setTemplateResolver(templateResolver);
-//	    
-//	    Map<String, Object> variables = new HashMap<>();
-//	    variables.put("name", order.get(0).getDestinationName());
-//	    variables.put("items",order.get(0).getOrderItemList());
-//	    variables.put("toppings", order.get(0).getOrderItemList().get(0).getOrderToppingList());
-//	    
-//	    Context context = new Context();
-//	    context.setVariables(variables);
-//	    
-//	    String text = engine.process("mail.txt", context);
-//	    msg.setText(text);
-	    
 		this.mailSender.send(msg);
 	}
 }

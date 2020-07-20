@@ -26,15 +26,4 @@ public class UserService {
 		user.setZipcode(rezip);
 		userRepository.insert(user);
 	}
-	
-	/**
-	 * ユーザIDからユーザ情報を取得
-	 * @param id ユーザID
-	 * @return ユーザ情報
-	 * @author shoya fujisawa
-	 */
-	public User getUser(Integer id) {
-		User user=userRepository.findUserById(id);
-		return user;
-	}
 }
