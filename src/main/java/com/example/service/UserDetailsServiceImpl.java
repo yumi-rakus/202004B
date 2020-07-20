@@ -66,10 +66,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 						if (!(order.get(0).getOrderItemList().get(0).getItem().getId() == 0)) {
 
-							Integer totalPrice = order.get(0).getCalcTotalPrice();
-							orderService.updateTotalPriceByUserId(user.getId(), totalPrice);
+							
+							orderService.updateTotalPrice(user.getId());
 						}
-
 					}
 				} else {
 
