@@ -527,8 +527,8 @@ public class CurryController {
 		Integer userId = (Integer) session.getAttribute("userId");
 
 		orderItemService.deleteOrderItemsAndOrderToppingsAll(userId);
-		orderService.updateTotalPriceByUserId(userId, 0);
-
+		orderService.updateTotalPrice(userId);
+		
 		return "redirect:/showCartList";
 	}
 
