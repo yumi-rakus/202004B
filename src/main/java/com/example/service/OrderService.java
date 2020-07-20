@@ -220,18 +220,6 @@ public class OrderService {
 	}
 
 	/**
-	 * 注文商品の合計金額を更新する.
-	 * 
-	 * @param userId     ユーザID
-	 * @param totalPrice 合計金額
-	 * 
-	 * @author yumi takahashi
-	 */
-	public void updateTotalPriceByUserId(Integer userId, Integer totalPrice) {
-		orderRepository.updateTotalPrice(userId, totalPrice);
-	}
-
-	/**
 	 * UUID(仮UserId)をログイン後のUserIdに更新する.
 	 * 
 	 * @param userId ユーザID
@@ -264,5 +252,18 @@ public class OrderService {
 	 */
 	public void deleteUuidRecordByUuid(Integer uuid) {
 		orderRepository.deleteUuidRecordByUuid(uuid);
+	}
+
+	/**
+	 * 注文商品の合計金額を更新する.
+	 * 
+	 * @param userId ユーザID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateTotalPrice(Integer userId) {
+		List<Order> order = getOrderListByUserIdAndStatus0(userId);
+		Integer totalPrice = order.get(0).getCalcTotalPrice();
+		orderRepository.updateTotalPrice(userId, totalPrice);
 	}
 }
