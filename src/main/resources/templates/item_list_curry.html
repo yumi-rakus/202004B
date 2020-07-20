@@ -76,6 +76,7 @@ jQuery(function($){
 <body class="drawer drawer--left">
 
 	<div class="container">
+<<<<<<< HEAD
 		<button type="button" class="drawer-toggle drawer-hamburger">
 			<span class="sr-only">toggle navigation</span> 
 			<span class="drawer-hamburger-icon"></span>
@@ -100,6 +101,12 @@ jQuery(function($){
 
 
 
+=======
+		<span th:include="fragment-part::frag_nav"></span>
+
+
+
+>>>>>>> feature/kohei
 
 		<div class="row">
 			<div
@@ -170,24 +177,38 @@ jQuery(function($){
 
 							</div>
 							<div class="text-center">
+								<span th:text="${no}"></span>
 								<button type="submit" value="検索" class="btn btn-primary">検索</button>
 								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
-								<span th:text="${no}"></span>
 							</div>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> feature/kohei
 						</div>
 					</div>
 				</div>
 			</div>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> feature/kohei
 			<div class="text-center">
 				<select th:field="*{id}" name="id">
 					<option th:each="item : ${itemMap}" th:value="${item.key}"
 						th:text="${item.value}">カレー順</option>
 				</select>
+<<<<<<< HEAD
 				<button>並び替え</button>
 			</div>
 
+=======
+				<!-- <input type="submit" value="並び替え" style="width: 70px; height: 25px"> -->
+				<button type="submit">並び替え</button>
+			</div>
+>>>>>>> feature/kohei
 		</form>
 
 

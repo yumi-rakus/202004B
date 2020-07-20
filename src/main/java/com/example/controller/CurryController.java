@@ -117,7 +117,6 @@ public class CurryController {
 		itemMap.put(1, "価格安い順");
 		itemMap.put(2, "価格高い順");
 		itemMap.put(3, "人気順");
-
 		model.addAttribute("itemMap", itemMap);
 
 		/*
@@ -133,58 +132,128 @@ public class CurryController {
 
 		/* List<Item> itemList = null; */
 
-		if (searchName == null) {
-			// 検索文字列が空なら全件検索
-			List<Item> itemList = itemService.findAll();
+		// 検索文字列があれば曖昧検索
 
-			// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-			Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-			model.addAttribute("itemPage", itemPage);
-			// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-			List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-			model.addAttribute("pageNumbers", pageNumbers);
-
-		} else {
-			// 検索文字列があれば曖昧検索
-
-			try {
-				if (form.getId() == 1) {
-
+		try {
+			if (form.getId() == 1) {
+				if (searchName == null) {
+					// 検索文字列が空なら全件検索
+					List<Item> itemList = itemService.findAll();
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+				} else {
 					List<Item> itemList = itemService.findByItemName(searchName);
-
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
-
-				} else if (form.getId() == 2) {
-					List<Item> itemList = itemService.findByItemName2(searchName);
-
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
-
-				} else if (form.getId() == 3) {
-					List<Item> itemList = itemService.findByItemName3(searchName);
-
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
-
+					if (itemList.size() == 0) {
+						String no = "該当する商品がありません";
+						model.addAttribute("no", no);
+						List<Item> itemList2 = itemService.findAll();
+						// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+						Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
+						model.addAttribute("itemPage", itemPage);
+						// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+						List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+						model.addAttribute("pageNumbers", pageNumbers);
+					} else {
+						// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+						Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+						model.addAttribute("itemPage", itemPage);
+						// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+						List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+						model.addAttribute("pageNumbers", pageNumbers);
+					}
 				}
 
-			} catch (NullPointerException e) {
-				List<Item> itemList = itemService.findAllByPrice3();
+			} else if (form.getId() == 2) {
+				if (searchName == null) {
+					// 検索文字列が空なら全件検索
+					List<Item> itemList = itemService.findAllByPrice2();
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+				}
+
+				List<Item> itemList = itemService.findByItemName2(searchName);
+				if (itemList.size() == 0) {
+					String no = "該当する商品がありません";
+					model.addAttribute("no", no);
+					List<Item> itemList2 = itemService.findAllByPrice2();
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+				} else {
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+				}
+
+			} else if (form.getId() == 3) {
+				if (searchName == null) {
+					// 検索文字列が空なら全件検索
+					List<Item> itemList = itemService.findAllByPrice3();
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+				}
+
+				List<Item> itemList = itemService.findByItemName3(searchName);
+				if (itemList.size() == 0) {
+					String no = "該当する商品がありません";
+					model.addAttribute("no", no);
+					List<Item> itemList2 = itemService.findAllByPrice3();
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+				} else {
+					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+					model.addAttribute("itemPage", itemPage);
+					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+					model.addAttribute("pageNumbers", pageNumbers);
+				}
 
 			}
+
+		} catch (NullPointerException e) {
+			List<Item> itemList = itemService.findAllByPrice3();
+			if (itemList.size() == 0) {
+				String no = "該当する商品がありません";
+				model.addAttribute("no", no);
+				List<Item> itemList2 = itemService.findAll();
+				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
+				model.addAttribute("itemPage", itemPage);
+				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+				model.addAttribute("pageNumbers", pageNumbers);
+			} else {
+				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+				model.addAttribute("itemPage", itemPage);
+				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+				model.addAttribute("pageNumbers", pageNumbers);
+			}
+
 		}
 
 		return "item_list_curry";
@@ -221,7 +290,7 @@ public class CurryController {
 			model.addAttribute("itemList", itemList);
 		} else { // 検索文字列があれば曖昧検索
 			List<Item> itemList = itemService.findByItemName(searchName);
-			if (itemList.equals("")) {
+			if (itemList.size() == 0) {
 				String no = "該当する商品がありません";
 				model.addAttribute("no", no);
 			}
