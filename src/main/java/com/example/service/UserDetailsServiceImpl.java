@@ -50,8 +50,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
 				Integer uuid = (Integer) session.getAttribute("userId");
+				List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
 
-				if (orderService.status0ExistByUserId(user.getId())) {
+				if (!order.isEmpty()) {
 
 					if (orderService.status0ExistByUserId(uuid)) {
 
@@ -61,7 +62,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 						orderService.updateOrderId(uuidOrderId, userOrderId);
 						orderService.deleteUuidRecordByUuid(uuid);
 
-						List<Order> order = orderService.getOrderListByUserIdAndStatus0(user.getId());
+						
 
 						if (!(order.get(0).getOrderItemList().get(0).getItem().getId() == 0)) {
 

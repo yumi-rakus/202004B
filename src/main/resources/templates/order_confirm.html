@@ -222,51 +222,10 @@
 										<div class="row">
 											<div th:if="${#fields.hasErrors('time')}" th:errors="*{time}" style="color:red"></div>
 											<div class="col-sm-12">
-												<label class="radio-inline">
+												<label class="radio-inline" th:each="time:${orderTime}">
 													<input type="radio"
-														name="responsibleCompany" checked="checked" th:field="*{time}" value="10:59:59">
-													10時
+														name="responsibleCompany" checked="checked" th:field="*{time}" th:value="${time.key}" th:text="${time.value}"><br>												
 												</label>
-												<label class="radio-inline">
-													<input type="radio"
-														name="responsibleCompany" th:field="*{time}" value="11:59:59">
-													11時
-												</label>
-												<label class="radio-inline">
-													<input type="radio"
-														name="responsibleCompany" th:field="*{time}" value="12:59:00">
-													12時
-												</label><br>
-												<label class="radio-inline">
-													<input type="radio"
-														name="responsibleCompany" th:field="*{time}" value="13:59:59">
-													13時
-												</label>
-												<label class="radio-inline">
-													<input type="radio"
-														name="responsibleCompany" th:field="*{time}" value="14:59:59">
-													14時
-												</label>
-												<label class="radio-inline">
-													<input type="radio"
-														name="responsibleCompany" th:field="*{time}" value="15:59:59">
-													15時
-												</label><br>
-												<label class="radio-inline">
-													<input type="radio"
-														name="responsibleCompany" th:field="*{time}" value="16:59:59">
-													16時
-												</label>
-												<label class="radio-inline">
-													<input type="radio"
-														name="responsibleCompany" th:field="*{time}" value="17:59:59">
-													17時
-												</label>
-												<label class="radio-inline">
-													<input type="radio"
-														name="responsibleCompany" th:field="*{time}" value="18:59:59">
-													18時
-												</label><br>
 											</div>
 										</div>
 									</div>

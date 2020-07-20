@@ -273,6 +273,17 @@ public class CurryController {
 			model.addAttribute("orderItemList", orderItemList);
 			model.addAttribute("tax", order.get(0).getTax());
 			model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
+			Map<String, String> orderTimeMap=new LinkedHashMap<>();
+			orderTimeMap.put("10:59:59", "10時");
+			orderTimeMap.put("11:59:59", "11時");
+			orderTimeMap.put("12:59:59", "12時");
+			orderTimeMap.put("13:59:59", "13時");
+			orderTimeMap.put("14:59:59", "14時");
+			orderTimeMap.put("15:59:59", "15時");
+			orderTimeMap.put("16:59:59", "16時");
+			orderTimeMap.put("17:59:59", "17時");
+			orderTimeMap.put("18:59:59", "18時");
+			model.addAttribute("orderTime",orderTimeMap);
 			return "order_confirm";
 		} catch (IndexOutOfBoundsException e) {
 			return showCartList(model);
