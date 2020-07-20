@@ -137,12 +137,10 @@ $(function(){
 
 							</div>
 							<div class="text-center">
+								<span th:text="${no}"></span>
 								<button type="submit" value="検索" class="btn btn-primary">検索</button>
 								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
-								<span th:text="${no}"></span>
 							</div>
-
-
 						</div>
 					</div>
 				</div>
@@ -153,7 +151,9 @@ $(function(){
 				<select th:field="*{id}" name="id">
 					<option th:each="item : ${itemMap}" th:value="${item.key}"
 						th:text="${item.value}">カレー順</option>
-				</select> <input type="button" value="並び替え" style="width: 70px; height: 25px">
+				</select>
+				<!-- <input type="submit" value="並び替え" style="width: 70px; height: 25px"> -->
+				<button type="submit">並び替え</button>
 			</div>
 		</form>
 
