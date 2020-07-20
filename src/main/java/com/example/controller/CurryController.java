@@ -3,7 +3,9 @@ package com.example.controller;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -338,7 +340,7 @@ public class CurryController {
 			model.addAttribute("orderItemList", orderItemList);
 			model.addAttribute("tax", order.get(0).getTax());
 			model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
-			Map<String, String> orderTimeMap=new LinkedHashMap<>();
+			Map<String, String> orderTimeMap = new LinkedHashMap<>();
 			orderTimeMap.put("10:59:59", "10時");
 			orderTimeMap.put("11:59:59", "11時");
 			orderTimeMap.put("12:59:59", "12時");
@@ -348,7 +350,9 @@ public class CurryController {
 			orderTimeMap.put("16:59:59", "16時");
 			orderTimeMap.put("17:59:59", "17時");
 			orderTimeMap.put("18:59:59", "18時");
-			model.addAttribute("orderTime",orderTimeMap);
+			User user = userService.getUserById(userId);			
+			model.addAttribute("user", user);
+			model.addAttribute("orderTime", orderTimeMap);
 			return "order_confirm";
 		} catch (IndexOutOfBoundsException e) {
 			return showCartList(model);
@@ -379,9 +383,9 @@ public class CurryController {
 		Date nowDate = new Date();
 		order.setOrderDate(nowDate);
 		order.setDestinationName(form.getName());
-		order.setDestinationEmail(form.getMailAddress());
+		order.setDestinationEmail(form.getEmail());
 		// 郵便番号のハイフンを除去
-		String zipCodeStr = form.getZipCode();
+		String zipCodeStr = form.getZipcode();
 		String zipCode = zipCodeStr.replace("-", "");
 		order.setDestinationZipcode(zipCode);
 
@@ -389,17 +393,18 @@ public class CurryController {
 		order.setDestinationTel(form.getTelephone());
 
 		String delivery = form.getOrderDate() + " " + form.getTime();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime time = LocalDateTime.parse(delivery, formatter);
-		Timestamp deliveryTime = Timestamp.valueOf(time);
-		order.setDeliveryTime(deliveryTime);
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		try {
 			Date dTime = df.parse(delivery);
+			Instant instant = dTime.toInstant();
+			LocalDateTime dTime2 = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+			dTime2 = dTime2.minusMinutes(59).minusSeconds(59);
+			Timestamp deliveryTime = Timestamp.valueOf(dTime2);
+			order.setDeliveryTime(deliveryTime);
+			// 選択時間から3時間以内は選択不可にする
 			long diff = dTime.getTime() - nowDate.getTime();
-
 			if (diff / (60 * 60 * 1000) < 3) {
 				model.addAttribute("message", "今から3時間後以降の日時をご入力ください");
 				return Confirm(form, model);
@@ -608,7 +613,7 @@ public class CurryController {
 
 		orderItemService.deleteOrderItemsAndOrderToppingsAll(userId);
 		orderService.updateTotalPrice(userId);
-		
+
 		return "redirect:/showCartList";
 	}
 
@@ -654,10 +659,10 @@ public class CurryController {
 	 * @author soshi morita
 	 */
 	@RequestMapping("/mypage")
-	public String mypage(){
+	public String mypage() {
 		return "mypage";
 	}
-	
+
 	//////////////////////////////////////////////
 	//// お気に入り商品の一覧画面
 	//////////////////////////////////////////////
@@ -665,7 +670,7 @@ public class CurryController {
 	 * @author soshi morita
 	 */
 	@RequestMapping("/favorite")
-	public String favorite(){
+	public String favorite() {
 		return "favorite";
 	}
 }

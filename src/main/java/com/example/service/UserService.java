@@ -26,4 +26,17 @@ public class UserService {
 		user.setZipcode(rezip);
 		userRepository.insert(user);
 	}
+
+	/**
+	 * @return ユーザ情報
+	 * @param id ユーザid
+	 * @author shoya fujisawa
+	 */
+	public User getUserById(Integer id) {
+		User user = userRepository.findById(id);
+		StringBuilder zipCode=new StringBuilder(user.getZipcode());
+		zipCode.insert(3, "-");
+		user.setZipcode(zipCode.toString());
+		return user;
+	}
 }

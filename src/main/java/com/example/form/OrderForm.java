@@ -18,10 +18,10 @@ public class OrderForm {
 	private String name;
 	@NotBlank(message = "メールアドレスを入力してください")
 	@Email(message = "メールアドレスの形式が不正です")
-	private String mailAddress;
+	private String email;
 	@NotBlank(message = "郵便番号を入力してください")
 	@Pattern(regexp = "^[0-9]{3}-[0-9]{4}$", message = "郵便番号はXXX-XXXXの形式で入力してください")
-	private String zipCode;
+	private String zipcode;
 	@NotBlank(message = "住所を入力してください")
 	private String address;
 	@NotBlank(message = "配達日時を入力してください")
@@ -72,20 +72,20 @@ public class OrderForm {
 		this.name = name;
 	}
 
-	public String getMailAddress() {
-		return mailAddress;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setMailAddress(String mailAddress) {
-		this.mailAddress = mailAddress;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getZipCode() {
-		return zipCode;
+	public String getZipcode() {
+		return zipcode;
 	}
 
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
 	}
 
 	public String getAddress() {
@@ -124,7 +124,7 @@ public class OrderForm {
 	@Override
 	public String toString() {
 		return "OrderForm [userId=" + userId + ", status=" + status + ", totalPrice=" + totalPrice + ", orderDate="
-				+ orderDate + ", name=" + name + ", mailAddress=" + mailAddress + ", zipCode=" + zipCode + ", address="
+				+ orderDate + ", name=" + name + ", mailAddress=" + email + ", zipCode=" + zipcode + ", address="
 				+ address + ", time=" + time + ", telephone=" + telephone + ", paymentMethod=" + paymentMethod + "]";
 	}
 

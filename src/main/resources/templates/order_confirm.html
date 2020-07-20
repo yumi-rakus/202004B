@@ -155,29 +155,29 @@
 									</div>
 								</td>
 								<td>
-									<input type="text" th:field="*{name}">
+									<input type="text" th:field="${user.name}">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<div th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" style="color:red"></div>
+									<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red"></div>
 									<div class="text-center">
 										メールアドレス
 									</div>
 								</td>
 								<td>
-									<input type="text" th:field="*{mailAddress}">
+									<input type="text" th:field="${user.email}">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<div th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}" style="color:red"></div>
+									<div th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}" style="color:red"></div>
 									<div class="text-center">
 										郵便番号
 									</div>
 								</td>
 								<td>
-									<input type="text" th:field="*{zipCode}" class="p-postal-code"><!--  &nbsp;&nbsp;<button>住所検索</button>-->
+									<input type="text" th:field="${user.zipcode}" class="p-postal-code"><!--  &nbsp;&nbsp;<button>住所検索</button>-->
 								</td>
 							</tr>
 							<tr>
@@ -188,7 +188,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text" th:field="*{address}" class="p-region p-locality p-street-address p-extended-address">
+									<input type="text" th:field="${user.address}" class="p-region p-locality p-street-address p-extended-address">
 								</td>
 							</tr>
 							<tr>
@@ -199,7 +199,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text" th:field="*{telephone}">
+									<input type="text" th:field="${user.telephone}">
 								</td>
 							</tr>
 							<tr>
