@@ -78,15 +78,4 @@ public class UserRepository {
 		template.update(sql, param);
 		return true;
 	}
-	
-	/**
-	 * @param id ユーザID
-	 * @author shoya fujisawa
-	 */
-	public User findUserById(Integer id) {
-		String sql = "select id,name,email,password,zipcode,address,telephone from users where id=:id";
-		MapSqlParameterSource param=new MapSqlParameterSource().addValue("id", id);
-		User user=template.queryForObject(sql, param, USER_ROW_MAPPER);
-		return user;
-	}
 }
