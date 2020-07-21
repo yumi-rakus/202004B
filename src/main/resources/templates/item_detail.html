@@ -194,6 +194,7 @@
 								<input type="hidden" name="itemId" th:value="${item.id}">
 								<input class="form-control btn btn-warning btn-block"
 									type="submit" id="cartInButton" value="カートに入れる">
+								<a class="btn btn-light btn-block" th:href="@{'favorite/insert?itemId=' + ${item.id}}" role="button">お気に入りに追加</a>
 							</p>
 
 						</div>

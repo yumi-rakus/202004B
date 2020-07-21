@@ -28,6 +28,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.domain.Favorite;
 import com.example.domain.Item;
 import com.example.domain.LoginUser;
 import com.example.domain.Order;
@@ -37,6 +38,7 @@ import com.example.domain.User;
 import com.example.form.ItemForm;
 import com.example.form.OrderForm;
 import com.example.form.UserForm;
+import com.example.service.FavoriteService;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
@@ -70,6 +72,8 @@ public class CurryController {
 	private HttpSession session;
 	@Autowired
 	private static final int VIEW_SIZE = 9;
+	@Autowired
+	private FavoriteService favoriteService;
 
 	@ModelAttribute
 	public UserForm setUpUserForm() {
@@ -515,8 +519,7 @@ public class CurryController {
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
 			if (orderService.status0ExistByUserId((Integer) session.getAttribute("userId"))) {
-				List<Order> order = orderService
-						.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
+				List<Order> order = orderService.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
 
 				if (order.get(0).getOrderItemList().get(0).getItem().getId() == 0) {
 					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
@@ -672,5 +675,18 @@ public class CurryController {
 	@RequestMapping("/favorite")
 	public String favorite() {
 		return "favorite";
+	}
+
+	//////////////////////////////////////////////
+	//// お気に入り商品の追加
+	//////////////////////////////////////////////
+	/**
+	 * @author soshi morita
+	 */
+	@RequestMapping("/favorite/insert")
+	public String favoriteInsert(@AuthenticationPrincipal LoginUser loginUser, Integer itemId) {
+		Favorite favorite = new Favorite(loginUser.getUser().getId(), itemId, new Date());
+		System.out.println(favoriteService.create(favorite));
+		return "forward:/favorite";
 	}
 }
