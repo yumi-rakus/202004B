@@ -1,5 +1,7 @@
 package com.example.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -8,8 +10,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 import com.example.domain.User;
 
@@ -44,7 +44,29 @@ public class UserRepository {
 	};
 
 	/**
-	 * ユーザ情報をメールアドレスから取得する.
+	 * メールアドレスから、既にDBに登録されているかを判定する.
+	 * 
+	 * @param email メールアドレス
+	 * @return 既に登録されているメールアドレスならtrueを、そうでないならfalseを返す
+	 * 
+	 * @author yumi takahashi
+	 */
+	public boolean existByEmail(String email) {
+
+		String sql = "SELECT count(*) FROM users WHERE email = :email";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
+
+		Integer count = template.queryForObject(sql, param, Integer.class);
+
+		if (count == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * メールアドレスからユーザ情報を取得する.
 	 * 
 	 * @param email メールアドレス
 	 * @return ユーザ情報
@@ -52,13 +74,13 @@ public class UserRepository {
 	 * @author kohei eto
 	 */
 	public User findByEmail(String email) {
-		String sql = "select * from users where email = :email";
+
+		String sql = "SELECT id, name, email, password, address, zipcode, telephone FROM users WHERE email = :email";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
-		List<User> userList = template.query(sql, param, USER_ROW_MAPPER);
-		if (userList.size() == 0) {
-			return null;
-		}
-		return userList.get(0);
+
+		List<User> user = template.query(sql, param, USER_ROW_MAPPER);
+
+		return user.get(0);
 	}
 
 	/**
@@ -83,7 +105,7 @@ public class UserRepository {
 	 * ユーザidからユーザ情報を取得
 	 * 
 	 * @param userId
-	 * @return shoyafujisawa
+	 * @return shoya fujisawa
 	 */
 	public User findById(Integer id) {
 		String sql = "select id,name,email,password,zipcode,address,telephone from users where id=:id";
