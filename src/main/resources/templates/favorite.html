@@ -34,18 +34,26 @@
     </button>
     <nav class="drawer-nav" role="navigation">
       <ul class="drawer-menu">
-        <li class="side-menu"><span style="font-weight: bold"> <span sec:authorize="isAuthenticated()"> <span
-                sec:authentication="principal.user.name"></span>さん&nbsp;
-            </span> <span sec:authorize="isAnonymous()"> <span>ゲストさん&nbsp;</span>
+        <li class="side-menu">
+          <span style="font-weight: bold">
+            <span sec:authorize="isAuthenticated()">
+              <span sec:authentication="principal.user.name"></span>さん
             </span>
-          </span> </li>
-        <li class="side-menu"><a href="item_list_curry.html" th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;
+            <span sec:authorize="isAnonymous()">
+              <span>ゲストさん</span>
+            </span>
+          </span>
         </li>
-        <li class="side-menu"><a href="cart_list.html" th:href="@{/showCartList}"
-            class="side-content">ショッピングカート</a>&nbsp;&nbsp; </li>
-        <li class="side-menu"><a href="order_history.html" th:href="@{/showOrderHistory}"
-            class="side-content">注文履歴</a>&nbsp;&nbsp; </li>
-        <li class="side-menu"><a th:href="@{/pdf/allergy.pdf}" target="_blank" class="side-content">アレルギー情報</a>&nbsp;&nbsp; </li>
+        <span sec:authorize="isAuthenticated()">
+          <li class="side-menu"><a th:href="@{/mypage}" class="side-content">マイページ</a></li>
+        </span>
+        <li class="side-menu"><a href="item_list_curry.html" th:href="@{/}" class="side-content">商品一覧</a>
+        </li>
+        <li class="side-menu"><a href="cart_list.html" th:href="@{/showCartList}" class="side-content">ショッピングカート</a>
+        </li>
+        <li class="side-menu"><a href="order_history.html" th:href="@{/showOrderHistory}" class="side-content">注文履歴</a>
+        </li>
+        <li class="side-menu"><a th:href="@{/pdf/allergy.pdf}" target="_blank" class="side-content">アレルギー情報</a> </li>
       </ul>
     </nav>
     <span th:include="fragment-part::frag_nav"></span>

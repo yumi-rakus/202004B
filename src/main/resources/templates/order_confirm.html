@@ -8,39 +8,36 @@
 	<title>ラクラクカリー -注文確認</title>
 	<link th:href="@{../css/bootstrap.css}" rel="stylesheet">
 	<link th:href="@{../css/curry.css}" rel="stylesheet">
-	<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
 	<link th:href="@{/css/drawer.css}" rel="stylesheet">
 	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 	<script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
-	<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
-	<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
 	<script>
-	jQuery(function($){
-		$(document).ready(function() {			
-			$('.drawer').drawer();			
+		jQuery(function ($) {
+			$(document).ready(function () {
+				$('.drawer').drawer();
+			});
 		});
-	});
 	</script>
 	<script type="text/javascript">
-	var toDoubleDigits = function(num) {
-		  num += "";
-		  if (num.length === 1) {
-		    num = "0" + num;
-		  }
-		 return num;     
+		var toDoubleDigits = function (num) {
+			num += "";
+			if (num.length === 1) {
+				num = "0" + num;
+			}
+			return num;
 		};
 
-	window.onload=function(){
-		  var date = new Date();
-		  var year = toDoubleDigits(date.getFullYear());
-		  var month = toDoubleDigits((date.getMonth()+1));
-		  var day = toDoubleDigits(date.getDate());
-		  var today = year + '-' + month + '-' + day;
-		  document.getElementById('date').setAttribute('min',today);
-	}
+		window.onload = function () {
+			var date = new Date();
+			var year = toDoubleDigits(date.getFullYear());
+			var month = toDoubleDigits((date.getMonth() + 1));
+			var day = toDoubleDigits(date.getDate());
+			var today = year + '-' + month + '-' + day;
+			document.getElementById('date').setAttribute('min', today);
+		}
 	</script>
 	<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -51,25 +48,29 @@
 <body class="drawer drawer--left">
 	<div class="container">
 		<button type="button" class="drawer-toggle drawer-hamburger">
-			<span class="sr-only">toggle navigation</span> 
+			<span class="sr-only">toggle navigation</span>
 			<span class="drawer-hamburger-icon"></span>
 		</button>
 		<nav class="drawer-nav" role="navigation">
 			<ul class="drawer-menu">
-				<li class="side-menu"><span style="font-weight: bold"> <span
-							sec:authorize="isAuthenticated()"> <span
+				<li class="side-menu"><span style="font-weight: bold"> <span sec:authorize="isAuthenticated()"> <span
 								sec:authentication="principal.user.name"></span>さん&nbsp;
 						</span> <span sec:authorize="isAnonymous()"> <span>ゲストさん&nbsp;</span>
 						</span>
-						</span> </li>
-				<li class="side-menu"><a href="item_list_curry.html" th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;</li>
+					</span> </li>
+				<span sec:authorize="isAuthenticated()">
+					<li class="side-menu"><a th:href="@{/mypage}" class="side-content">マイページ</a></li>
+				</span>
+				<li class="side-menu"><a href="item_list_curry.html" th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;
+				</li>
 				<li class="side-menu"><a href="cart_list.html" th:href="@{/showCartList}"
-							class="side-content">ショッピングカート</a>&nbsp;&nbsp; </li>
+						class="side-content">ショッピングカート</a>&nbsp;&nbsp; </li>
 				<li class="side-menu"><a href="order_history.html" th:href="@{/showOrderHistory}"
-							class="side-content">注文履歴</a>&nbsp;&nbsp; </li>
-				<li class="side-menu"><a th:href="@{/pdf/allergy.pdf}" target="_blank" class="side-content">アレルギー情報</a>&nbsp;&nbsp; </li>
+						class="side-content">注文履歴</a>&nbsp;&nbsp; </li>
+				<li class="side-menu"><a th:href="@{/pdf/allergy.pdf}" target="_blank"
+						class="side-content">アレルギー情報</a>&nbsp;&nbsp; </li>
 			</ul>
-		</nav> 
+		</nav>
 		<span th:include="fragment-part::frag_nav"></span>
 
 		<!-- 購入ステップ -->
