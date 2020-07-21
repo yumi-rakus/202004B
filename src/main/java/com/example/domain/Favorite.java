@@ -12,6 +12,8 @@ public class Favorite {
 
   private Date addedDate;
 
+  private Item item;
+
   public Favorite() {
   }
 
@@ -19,6 +21,14 @@ public class Favorite {
     this.userId = userId;
     this.itemId = itemId;
     this.addedDate = addedDate;
+  }
+
+  public Favorite(Integer id, Integer userId, Integer itemId, Date addedDate, Item item) {
+    this.id = id;
+    this.userId = userId;
+    this.itemId = itemId;
+    this.addedDate = addedDate;
+    this.item = item;
   }
 
   public Integer getId() {
@@ -53,24 +63,12 @@ public class Favorite {
     this.addedDate = addedDate;
   }
 
-  public Favorite id(Integer id) {
-    this.id = id;
-    return this;
+  public Item getItem() {
+    return this.item;
   }
 
-  public Favorite userId(Integer userId) {
-    this.userId = userId;
-    return this;
-  }
-
-  public Favorite itemId(Integer itemId) {
-    this.itemId = itemId;
-    return this;
-  }
-
-  public Favorite addedDate(Date addedDate) {
-    this.addedDate = addedDate;
-    return this;
+  public void setItem(Item item) {
+    this.item = item;
   }
 
   @Override
