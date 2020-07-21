@@ -72,6 +72,8 @@ jQuery(function($){
 		$('.drawer').drawer();			
 	});
 });
+
+
 </script>
 </head>
 <body class="drawer drawer--left">
@@ -170,7 +172,7 @@ jQuery(function($){
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
 									<input type="text" name="searchName" id="searchName"
-										class="form-control" autocomplete="on" list="itemList">
+										class="form-control" autocomplete="on" list="itemList" th:field="*{searchName}">
 									<datalist id="itemList"></datalist>
 								</div>
 

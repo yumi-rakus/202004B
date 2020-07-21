@@ -25,6 +25,16 @@ public class ItemForm {
 
 	private Integer id;
 
+	private String searchName;
+
+	public String getSearchName() {
+		return searchName;
+	}
+
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -66,11 +76,10 @@ public class ItemForm {
 		this.itemId = itemId;
 	}
 
-	// toString
 	@Override
 	public String toString() {
 		return "ItemForm [size=" + size + ", toppingIdList=" + toppingIdList + ", quantity=" + quantity + ", itemId="
-				+ itemId + "]";
+				+ itemId + ", id=" + id + ", searchName=" + searchName + "]";
 	}
 
 }

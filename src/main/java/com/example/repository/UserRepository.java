@@ -78,4 +78,15 @@ public class UserRepository {
 		template.update(sql, param);
 		return true;
 	}
+
+	// メールアドレスからユーザ情報を取得
+	public User findByMail(String email) {
+		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where email = :email";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
+
+		User user = template.queryForObject(sql, param, USER_ROW_MAPPER);
+
+		return user;
+	}
 }

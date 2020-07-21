@@ -7,6 +7,8 @@
 <title>ラクラクカリー -ユーザ登録</title>
 <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 <link th:href="@{/css/curry.css}" rel="stylesheet">
+
+
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -26,6 +28,29 @@ $(function () {
     });
 });
 </script> -->
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/validationEngine.jquery.min.css" type="text/css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-ja.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+	$(document).ready(function() {
+		$("#form_1").validationEngine();
+	});
+</script>
+
+
+<!-- /* $function() { $('form').validate({ rules : { name : { required : true
+} } messages: { mytext: { required: "これは必須項目です!" } } } }); */ /*
+$("input[name='name']").blur(function(){ if($(this).val() == ""){
+alert('空です') } else if(!$(this).val().match(/^[0-9]+$/)) {
+alert('半角数字を入力してください') } }); */ -->
+
 </head>
 <body>
 	<div class="container">
@@ -37,7 +62,7 @@ $(function () {
 				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
 				<div class="well">
 
-					<form method="post" th:action="@{/register}"
+					<form id="form_1" method="post" th:action="@{/register}"
 						th:object="${userForm}">
 						<div class="h-adr">
 							<fieldset>
@@ -46,15 +71,18 @@ $(function () {
 									<label for="inputName">名前:</label> <label
 										th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
 										style="color: red" class="error-messages">入力してください</label> <input
-										type="text" id="inputName" class="form-control"
-										placeholder="Name" name="name" th:field="*{name}">
+										type="text" id="inputName"
+										class="form-control validate[required]" placeholder="Name"
+										name="name" th:field="*{name}">
 								</div>
 								<div class="form-group">
 									<label for="inputEmail">メールアドレス:</label> <label
 										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
 										style="color: red" class="error-messages">入力してください</label> <input
-										type="text" id="inputEmail" class="form-control"
-										placeholder="Email" name="email" th:field="*{email}">
+										type="text" id="inputEmail"
+										class="form-control validate[required]" placeholder="Email"
+										name="email" th:field="*{email}"> <span th:text="${b}"
+										style="color: red"></span>
 								</div>
 
 
@@ -102,10 +130,12 @@ $(function () {
 									<label for="inputConfirmationPassword">確認用パスワード:</label> <label
 										th:if="${#fields.hasErrors('conpassword')}"
 										th:errors="*{conpassword}" style="color: red"
-										class="error-messages">メールアドレスを入力してください</label> <input
-										type="password" id="inputConfirmationPassword"
-										class="form-control" placeholder="Confirmation Password"
-										name="conpassword" th:field="*{conpassword}">
+										class="error-messages">メールアドレスを入力してください</label> <span
+										th:text="${nopass}"></span> <input type="password"
+										id="inputConfirmationPassword" class="form-control"
+										placeholder="Confirmation Password" name="conpassword"
+										th:field="*{conpassword}"> <span th:text="${c}"
+										style="color: red"></span>
 								</div>
 								<div class="form-group">
 									<button type="submit" class="btn btn-primary">登録</button>
@@ -122,9 +152,11 @@ $(function () {
 
 	</div>
 	<!-- end container -->
-
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script src="https://yubinbango.github.io/yubinbango/yubinbango.js"
 		charset="UTF-8"></script>

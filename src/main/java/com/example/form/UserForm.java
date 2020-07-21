@@ -19,7 +19,7 @@ public class UserForm {
 	@NotBlank(message = "メールアドレスを入力してください")
 	private String email;
 	@NotBlank(message = "パスワードを入力してください")
-	@Size(min = 1, max = 16, message = "パスワードは８文字以上１６文字以内で設定してください")
+	@Size(min = 8, max = 16, message = "パスワードは８文字以上１６文字以内で設定してください")
 	private String password;
 	@NotBlank(message = "郵便番号を入力してください")
 	@Pattern(message = "郵便番号はXXX-XXXXの形式で入力してください", regexp = "[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]")

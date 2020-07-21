@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.example.domain.Item;
+import com.example.domain.User;
 
 /**
  * itemsテーブルを操作するリポジトリ.
@@ -137,7 +138,7 @@ public class ItemRepository {
 		return itemlist;
 	}
 
-	// 全商品情報を人気順で取得(id順)
+	// 全商品情報をid順で取得
 	public List<Item> findAllByPrice3() {
 
 		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items order by id";
