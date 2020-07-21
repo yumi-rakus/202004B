@@ -19,7 +19,7 @@ public class UserForm {
 	@NotBlank(message = "メールアドレスを入力してください")
 	private String email;
 	@NotBlank(message = "パスワードを入力してください")
-	@Size(min = 1, max = 16, message = "パスワードは８文字以上１６文字以内で設定してください")
+	@Size(min = 8, max = 16, message = "パスワードは８文字以上１６文字以内で設定してください")
 	private String password;
 	@NotBlank(message = "郵便番号を入力してください")
 	@Pattern(message = "郵便番号はXXX-XXXXの形式で入力してください", regexp = "[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]")
@@ -27,10 +27,7 @@ public class UserForm {
 	@NotBlank(message = "住所を入力してください")
 	private String address;
 	@NotBlank(message = "電話番号を入力してください")
-	/*
-	 * @Pattern(message = "電話番号はXXXX-XXXX-XXXXの形式で入力してください", regexp =
-	 * "[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]")
-	 */
+	@Pattern(message = "電話番号はXXXX-XXXX-XXXXの形式で入力してください", regexp = "\\d{1,4}-\\d{1,4}-\\d{1,4}")
 	private String telephone;
 	@NotBlank(message = "確認用パスワードを入力してください")
 	private String conpassword;

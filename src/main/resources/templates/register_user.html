@@ -7,6 +7,8 @@
 <title>ラクラクカリー -ユーザ登録</title>
 <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 <link th:href="@{/css/curry.css}" rel="stylesheet">
+
+
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -26,80 +28,130 @@ $(function () {
     });
 });
 </script> -->
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/validationEngine.jquery.min.css"
+	type="text/css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-ja.min.js"
+	type="text/javascript" charset="utf-8"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js"
+	type="text/javascript" charset="utf-8"></script>
+
+<script>
+	$(document).ready(function() {
+		$("#form_1").validationEngine();
+	});
+</script>
+
+
+<!-- /* $function() { $('form').validate({ rules : { name : { required : true
+} } messages: { mytext: { required: "これは必須項目です!" } } } }); */ /*
+$("input[name='name']").blur(function(){ if($(this).val() == ""){
+alert('空です') } else if(!$(this).val().match(/^[0-9]+$/)) {
+alert('半角数字を入力してください') } }); */ -->
+
 </head>
 <body>
 	<div class="container">
 		<span th:include="fragment-part::frag_nav"></span>
-		
+
 		<!-- login form -->
 		<div class="row">
-			<div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+			<div
+				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
 				<div class="well">
-				   
-					<form method="post" th:action="@{/register}" th:object="${userForm}"  >
-					  <div class="h-adr">
-						<fieldset>
-							<legend>ユーザ登録</legend>
-							<div class="form-group">
-								<label for="inputName">名前:</label>
-								<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputName" class="form-control"
-									placeholder="Name" name="name" th:fields="*{name}">
-							</div>
-							<div class="form-group">
-								<label for="inputEmail">メールアドレス:</label>
-								<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputEmail" class="form-control"
-									placeholder="Email" name="email">
-							</div>
-							
-							
-							<span class="p-country-name" style="display:none;">Japan</span>
-							<div class="form-group">
-								<label for="inputZipcode">郵便番号:</label>
-								<label th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}" style="color: red" class="error-messages">入力してください</label>
-								
-								<!-- <input type="button" class="p-postal-code" id="btn" value="住所検索"> -->
-								<input type="text" id="inputZipcode" class="form-control p-postal-code"
-									placeholder="Zipcode" name="zipcode">		
-                          
-							</div>
-							<div class="form-group">
-								<label for="inputAddress">住所:</label>
-								<label th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputAddress" class="form-control p-region p-locality p-street-address p-extended-address"
-									placeholder="Address" name="address" >
-							</div>
-							
-							
-						
-							
-							<div class="form-group">
-								<label for="inputTel">電話番号:</label>
-								<label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="text" id="inputTel" class="form-control"
-									placeholder="Tel" name="telephone">
-							</div>
-							<div class="form-group">
-								<label for="inputPassword">パスワード:</label>
-								<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="password" id="inputPassword" class="form-control"
-									placeholder="Password" name="password">
-							</div>
-							<div class="form-group">
-								<label for="inputConfirmationPassword">確認用パスワード:</label>
-								<label th:if="${#fields.hasErrors('conpassword')}" th:errors="*{conpassword}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="password" id="inputConfirmationPassword" class="form-control"
-									placeholder="Confirmation Password" name="conpassword">
-							</div>
-							<div class="form-group">
-								<button type="submit" class="btn btn-primary">登録</button>
-						     <form th:action="@{/indexRegister}" method="post">
-								<button type="reset" class="btn btn-primary">クリア</button>
-						     </form>
-							</div>
-						</fieldset>
-					  </div>
+
+					<form id="form_1" method="post" th:action="@{/register}"
+						th:object="${userForm}">
+						<div class="h-adr">
+							<fieldset>
+								<legend>ユーザ登録</legend>
+								<div class="form-group">
+									<label for="inputName">名前:</label> <label
+										th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+										style="color: red" class="error-messages">入力してください</label> <input
+										type="text" id="inputName"
+										class="form-control validate[required]" placeholder="Name"
+										name="name" th:field="*{name}">
+								</div>
+								<div class="form-group">
+									<label for="inputEmail">メールアドレス:</label> <label
+										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+										style="color: red" class="error-messages">入力してください</label> <input
+										type="text" id="inputEmail"
+										class="form-control validate[required]" placeholder="Email"
+										name="email" th:field="*{email}"> <span th:text="${b}"
+										style="color: red"></span>
+								</div>
+
+
+								<span class="p-country-name" style="display: none;">Japan</span>
+								<div class="form-group">
+									<label for="inputZipcode">郵便番号:</label> <label
+										th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}"
+										style="color: red" class="error-messages">入力してください</label>
+
+									<!-- <input type="button" class="p-postal-code" id="btn" value="住所検索"> -->
+									<input type="text" id="inputZipcode"
+										class="form-control p-postal-code" placeholder="Zipcode"
+										name="zipcode" th:field="*{zipcode}">
+
+								</div>
+								<div class="form-group">
+									<label for="inputAddress">住所:</label> <label
+										th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
+										style="color: red" class="error-messages">入力してください</label> <input
+										type="text" id="inputAddress"
+										class="form-control p-region p-locality p-street-address p-extended-address"
+										placeholder="Address" name="address" th:field="*{address}">
+								</div>
+
+
+
+
+								<div class="form-group">
+									<label for="inputTel">電話番号:</label> <label
+										th:if="${#fields.hasErrors('telephone')}"
+										th:errors="*{telephone}" style="color: red"
+										class="error-messages">メールアドレスを入力してください</label> <input
+										type="text" id="inputTel" class="form-control"
+										placeholder="Tel" name="telephone" th:field="*{telephone}">
+								</div>
+								<div class="form-group">
+									<label for="inputPassword">パスワード:</label> <label
+										th:if="${#fields.hasErrors('password')}"
+										th:errors="*{password}" style="color: red"
+										class="error-messages">メールアドレスを入力してください</label> <input
+										type="password" id="inputPassword" class="form-control"
+										placeholder="Password" name="password" th:field="*{password}">
+									<span th:text="${b}" style="color: red">
+								</div>
+								<div class="form-group">
+									<label for="inputConfirmationPassword">確認用パスワード:</label> <label
+										th:if="${#fields.hasErrors('conpassword')}"
+										th:errors="*{conpassword}" style="color: red"
+										class="error-messages">メールアドレスを入力してください</label> <span
+										th:text="${nopass}"></span> <input type="password"
+										id="inputConfirmationPassword" class="form-control"
+										placeholder="Confirmation Password" name="conpassword"
+										th:field="*{conpassword}"> <span th:text="${c}"
+										style="color: red"></span>
+								</div>
+								<div class="form-group">
+									<button type="submit" class="btn btn-primary">登録</button>
+									<form th:action="@{/indexRegister}" method="post">
+										<button type="reset" class="btn btn-primary">クリア</button>
+									</form>
+								</div>
+							</fieldset>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -107,10 +159,13 @@ $(function () {
 
 	</div>
 	<!-- end container -->
-	
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
 	<script th:src="@{/js/bootstrap.min.js}"></script>
-	<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>	
+	<script src="https://yubinbango.github.io/yubinbango/yubinbango.js"
+		charset="UTF-8"></script>
 </body>
 </html>

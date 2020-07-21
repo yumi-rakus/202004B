@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
@@ -32,6 +33,7 @@ $( function() {
     source: availableTags
   });
 }); -->
+
 	<script>
 		jQuery(function ($) {
 			$(document).ready(function () {
@@ -69,10 +71,12 @@ $( function() {
 		});
 
 	</script>
+
 </head>
 
 <body class="drawer drawer--left">
 	<div class="container">
+
 		<!-- ハンバーガー始め -->
 		<button type="button" class="drawer-toggle drawer-hamburger">
 			<span class="sr-only">toggle navigation</span>
@@ -95,6 +99,7 @@ $( function() {
 		</nav>
 		<!-- ハンバーガー終わり -->
 		<span th:include="fragment-part::frag_nav"></span>
+
 		<div class="row">
 			<div class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<!-- Swiper START -->
@@ -154,8 +159,10 @@ $( function() {
 
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
-									<input type="text" name="searchName" id="searchName" class="form-control" autocomplete="on"
-										list="itemList">
+
+									<input type="text" name="searchName" id="searchName"
+										class="form-control" autocomplete="on" list="itemList" th:field="*{searchName}">
+										
 									<datalist id="itemList"></datalist>
 								</div>
 
@@ -165,6 +172,7 @@ $( function() {
 								<button type="submit" value="検索" class="btn btn-primary">検索</button>
 								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -175,9 +183,11 @@ $( function() {
 				<select th:field="*{id}" name="id">
 					<option th:each="item : ${itemMap}" th:value="${item.key}" th:text="${item.value}">カレー順</option>
 				</select>
+
 				<!-- <input type="submit" value="並び替え" style="width: 70px; height: 25px"> -->
 				<button type="submit">並び替え</button>
 			</div>
+
 		</form>
 
 

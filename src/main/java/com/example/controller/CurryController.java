@@ -107,7 +107,7 @@ public class CurryController {
 	 * @author kohei eto
 	 */
 	@RequestMapping("")
-	public String index(Model model, Integer page, ItemForm form, String searchName) {
+	public String index(Model model, Integer page, ItemForm form) {
 		/*
 		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
 		 * itemList); // オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納 StringBuilder
@@ -138,7 +138,7 @@ public class CurryController {
 
 		try {
 			if (form.getId() == 1) {
-				if (searchName == null) {
+				if (form.getSearchName() == null) {
 					// 検索文字列が空なら全件検索
 					List<Item> itemList = itemService.findAll();
 					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
@@ -148,7 +148,7 @@ public class CurryController {
 					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
 					model.addAttribute("pageNumbers", pageNumbers);
 				} else {
-					List<Item> itemList = itemService.findByItemName(searchName);
+					List<Item> itemList = itemService.findByItemName(form.getSearchName());
 					if (itemList.size() == 0) {
 						String no = "該当する商品がありません";
 						model.addAttribute("no", no);
@@ -170,7 +170,7 @@ public class CurryController {
 				}
 
 			} else if (form.getId() == 2) {
-				if (searchName == null) {
+				if (form.getSearchName() == null) {
 					// 検索文字列が空なら全件検索
 					List<Item> itemList = itemService.findAllByPrice2();
 					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
@@ -181,7 +181,7 @@ public class CurryController {
 					model.addAttribute("pageNumbers", pageNumbers);
 				}
 
-				List<Item> itemList = itemService.findByItemName2(searchName);
+				List<Item> itemList = itemService.findByItemName2(form.getSearchName());
 				if (itemList.size() == 0) {
 					String no = "該当する商品がありません";
 					model.addAttribute("no", no);
@@ -202,7 +202,7 @@ public class CurryController {
 				}
 
 			} else if (form.getId() == 3) {
-				if (searchName == null) {
+				if (form.getSearchName() == null) {
 					// 検索文字列が空なら全件検索
 					List<Item> itemList = itemService.findAllByPrice3();
 					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
@@ -213,7 +213,7 @@ public class CurryController {
 					model.addAttribute("pageNumbers", pageNumbers);
 				}
 
-				List<Item> itemList = itemService.findByItemName3(searchName);
+				List<Item> itemList = itemService.findByItemName3(form.getSearchName());
 				if (itemList.size() == 0) {
 					String no = "該当する商品がありません";
 					model.addAttribute("no", no);
@@ -313,6 +313,7 @@ public class CurryController {
 	 */
 	@RequestMapping("/indexRegister")
 	public String indexRegister() {
+
 		return "register_user";
 	}
 
@@ -323,13 +324,30 @@ public class CurryController {
 	 */
 	@RequestMapping("/register")
 	public String register(@Validated UserForm userForm, BindingResult result, Model model) {
+
 		if (result.hasErrors()) {
+
 			return indexRegister();
 		}
-		User user = new User();
-		BeanUtils.copyProperties(userForm, user);
-		userService.insert(user);
-		return "login";
+
+		// 入力されたメールアドレスをデータベースで検索してその管理者情報を取得する
+
+		if (userForm.getPassword().equals(userForm.getConpassword())) {
+			System.out.println("ok");
+			User user = new User();
+			BeanUtils.copyProperties(userForm, user);
+			userService.insert(user);
+
+			return "login";
+
+		} else {
+			String c = "確認用パスワードが間違っています";
+
+			model.addAttribute("c", c);
+
+			return "register_user";
+		}
+
 	}
 
 	//////////////////////////////////////////////
@@ -530,10 +548,10 @@ public class CurryController {
 					model.addAttribute("cartInComplete", "cartInComplete");
 				}
 			} else {
-				return index(model, page, form, searchname);
+				return index(model, page, form);
 			}
 		} else {
-			return index(model, page, form, searchname);
+			return index(model, page, form);
 		}
 
 		return "cart_list";

@@ -3,6 +3,8 @@ package com.example.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.example.domain.Item;
 import com.example.domain.User;
 import com.example.repository.UserRepository;
 
@@ -34,9 +36,14 @@ public class UserService {
 	 */
 	public User getUserById(Integer id) {
 		User user = userRepository.findById(id);
-		StringBuilder zipCode=new StringBuilder(user.getZipcode());
+		StringBuilder zipCode = new StringBuilder(user.getZipcode());
 		zipCode.insert(3, "-");
 		user.setZipcode(zipCode.toString());
 		return user;
+
+	}
+
+	public User findByMail(String email) {
+		return userRepository.findByEmail(email);
 	}
 }
