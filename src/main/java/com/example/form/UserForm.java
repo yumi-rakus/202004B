@@ -27,7 +27,7 @@ public class UserForm {
 	private String email;
 
 	/** パスワード */
-	@Size(min = 1, max = 16, message = "パスワードは８文字以上１６文字以内で設定してください")
+	@Size(min = 8, max = 16, message = "パスワードは８文字以上１６文字以内で設定してください")
 	private String password;
 
 	/** 郵便番号（上3桁） */
@@ -47,7 +47,7 @@ public class UserForm {
 	private String addressLast;
 
 	/** 電話番号 */
-	@Size(min=10, max=12, message="電話番号を入力してください")
+	@Size(min=10, max=11, message="電話番号を入力してください")
 	private String telephone;
 
 	/** 確認用パスワード */
