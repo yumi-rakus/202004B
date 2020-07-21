@@ -52,7 +52,7 @@ public class UserRepository {
 	 * @author kohei eto
 	 */
 	public User findByEmail(String email) {
-		String sql = "select id,name,email,password,zipcode,address,telephone from users where email=:email";
+		String sql = "select * from users where email = :email";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
 		List<User> userList = template.query(sql, param, USER_ROW_MAPPER);
 		if (userList.size() == 0) {
@@ -77,16 +77,5 @@ public class UserRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
 		template.update(sql, param);
 		return true;
-	}
-
-	// メールアドレスからユーザ情報を取得
-	public User findByMail(String email) {
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where email = :email";
-
-		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
-
-		User user = template.queryForObject(sql, param, USER_ROW_MAPPER);
-
-		return user;
 	}
 }

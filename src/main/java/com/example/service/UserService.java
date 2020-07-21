@@ -29,7 +29,7 @@ public class UserService {
 		userRepository.insert(user);
 	}
 
-	public User findByMail(String mail) {
-		return userRepository.findByMail(mail);
+	public User findByMail(String email) {
+		return userRepository.findByEmail(email);
 	}
 }

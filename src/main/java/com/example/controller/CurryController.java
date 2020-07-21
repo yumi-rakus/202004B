@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -332,30 +331,19 @@ public class CurryController {
 		// 入力されたメールアドレスをデータベースで検索してその管理者情報を取得する
 
 		if (userForm.getPassword().equals(userForm.getConpassword())) {
+			System.out.println("ok");
+			User user = new User();
+			BeanUtils.copyProperties(userForm, user);
+			userService.insert(user);
 
-			User user = userService.findByMail(userForm.getEmail());
+			return "login";
 
-			if (user == null) {
-
-				BeanUtils.copyProperties(userForm, user);
-				userService.insert(user);
-
-				return "redirect:/toLogin";
-
-			} else {
-				String b = "既に登録されたメールアドレスです";
-
-				model.addAttribute("b", b);
-
-				return "/register";
-
-			}
 		} else {
 			String c = "確認用パスワードが間違っています";
 
 			model.addAttribute("c", c);
 
-			return register(userForm, result, model);
+			return "register_user";
 		}
 
 	}
