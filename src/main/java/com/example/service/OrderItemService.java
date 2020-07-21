@@ -123,15 +123,27 @@ public class OrderItemService {
 	}
 
 	/**
-	 * 注文商品の個数を加算する.
+	 * 注文商品の数量を加算する.
 	 * 
-	 * @param plusQuantity 新たに加える個数
+	 * @param plusQuantity 新たに加える数量
 	 * @param orderItemId  注文商品ID
 	 * 
 	 * @author yumi takahashi
 	 */
 	public void updateQuantityByOrderItemId(Integer plusQuantity, Integer orderItemId) {
 		orderItemRepository.updateQuantityByOrderItemId(plusQuantity, orderItemId);
+	}
+
+	/**
+	 * 注文商品の数量を更新する.
+	 * 
+	 * @param plusQuantity 数量
+	 * @param orderItemId  注文商品ID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateNewQuantityByOrderItemId(Integer newQuantity, Integer orderItemId) {
+		orderItemRepository.updateNewQuantityByOrderItemId(newQuantity, orderItemId);
 	}
 
 	/**
