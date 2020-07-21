@@ -22,10 +22,14 @@ public class User {
 
 	/** 郵便番号 */
 	private String zipcode;
-
+	
+	private String zipcodefirst;
+	
+	private String zipcodelast;
 	/** 住所 */
 	private String address;
-
+	
+	
 	/** 電話番号 */
 	private String telephone;
 
@@ -34,7 +38,7 @@ public class User {
 
 	}
 
-	public User(Integer id, String name, String email, String password, String zipcode, String address,
+	public User(Integer id, String name, String email, String password, String zipcode,String address,
 			String telephone) {
 		super();
 		this.id = id;
@@ -85,6 +89,23 @@ public class User {
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+	
+	
+	public String getZipcodefirst() {
+		return zipcodefirst;
+	}
+
+	public void setZipcodefirst(String zipcodefirst) {
+		this.zipcodefirst = zipcodefirst;
+	}
+
+	public String getZipcodelast() {
+		return zipcodelast;
+	}
+
+	public void setZipcodelast(String zipcodelast) {
+		this.zipcodelast = zipcodelast;
 	}
 
 	public String getAddress() {

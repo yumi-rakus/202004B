@@ -11,6 +11,7 @@
 	<link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
 	<link th:href="@{/css/drawer.css}" rel="stylesheet">
+	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 	<script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
 	<script
 	src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
@@ -190,13 +191,18 @@
 							</tr>
 							<tr>
 								<td>
-									<div th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}" style="color:red"></div>
+									<div th:if="${#fields.hasErrors('zipcodefirst')}" th:errors="*{zipcodefirst}" style="color:red"></div>
+									<div th:if="${#fields.hasErrors('zipcodelast')}" th:errors="*{zipcodelast}" style="color:red"></div>
 									<div class="text-center">
 										郵便番号
 									</div>
 								</td>
 								<td>
-									<input type="text" th:field="${user.zipcode}" class="p-postal-code"><!--  &nbsp;&nbsp;<button>住所検索</button>-->
+									<div class="input-group">
+									<input type="text" th:field="${user.zipcodefirst}" class="p-postal-code" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');"><!--  &nbsp;&nbsp;<button>住所検索</button>-->
+									<span class="input-group-addon">-</span>
+									<input type="text" th:field="${user.zipcodelast}">
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -207,9 +213,9 @@
 									</div>
 								</td>
 								<td>
-									<input type="text" th:field="${user.address}" class="p-region p-locality p-street-address p-extended-address">
+									<input type="text" th:field="${user.address}">
 								</td>
-							</tr>
+							</tr>					
 							<tr>
 								<td>
 									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red"></div>
@@ -312,12 +318,10 @@
 				</div>
 			</div>
 		</form>
-	</div>
 	<!-- end container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{../js/bootstrap.min.js}"></script>
-	<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 	<script type="text/javascript">
 		$(function () {
 			$('#order').on('click', function () {
