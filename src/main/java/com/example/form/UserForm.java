@@ -12,38 +12,48 @@ import javax.validation.constraints.Size;
  *
  */
 public class UserForm {
+
+	/** ID */
 	private Integer id;
+
+	/** 名前 */
 	@NotBlank(message = "名前を入力してください")
+	@Size(min = 0, max = 50, message = "名前は50文字以内で入力してください")
 	private String name;
-	@Email(message = "メールアドレスの形式が不正です")
+
+	/** メールアドレス */
 	@NotBlank(message = "メールアドレスを入力してください")
+	@Email(message = "メールアドレスの形式が不正です")
 	private String email;
-	@NotBlank(message = "パスワードを入力してください")
+
+	/** パスワード */
 	@Size(min = 1, max = 16, message = "パスワードは８文字以上１６文字以内で設定してください")
 	private String password;
-	@NotBlank(message = "郵便番号を入力してください")
-	@Pattern(message = "郵便番号はXXX-XXXXの形式で入力してください", regexp = "[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]")
-	private String zipcode;
-	@NotBlank(message = "住所を入力してください")
-	private String address;
-	@NotBlank(message = "電話番号を入力してください")
-	/*
-	 * @Pattern(message = "電話番号はXXXX-XXXX-XXXXの形式で入力してください", regexp =
-	 * "[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]")
-	 */
+
+	/** 郵便番号（上3桁） */
+	@Pattern(regexp = "[0-9]{3}", message = "郵便番号（上3桁）：3桁で入力してください")
+	private String zipcodeFirst;
+
+	/** 郵便番号（上4桁） */
+	@Pattern(regexp = "[0-9]{4}", message = "郵便番号（下4桁）：4桁で入力してください")
+	private String zipcodeLast;
+
+	/** 住所（都道府県市区町村） */
+	@NotBlank(message = "住所(都道府県市区町村)を入力してください")
+	private String addressFirst;
+
+	/** 住所（番地以降） */
+	@NotBlank(message = "住所（番地以降）を入力してください")
+	private String addressLast;
+
+	/** 電話番号 */
+	@Size(min=10, max=12, message="電話番号を入力してください")
 	private String telephone;
-	@NotBlank(message = "確認用パスワードを入力してください")
+
+	/** 確認用パスワード */
 	private String conpassword;
 
 	// getter setter
-	public String getConpassword() {
-		return conpassword;
-	}
-
-	public void setConpassword(String conpassword) {
-		this.conpassword = conpassword;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -76,20 +86,36 @@ public class UserForm {
 		this.password = password;
 	}
 
-	public String getZipcode() {
-		return zipcode;
+	public String getZipcodeFirst() {
+		return zipcodeFirst;
 	}
 
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
+	public void setZipcodeFirst(String zipcodeFirst) {
+		this.zipcodeFirst = zipcodeFirst;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getZipcodeLast() {
+		return zipcodeLast;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setZipcodeLast(String zipcodeLast) {
+		this.zipcodeLast = zipcodeLast;
+	}
+
+	public String getAddressFirst() {
+		return addressFirst;
+	}
+
+	public void setAddressFirst(String addressFirst) {
+		this.addressFirst = addressFirst;
+	}
+
+	public String getAddressLast() {
+		return addressLast;
+	}
+
+	public void setAddressLast(String addressLast) {
+		this.addressLast = addressLast;
 	}
 
 	public String getTelephone() {
@@ -100,11 +126,20 @@ public class UserForm {
 		this.telephone = telephone;
 	}
 
+	public String getConpassword() {
+		return conpassword;
+	}
+
+	public void setConpassword(String conpassword) {
+		this.conpassword = conpassword;
+	}
+
 	// toString
 	@Override
 	public String toString() {
-		return "UserForm [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", zipcode="
-				+ zipcode + ", address=" + address + ", telephone=" + telephone + ", conpassword=" + conpassword + "]";
+		return "UserForm [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password
+				+ ", zipcodeFirst=" + zipcodeFirst + ", zipcodeLast=" + zipcodeLast + ", addressFirst=" + addressFirst
+				+ ", addressLast=" + addressLast + ", telephone=" + telephone + ", conpassword=" + conpassword + "]";
 	}
 
 }
