@@ -29,7 +29,7 @@ $(function () {
 });
 </script> -->
 
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -42,11 +42,19 @@ $(function () {
 	type="text/javascript" charset="utf-8"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js"
-	type="text/javascript" charset="utf-8"></script>
+	type="text/javascript" charset="utf-8"></script> -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/validationEngine.jquery.min.css" type="text/css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery-1.8.2.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-ja.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+
 
 <script>
 	$(document).ready(function() {
-		$("#form_1").validationEngine();
+		$("#inputName").validationEngine();
 	});
 </script>
 
@@ -67,6 +75,7 @@ alert('半角数字を入力してください') } }); */ -->
 			<div
 				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
 				<div class="well">
+
 
 				   
 					<form method="post" th:action="@{/register}" th:object="${userForm}"  >
@@ -161,6 +170,7 @@ alert('半角数字を入力してください') } }); */ -->
 						</fieldset>
 					  </div>
 
+
 					</form>
 				</div>
 			</div>
@@ -168,10 +178,10 @@ alert('半角数字を入力してください') } }); */ -->
 
 	</div>
 	<!-- end container -->
-	<script
+<!-- 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script> -->
 
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 
