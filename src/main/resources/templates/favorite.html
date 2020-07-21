@@ -98,11 +98,11 @@
                 </div>
                 <div>
                   Mサイズ
-                  <span th:text="${favorite.item.priceM}">1800</span>円
+                  <span th:text="${#numbers.formatInteger(favorite.item.priceM, 1, 'COMMA')}">1800</span>円
                 </div>
               </td>
               <td>
-                <small><span  th:text="${favorite.addedDate}">2020年7月19日</span>に追加されました</small>
+                <small><span th:text="${#dates.format(favorite.addedDate, 'yyyy年MM月dd日')}">2020年7月19日</span>に追加されました</small>
                 <p>
                   <a class="form-control btn btn-warning btn-block" th:href="@{'showDetail?id=' + ${favorite.item.id}}" role="button">詳細ページ</a>
                 </p>
