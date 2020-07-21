@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.domain.Item;
 import com.example.domain.User;
 import com.example.repository.UserRepository;
 
@@ -21,12 +20,20 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	// ユーザ情報を登録
+	/**
+	 * ユーザ登録をする.
+	 * 
+	 * @param user ユーザ情報
+	 * 
+	 * @author kohei eto
+	 */
 	public void insert(User user) {
 		userRepository.insert(user);
 	}
 
 	/**
+	 * ユーザIDからユーザ情報を取得する.
+	 * 
 	 * @return ユーザ情報
 	 * @param id ユーザid
 	 * @author shoya fujisawa
@@ -40,7 +47,27 @@ public class UserService {
 
 	}
 
-	public User findByMail(String email) {
+	/**
+	 * メールアドレスが既に登録されているかを判定する.
+	 * 
+	 * @param email メールアドレス
+	 * @return 既に登録されているメールアドレスならtrueを、そうでないならfalseを返す
+	 * 
+	 * @author yumi takahashi
+	 */
+	public boolean existByEmail(String email) {
+		return userRepository.existByEmail(email);
+	}
+
+	/**
+	 * メールアドレスからユーザ情報を取得する.
+	 * 
+	 * @param email メールアドレス
+	 * @return ユーザ情報
+	 * 
+	 * @author kohei eto
+	 */
+	public User findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 }
