@@ -97,8 +97,12 @@
                   食べると勝負に勝てると言われる勝つカレー。ラクラクカレー定番の１品です
                 </div>
                 <div>
-                  Mサイズ
+                  Mサイズ：
                   <span th:text="${#numbers.formatInteger(favorite.item.priceM, 1, 'COMMA')}">1800</span>円
+                </div>
+                <div>
+                  Lサイズ：
+                  <span th:text="${#numbers.formatInteger(favorite.item.priceL, 1, 'COMMA')}">1800</span>円
                 </div>
               </td>
               <td>
