@@ -78,7 +78,7 @@ alert('半角数字を入力してください') } }); */ -->
 
 
 				   
-					<form method="post" th:action="@{/register}" th:object="${userForm}"  >
+					<form method="post" id="inputName" th:action="@{/register}" th:object="${userForm}"  >
 					  <div class="h-adr">
 						<fieldset>
 							<legend>ユーザ登録</legend>
@@ -86,8 +86,8 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputName">名前:</label>
 								<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputName" class="form-control"
-									placeholder="Name" name="name" th:field="*{name}">
+								<input type="text" id="inputName" class="form-control  validate[required]"
+									placeholder="Name" name="name" th:field="*{name}" >
 							</div>
 							
 							<!-- メールアドレス -->
@@ -95,14 +95,14 @@ alert('半角数字を入力してください') } }); */ -->
 								<label for="inputEmail">メールアドレス:</label>
 								<label th:if="${emailResult}" th:text="${emailResult}"></label>
 								<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputEmail" class="form-control"
+								<input type="text" id="inputEmail" class="form-control validate[required]"
 									placeholder="Email" th:field="*{email}">
 							</div>
 							
 							<span class="p-country-name" style="display:none;">Japan</span>
 							
 							<!-- 郵便番号 -->
-							<div class="form-group">
+							<div class="form-group validate[required]">
 							<div class="row">
 							<div class="col-sm-12">
 							<label for="inputZipcode">郵便番号:</label>
@@ -123,7 +123,7 @@ alert('半角数字を入力してください') } }); */ -->
 							</div>
 							
 							<!-- 住所（都道府県市区町村） -->
-							<div class="form-group">
+							<div class="form-group validate[required]">
 								<label for="inputAddress">住所（都道府県市区町村）:</label>
 								<label th:if="${#fields.hasErrors('addressFirst')}" th:errors="*{addressFirst}" style="color: red" class="error-messages">入力してください</label>
 								<input type="text" id="inputAddress" class="form-control"
@@ -142,7 +142,7 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputTel">電話番号:</label>
 								<label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="text" id="inputTel" class="form-control"
+								<input type="text" id="inputTel" class="form-control validate[required]"
 									placeholder="Tel" th:field="*{telephone}">
 							</div>
 							
@@ -150,7 +150,7 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputPassword">パスワード:</label>
 								<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="password" id="inputPassword" class="form-control"
+								<input type="password" id="inputPassword" class="form-control validate[required]"
 									placeholder="Password" th:field="*{password}">
 							</div>
 							
@@ -159,7 +159,7 @@ alert('半角数字を入力してください') } }); */ -->
 								<label for="inputConfirmationPassword">確認用パスワード:</label>
 								<label th:if="${passwordResult}" th:text="${passwordResult}" style="color:red"></label>
 								<label th:if="${#fields.hasErrors('conpassword')}" th:errors="*{conpassword}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="password" id="inputConfirmationPassword" class="form-control"
+								<input type="password" id="inputConfirmationPassword" class="form-control validate[required]"
 									placeholder="Confirmation Password" th:field="*{conpassword}">
 							</div>
 							<div class="form-group">
