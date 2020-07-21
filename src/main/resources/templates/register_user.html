@@ -29,7 +29,7 @@ $(function () {
 });
 </script> -->
 
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -42,7 +42,7 @@ $(function () {
 	type="text/javascript" charset="utf-8"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js"
-	type="text/javascript" charset="utf-8"></script>
+	type="text/javascript" charset="utf-8"></script> -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/validationEngine.jquery.min.css" type="text/css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery-1.8.2.min.js" type="text/javascript"></script>
@@ -108,7 +108,7 @@ alert('半角数字を入力してください') } }); */ -->
 
 									<!-- <input type="button" class="p-postal-code" id="btn" value="住所検索"> -->
 									<input type="text" id="inputZipcode"
-										class="form-control p-postal-code" placeholder="Zipcode"
+										class="form-control p-postal-code validate[required]" placeholder="Zipcode"
 										name="zipcode" th:field="*{zipcode}">
 
 								</div>
@@ -117,7 +117,7 @@ alert('半角数字を入力してください') } }); */ -->
 										th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
 										style="color: red" class="error-messages">入力してください</label> <input
 										type="text" id="inputAddress"
-										class="form-control p-region p-locality p-street-address p-extended-address"
+										class="form-control p-region p-locality p-street-address p-extended-address validate[required]"
 										placeholder="Address" name="address" th:field="*{address}">
 								</div>
 
@@ -129,7 +129,7 @@ alert('半角数字を入力してください') } }); */ -->
 										th:if="${#fields.hasErrors('telephone')}"
 										th:errors="*{telephone}" style="color: red"
 										class="error-messages">メールアドレスを入力してください</label> <input
-										type="text" id="inputTel" class="form-control"
+										type="text" id="inputTel" class="form-control validate[required]"
 										placeholder="Tel" name="telephone" th:field="*{telephone}">
 								</div>
 								<div class="form-group">
@@ -137,7 +137,7 @@ alert('半角数字を入力してください') } }); */ -->
 										th:if="${#fields.hasErrors('password')}"
 										th:errors="*{password}" style="color: red"
 										class="error-messages">メールアドレスを入力してください</label> <input
-										type="password" id="inputPassword" class="form-control"
+										type="password" id="inputPassword" class="form-control validate[required]"
 										placeholder="Password" name="password" th:field="*{password}">
 									<span th:text="${b}" style="color: red">
 								</div>
@@ -147,7 +147,7 @@ alert('半角数字を入力してください') } }); */ -->
 										th:errors="*{conpassword}" style="color: red"
 										class="error-messages">メールアドレスを入力してください</label> <span
 										th:text="${nopass}"></span> <input type="password"
-										id="inputConfirmationPassword" class="form-control"
+										id="inputConfirmationPassword" class="form-control validate[required]"
 										placeholder="Confirmation Password" name="conpassword"
 										th:field="*{conpassword}"> <span th:text="${c}"
 										style="color: red"></span>
@@ -167,10 +167,10 @@ alert('半角数字を入力してください') } }); */ -->
 
 	</div>
 	<!-- end container -->
-	<script
+<!-- 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script> -->
 
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script src="https://yubinbango.github.io/yubinbango/yubinbango.js"
