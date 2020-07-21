@@ -21,9 +21,6 @@ public class UserService {
 
 	// ユーザ情報を登録
 	public void insert(User user) {
-		String zip = user.getZipcode();
-		String rezip = zip.replace("-", "");
-		user.setZipcode(rezip);
 		userRepository.insert(user);
 	}
 
@@ -34,7 +31,7 @@ public class UserService {
 	 */
 	public User getUserById(Integer id) {
 		User user = userRepository.findById(id);
-		StringBuilder zipCode=new StringBuilder(user.getZipcode());
+		StringBuilder zipCode = new StringBuilder(user.getZipcode());
 		zipCode.insert(3, "-");
 		user.setZipcode(zipCode.toString());
 		return user;
