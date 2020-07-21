@@ -84,28 +84,21 @@
     <div class="row">
       <div class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
         <table class="table item-list-table">
-          <tbody>
-            <tr th:each="favorite : ${favoriteList}">
-              <td>
+          <tbody th:each="favorite : ${favoriteList}">
+            <tr >
+              <td rowspan="2">
                 <a th:href="@{'showDetail?id=' + ${favorite.item.id}}">
                   <img th:src="@{'/img_curry/' + ${favorite.item.imagePath}}"
                   class="img-responsive img-rounded item-img-center" width="100" height="300">
                 </a>
+                <p th:text="${favorite.item.name}" class="text-center h5"></p>
               </td>
               <td>
                 <div th:text="${favorite.item.description}">
                   食べると勝負に勝てると言われる勝つカレー。ラクラクカレー定番の１品です
                 </div>
-                <div>
-                  Mサイズ：
-                  <span th:text="${#numbers.formatInteger(favorite.item.priceM, 1, 'COMMA')}">1800</span>円
-                </div>
-                <div>
-                  Lサイズ：
-                  <span th:text="${#numbers.formatInteger(favorite.item.priceL, 1, 'COMMA')}">1800</span>円
-                </div>
               </td>
-              <td>
+              <td rowspan="2">
                 <small><span th:text="${#dates.format(favorite.addedDate, 'yyyy年MM月dd日')}">2020年7月19日</span>に追加されました</small>
                 <p>
                   <a class="form-control btn btn-warning btn-block" th:href="@{'showDetail?id=' + ${favorite.item.id}}" role="button">詳細ページ</a>
@@ -114,6 +107,18 @@
                   <input type="hidden" th:value="${favorite.item.id}" name="itemId">
                   <button type="submit" class="btn btn-light">削除</button>
                 </form>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div>
+                  <small>Mサイズ</small>：
+                  <span th:text="${#numbers.formatInteger(favorite.item.priceM, 1, 'COMMA')}">1800</span>円
+                </div>
+                <div>
+                  <small>Lサイズ</small>：
+                  <span th:text="${#numbers.formatInteger(favorite.item.priceL, 1, 'COMMA')}">1800</span>円
+                </div>
               </td>
             </tr>
           </tbody>
