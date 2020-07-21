@@ -333,6 +333,7 @@ public class CurryController {
 		}
 
 		if (userService.existByEmail(userForm.getEmail())) {
+			model.addAttribute("emailResult", "そのメールアドレスは既に登録されています");
 			return indexRegister();
 		}
 
