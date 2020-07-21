@@ -51,6 +51,7 @@ public class SendMailService {
 		mailContent.append("\n");
 		mailContent.append("■ご注文内容■\n");
 		for(OrderItem item:itemList) {
+			mailContent.append("\n");
 			mailContent.append("商品: "+item.getItem().getName()+"\n");
 			mailContent.append("サイズ: "+item.getSize()+"\n");
 			mailContent.append("数量: "+item.getQuantity()+"\n");
@@ -63,7 +64,6 @@ public class SendMailService {
 			}else {
 				mailContent.append("--");
 			}
-			mailContent.append("\n");
 			mailContent.append("\n");
 		}
 		mailContent.append("\n");
