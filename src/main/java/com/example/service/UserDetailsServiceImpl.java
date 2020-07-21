@@ -62,11 +62,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 						orderService.updateOrderId(uuidOrderId, userOrderId);
 						orderService.deleteUuidRecordByUuid(uuid);
 
-						
+						if (order.get(0).getOrderItemList().get(0).getItem().getId() != 0) {
 
-						if (!(order.get(0).getOrderItemList().get(0).getItem().getId() == 0)) {
-
-							
 							orderService.updateTotalPrice(user.getId());
 						}
 					}
