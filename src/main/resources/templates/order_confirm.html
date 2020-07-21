@@ -23,6 +23,24 @@
 		});
 	});
 	</script>
+	<script type="text/javascript">
+	var toDoubleDigits = function(num) {
+		  num += "";
+		  if (num.length === 1) {
+		    num = "0" + num;
+		  }
+		 return num;     
+		};
+
+	window.onload=function(){
+		  var date = new Date();
+		  var year = toDoubleDigits(date.getFullYear());
+		  var month = toDoubleDigits((date.getMonth()+1));
+		  var day = toDoubleDigits(date.getDate());
+		  var today = year + '-' + month + '-' + day;
+		  document.getElementById('date').setAttribute('min',today);
+	}
+	</script>
 	<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -214,8 +232,8 @@
 											<span th:text="${message}" style="color:red"></span>
 											<div th:if="${#fields.hasErrors('orderDate')}" th:errors="*{orderDate}" style="color:red"></div>
 											<div class="col-sm-5">
-												<input type="date" name="name" id="name"
-													class="form-control input-sm" th:field="*{orderDate}"/>
+												<input type="date" name="name" id="date"
+													class="form-control input-sm" th:field="*{orderDate}" min=""/>
 											</div>
 
 										</div>
