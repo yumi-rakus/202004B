@@ -668,20 +668,37 @@ public class CurryController {
 	 * @author soshi morita
 	 */
 	@RequestMapping("/favorite")
-	public String favorite() {
+	public String favorite(@AuthenticationPrincipal LoginUser loginUser, Model model) {
+		Integer userId = loginUser.getUser().getId();
+		List<Favorite> favoriteList = favoriteService.showAll(userId);
+		model.addAttribute("favoriteList", favoriteList);
 		return "favorite";
 	}
 
 	//////////////////////////////////////////////
-	//// お気に入り商品の追加
+	//// お気に入り商品の追加と削除
 	//////////////////////////////////////////////
 	/**
+	 * お気に入りへの追加
+	 * 
 	 * @author soshi morita
 	 */
-	@RequestMapping("/favorite/insert")
-	public String favoriteInsert(@AuthenticationPrincipal LoginUser loginUser, Integer itemId) {
+	@RequestMapping("/favorite-insert")
+	public String favoriteInsert(@AuthenticationPrincipal LoginUser loginUser, Integer itemId, Model model) {
 		Favorite favorite = new Favorite(loginUser.getUser().getId(), itemId, new Date());
-		System.out.println(favoriteService.create(favorite));
-		return "forward:/favorite";
+		boolean isInserted = favoriteService.create(favorite);
+		return favorite(loginUser, model);
+	}
+
+	/**
+	 * お気に入りからの削除
+	 * 
+	 * @author soshi morita
+	 */
+	@RequestMapping("/favorite-delete")
+	public String favoriteDelete(@AuthenticationPrincipal LoginUser loginUser, Integer itemId, Model model) {
+		Favorite favorite = new Favorite(loginUser.getUser().getId(), itemId, new Date());
+		boolean isDeleted = favoriteService.delete(favorite);
+		return favorite(loginUser, model);
 	}
 }
