@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -17,7 +16,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -331,7 +329,10 @@ public class CurryController {
 		}
 
 		if (result.hasErrors()) {
+			return indexRegister();
+		}
 
+		if (userService.existByEmail(userForm.getEmail())) {
 			return indexRegister();
 		}
 
@@ -709,7 +710,7 @@ public class CurryController {
 	@RequestMapping("/favorite-insert")
 	public String favoriteInsert(@AuthenticationPrincipal LoginUser loginUser, Integer itemId, Model model) {
 		Favorite favorite = new Favorite(loginUser.getUser().getId(), itemId, new Date());
-		boolean isInserted = favoriteService.create(favorite);
+		favoriteService.create(favorite);
 		return favorite(loginUser, model);
 	}
 
@@ -721,7 +722,7 @@ public class CurryController {
 	@RequestMapping("/favorite-delete")
 	public String favoriteDelete(@AuthenticationPrincipal LoginUser loginUser, Integer itemId, Model model) {
 		Favorite favorite = new Favorite(loginUser.getUser().getId(), itemId, new Date());
-		boolean isDeleted = favoriteService.delete(favorite);
+		favoriteService.delete(favorite);
 		return favorite(loginUser, model);
 	}
 }
