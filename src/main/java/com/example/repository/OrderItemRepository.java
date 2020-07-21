@@ -166,9 +166,9 @@ public class OrderItemRepository {
 	}
 
 	/**
-	 * 注文商品IDから個数を加算する.
+	 * 注文商品IDから数量を加算する.
 	 * 
-	 * @param plusQuantity 新たに加える個数
+	 * @param plusQuantity 新たに加える数量
 	 * @param orderItemId  注文商品ID
 	 * 
 	 * @author yumi takahashi
@@ -178,6 +178,24 @@ public class OrderItemRepository {
 		String sql = "UPDATE order_items SET quantity = quantity + :plusQuantity WHERE id = :orderItemId";
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("plusQuantity", plusQuantity)
+				.addValue("orderItemId", orderItemId);
+
+		template.update(sql, param);
+	}
+
+	/**
+	 * 注文商品IDから数量を更新する.
+	 * 
+	 * @param newQuantity 数量
+	 * @param orderItemId 注文商品ID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateNewQuantityByOrderItemId(Integer newQuantity, Integer orderItemId) {
+
+		String sql = "UPDATE order_items SET quantity = :newQuantity WHERE id = :orderItemId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("newQuantity", newQuantity)
 				.addValue("orderItemId", orderItemId);
 
 		template.update(sql, param);
