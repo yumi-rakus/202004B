@@ -388,11 +388,12 @@ public class CurryController {
 		order.setOrderDate(nowDate);
 		order.setDestinationName(form.getName());
 		order.setDestinationEmail(form.getEmail());
-		// 郵便番号のハイフンを除去
-		String zipCodeStr = form.getZipcode();
-		String zipCode = zipCodeStr.replace("-", "");
+		// 郵便番号を合体させる
+		String zipCodeFirst = form.getZipcodefirst();
+		String zipCodeLast = form.getZipcodelast();
+		String zipCode = zipCodeFirst+zipCodeLast;
 		order.setDestinationZipcode(zipCode);
-
+		
 		order.setDestinationAddress(form.getAddress());
 		order.setDestinationTel(form.getTelephone());
 
