@@ -102,7 +102,7 @@ alert('半角数字を入力してください') } }); */ -->
 							<span class="p-country-name" style="display:none;">Japan</span>
 							
 							<!-- 郵便番号 -->
-							<div class="form-group validate[required]">
+							<div class="form-group">
 							<div class="row">
 							<div class="col-sm-12">
 							<label for="inputZipcode">郵便番号:</label>
@@ -112,21 +112,21 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="col-sm-5">
 								
 								<div class="input-group">
-								<input type="number" name="zipcodeFirst" id="zipcodeFirst" class="form-control" placeholder="123" th:field="*{zipcodeFirst}">
+								<input type="number" name="zipcodeFirst" id="zipcodeFirst" class="form-control validate[required]" placeholder="123" th:field="*{zipcodeFirst}">
 												 
 								<span class="input-group-addon">-</span>
 											
-								<input type="number" name="zipcodeLast" id="zipcodeLast" class="form-control" placeholder="4567" th:field="*{zipcodeLast}" onkeyup="AjaxZip3.zip2addr('zipcodeFirst','zipcodeLast','addressFirst','addressFirst');">
+								<input type="number" name="zipcodeLast" id="zipcodeLast" class="form-control validate[required]" placeholder="4567" th:field="*{zipcodeLast}" onkeyup="AjaxZip3.zip2addr('zipcodeFirst','zipcodeLast','addressFirst','addressFirst');">
 								</div>			                         
 							</div>
 							</div>
 							</div>
 							
 							<!-- 住所（都道府県市区町村） -->
-							<div class="form-group validate[required]">
+							<div class="form-group ">
 								<label for="inputAddress">住所（都道府県市区町村）:</label>
 								<label th:if="${#fields.hasErrors('addressFirst')}" th:errors="*{addressFirst}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputAddress" class="form-control"
+								<input type="text" id="inputAddress" class="form-control validate[required]"
 									placeholder="Address" th:field="*{addressFirst}">
 							</div>
 							
@@ -134,7 +134,7 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputAddress">住所（番地以降）:</label>
 								<label th:if="${#fields.hasErrors('addressLast')}" th:errors="*{addressLast}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputAddress" class="form-control"
+								<input type="text" id="inputAddress" class="form-control  validate[required]"
 									placeholder="Address" th:field="*{addressLast}">
 							</div>
 							
