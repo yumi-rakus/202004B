@@ -323,11 +323,24 @@ public class CurryController {
 	 */
 	@RequestMapping("/register")
 	public String register(@Validated UserForm userForm, BindingResult result, Model model) {
+
+		if (!userForm.getPassword().equals(userForm.getConpassword())) {
+			model.addAttribute("passwordResult", "パスワードが一致していません");
+			return indexRegister();
+		}
+
 		if (result.hasErrors()) {
 			return indexRegister();
 		}
 		User user = new User();
-		BeanUtils.copyProperties(userForm, user);
+		
+		user.setName(userForm.getName());
+		user.setEmail(userForm.getEmail());
+		user.setZipcode(userForm.getZipcodeFirst() + userForm.getZipcodeLast());
+		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
+		user.setTelephone(userForm.getTelephone());
+		user.setPassword(userForm.getPassword());
+		
 		userService.insert(user);
 		return "login";
 	}
@@ -354,7 +367,7 @@ public class CurryController {
 			orderTimeMap.put("16:59:59", "16時");
 			orderTimeMap.put("17:59:59", "17時");
 			orderTimeMap.put("18:59:59", "18時");
-			User user = userService.getUserById(userId);			
+			User user = userService.getUserById(userId);
 			model.addAttribute("user", user);
 			model.addAttribute("orderTime", orderTimeMap);
 			return "order_confirm";
@@ -519,7 +532,8 @@ public class CurryController {
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
 			if (orderService.status0ExistByUserId((Integer) session.getAttribute("userId"))) {
-				List<Order> order = orderService.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
+				List<Order> order = orderService
+						.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
 
 				if (order.get(0).getOrderItemList().get(0).getItem().getId() == 0) {
 					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
