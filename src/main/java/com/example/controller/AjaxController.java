@@ -1,18 +1,24 @@
 package com.example.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.domain.Favorite;
 import com.example.domain.Item;
+import com.example.domain.LoginUser;
 import com.example.domain.Order;
+import com.example.service.FavoriteService;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
@@ -29,13 +35,12 @@ public class AjaxController {
 
 	@Autowired
 	private ItemService itemService;
-
 	@Autowired
 	private OrderItemService orderItemService;
-
 	@Autowired
 	private OrderService orderService;
-
+	@Autowired
+	private FavoriteService favoriteService;
 	@Autowired
 	private HttpSession session;
 
@@ -104,7 +109,6 @@ public class AjaxController {
 			orderService.updateStatusByOrderId(status, orderId);
 			resultMap.put("result", 200);
 		} catch (Exception e) {
-			// TODO: handle exception
 			resultMap.put("result", 400);
 		}
 
@@ -129,10 +133,31 @@ public class AjaxController {
 			itemService.updateDeleteFlag(deleted, itemId);
 			resultMap.put("result", 200);
 		} catch (Exception e) {
-			// TODO: handle exception
 			resultMap.put("result", 400);
 		}
 
 		return resultMap;
+	}
+
+	@RequestMapping("/toFavorite")
+	public String ajaxToFavorite(@AuthenticationPrincipal LoginUser loginUser, Integer itemId) {
+		// 追加に成功したら200、追加できなかった場合は201を返す。
+		// 不正なリクエストの場合は400、ログインしていなかった場合は401を返す。
+		System.out.println("restcontroller");
+		if (Objects.isNull(loginUser)) {
+			return "401";
+		}
+		try {
+			Favorite favorite = new Favorite(loginUser.getUser().getId(), itemId, new Date());
+			boolean hasInserted = favoriteService.create(favorite);
+			if (hasInserted) {
+				return "200";
+			} else {
+				return "201";
+			}
+		} catch (Exception e) {
+			return "400";
+		}
+
 	}
 }

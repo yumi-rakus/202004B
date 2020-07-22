@@ -5,6 +5,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 	<title>ラクラクカリー -商品詳細</title>
 	<link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 	<link th:href="@{/css/curry.css}" rel="stylesheet">
@@ -14,6 +16,8 @@
 	<script src="/js/calc.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
+	<script src="/js/favorite.js"></script>
+
 	<script>
 		jQuery(function ($) {
 			$(document).ready(function () {
@@ -196,10 +200,15 @@
 					<div class="col-xs-offset-2 col-xs-3">
 						<div class="form-group">
 							<p>
-								<input type="hidden" name="itemId" th:value="${item.id}">
+								<input type="hidden" id="itemId" name="itemId" th:value="${item.id}">
 								<input class="form-control btn btn-warning btn-block"
 									type="submit" id="cartInButton" value="カートに入れる">
-								<a class="btn btn-light btn-block" th:href="@{'favorite-insert?itemId=' + ${item.id}}" role="button">お気に入りに追加</a>
+								<a class="modal form-control btn btn-light btn-block" href="#toFavorite" role="button">お気に入りに追加</a>
+								<!-- 以下がモーダルで呼ばれる -->
+								<div class="modalBox" id="toFavorite">
+									<div class="modalInner">
+									</div>
+								</div>
 							</p>
 
 						</div>
