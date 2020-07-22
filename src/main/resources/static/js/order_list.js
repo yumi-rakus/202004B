@@ -17,6 +17,9 @@ $(function() {
 						.css('color', 'blue').css('font-weight', 'bold');
 
 				changeStatus(status, orderId);
+				
+				$(this).prop('disabled', true);
+				$(this).siblings('button[name="deliveryCompleted"]').prop('disabled', false);
 			});
 
 	$('button[name="deliveryCompleted"]').on(
@@ -33,6 +36,9 @@ $(function() {
 						.css('color', 'green').css('font-weight', 'bold');
 
 				changeStatus(status, orderId);
+				
+				$(this).prop('disabled', true);
+				$(this).siblings('button[name="shipped"]').prop('disabled', false);
 			});
 });
 
