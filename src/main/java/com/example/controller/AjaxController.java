@@ -17,6 +17,12 @@ import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
 
+/**
+ * 非同期通信を行うレストコントローラー.
+ * 
+ * @author yumi takahashi
+ *
+ */
 @RestController
 @RequestMapping("/ajax")
 public class AjaxController {
