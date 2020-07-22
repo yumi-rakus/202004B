@@ -164,9 +164,9 @@
 							</td>
 							<td>
 								<div class="text-center">
-									<form action="cart_list.html" th:action="@{/deleteOrderItem}">
+									<form action="cart_list.html" th:action="@{/deleteOrderItem}" name="deleteForm">
 										<input type="hidden" th:value="${orderItem.id}" name="orderItemId">
-										<button type="submit" class="btn btn-primary">削除</button>
+										<button type="submit" name="delete" class="btn btn-primary">削除</button>
 									</form>
 								</div>
 							</td>
