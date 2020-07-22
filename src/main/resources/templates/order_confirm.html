@@ -164,67 +164,66 @@
 				<div
 					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 					<h3 class="text-center">お届け先情報</h3>
-					<div class="h-adr">
-					<span class="p-country-name" style="display:none;">Japan</span>
+					<div class="h-adr">					
 					<table class="table table-striped item-list-table">
 						<tbody>
 							<tr>
-								<td>
-									<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></div>
+								<td>									
 									<div class="text-center">
 										お名前
 									</div>
 								</td>
 								<td>
+									<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red" class="text-center"></div>
 									<input type="text" th:field="${user.name}">
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red"></div>
+								<td>									
 									<div class="text-center">
 										メールアドレス
 									</div>
 								</td>
 								<td>
+									<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red" class="text-center"></div>
 									<input type="text" th:field="${user.email}">
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<div th:if="${#fields.hasErrors('zipcodefirst')}" th:errors="*{zipcodefirst}" style="color:red"></div>
-									<div th:if="${#fields.hasErrors('zipcodelast')}" th:errors="*{zipcodelast}" style="color:red"></div>
+								<td>										
 									<div class="text-center">
 										郵便番号
 									</div>
 								</td>
 								<td>
 									<div class="input-group">
+									<div th:if="${#fields.hasErrors('zipcodefirst')}" th:errors="*{zipcodefirst}" style="color:red" class="text-center"></div>
 									<input type="text" th:field="${user.zipcodefirst}" class="p-postal-code" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');"><!--  &nbsp;&nbsp;<button>住所検索</button>-->
 									<span class="input-group-addon">-</span>
+									<div th:if="${#fields.hasErrors('zipcodelast')}" th:errors="*{zipcodelast}" style="color:red" class="text-center"></div>
 									<input type="text" th:field="${user.zipcodelast}">
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red"></div>
+								<td>									
 									<div class="text-center">
 										住所
 									</div>
 								</td>
 								<td>
+									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red" class="text-center"></div>
 									<input type="text" th:field="${user.address}">
 								</td>
 							</tr>					
 							<tr>
-								<td>
-									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red"></div>
+								<td>							
 									<div class="text-center">
 										電話番号
 									</div>
 								</td>
 								<td>
+									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red" class="text-center"></div>
 									<input type="text" th:field="${user.telephone}">
 								</td>
 							</tr>
@@ -238,7 +237,7 @@
 									<div class="form-group">
 										<div class="row">
 											<span th:text="${message}" style="color:red"></span>
-											<div th:if="${#fields.hasErrors('orderDate')}" th:errors="*{orderDate}" style="color:red"></div>
+											<div th:if="${#fields.hasErrors('orderDate')}" th:errors="*{orderDate}" style="color:red" class="text-center"></div>
 											<div class="col-sm-5">
 												<input type="date" name="name" id="date"
 													class="form-control input-sm" th:field="*{orderDate}" min=""/>
@@ -246,7 +245,7 @@
 
 										</div>
 										<div class="row">
-											<div th:if="${#fields.hasErrors('time')}" th:errors="*{time}" style="color:red"></div>
+											<div th:if="${#fields.hasErrors('time')}" th:errors="*{time}" style="color:red" class="text-center"></div>
 											<div class="col-sm-12">
 												<label class="radio-inline" th:each="time:${orderTime}">
 													<input type="radio"
@@ -267,11 +266,11 @@
 				<div
 					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 					<h3 class="text-center">お支払い方法</h3>
+					<div th:if="${#fields.hasErrors('paymentMethod')}" th:errors="*{paymentMethod}" style="color:red" class="text-center"></div>
 					<table class="table table-striped item-list-table">
 						<tbody>
 							<tr>
-								<td>
-									<div th:if="${#fields.hasErrors('paymentMethod')}" th:errors="*{paymentMethod}" style="color:red"></div>
+								<td>									
 									<div class="text-center">
 										代金引換
 									</div>

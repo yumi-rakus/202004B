@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class OrderForm {
 	private Integer userId;
@@ -15,21 +16,20 @@ public class OrderForm {
 	private String orderDate;
 
 	@NotBlank(message = "名前を入力してください")
+	@Size(max = 20, message = "20文字以内で入力してください")
 	private String name;
 	@NotBlank(message = "メールアドレスを入力してください")
 	@Email(message = "メールアドレスの形式が不正です")
 	private String email;
-	@NotBlank(message = "郵便番号を入力してください")
-	@Pattern(regexp = "^[0-9]{3}", message = "3桁入力してください")
+	@Pattern(regexp = "^[0-9]{3}", message = "郵便番号（上3桁）:3桁で入力してください")
 	private String zipcodefirst;
-	@NotBlank(message = "郵便番号を入力してください")
-	@Pattern(regexp = "^[0-9]{4}$", message = "4桁入力してください")
+	@Pattern(regexp = "^[0-9]{4}$", message = "郵便番号（下4桁）:4桁で入力してください")
 	private String zipcodelast;
 	@NotBlank(message = "住所を入力してください")
 	private String address;
 	@NotBlank(message = "配達日時を入力してください")
 	private String time;
-	@NotBlank(message = "電話番号を入力してください")
+	@Size(min=10, max=12, message="電話番号を入力してください")
 	private String telephone;
 	@NotNull(message = "支払い方法を選択してください")
 	private Integer paymentMethod;
