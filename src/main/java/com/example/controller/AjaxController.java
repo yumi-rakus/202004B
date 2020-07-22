@@ -79,4 +79,54 @@ public class AjaxController {
 
 		return updateMap;
 	}
+
+	/**
+	 * 注文のstatusを更新する.
+	 * 
+	 * @param status  状態
+	 * @param orderId 注文ID
+	 * @return ステータスコード
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/updateStatus")
+	public Map<String, Integer> updateStatus(Integer status, Integer orderId) {
+
+		Map<String, Integer> resultMap = new HashMap<>();
+
+		try {
+			orderService.updateStatusByOrderId(status, orderId);
+			resultMap.put("result", 200);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", 400);
+		}
+
+		return resultMap;
+	}
+
+	/**
+	 * 削除フラグを更新する.
+	 * 
+	 * @param deleted 削除フラグ
+	 * @param itemId  商品ID
+	 * @return ステータスコード
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/updateDeleteFlag")
+	public Map<String, Integer> updateDeleteFlag(Boolean deleted, Integer itemId) {
+
+		Map<String, Integer> resultMap = new HashMap<>();
+
+		try {
+			itemService.updateDeleteFlag(deleted, itemId);
+			resultMap.put("result", 200);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("result", 400);
+		}
+
+		return resultMap;
+	}
 }
