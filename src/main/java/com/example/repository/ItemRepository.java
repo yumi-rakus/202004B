@@ -181,4 +181,22 @@ public class ItemRepository {
 
 		template.update(sql, param);
 	}
+
+	/**
+	 * 商品情報を更新する.
+	 * 
+	 * @param item 商品情報
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateItem(Item item) {
+
+		String sql = "UPDATE items SET name = :name, description = :description, price_m = :priceM, price_l = :priceL WHERE id = :itemId;";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", item.getName())
+				.addValue("description", item.getDescription()).addValue("priceM", item.getPriceM())
+				.addValue("priceL", item.getPriceL()).addValue("itemId", item.getId());
+
+		template.update(sql, param);
+	}
 }
