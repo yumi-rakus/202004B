@@ -678,7 +678,7 @@ public class CurryController {
 	}
 
 	//////////////////////////////////////////////
-	//// 商品管理ページを表示する
+	//// 商品管理ページを表示
 	//////////////////////////////////////////////
 	/**
 	 * 削除フラグを管理する商品一覧ページを出力する.
@@ -695,6 +695,66 @@ public class CurryController {
 		model.addAttribute("itemList", itemList);
 
 		return "admin_item_list";
+	}
+
+	//////////////////////////////////////////////
+	//// 管理者登録ページの表示
+	//////////////////////////////////////////////
+	/**
+	 * 管理者登録画面を出力する.
+	 * 
+	 * @return 管理者登録画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/admin/toRegister")
+	public String toRegisterAdmin() {
+		return "register_admin";
+	}
+
+	//////////////////////////////////////////////
+	//// 管理者登録をする
+	//////////////////////////////////////////////
+	/**
+	 * 管理者を登録する.
+	 * 
+	 * @param userForm フォーム
+	 * @param result   BindingResultオブジェクト
+	 * @param model    モデル
+	 * @return 管理者ページ画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/admin/register")
+	public String registerAdmin(@Validated UserForm userForm, BindingResult result, Model model) {
+
+		if (!userForm.getPassword().equals(userForm.getConpassword())) {
+			model.addAttribute("passwordResult", "パスワードが一致していません");
+			return toRegisterAdmin();
+		}
+
+		if (result.hasErrors()) {
+			return toRegisterAdmin();
+		}
+
+		if (userService.existByEmail(userForm.getEmail())) {
+			model.addAttribute("emailResult", "そのメールアドレスは既に登録されています");
+			return toRegisterAdmin();
+		}
+
+		User user = new User();
+
+		user.setName(userForm.getName());
+		user.setEmail(userForm.getEmail());
+		user.setZipcode(userForm.getZipcodeFirst() + userForm.getZipcodeLast());
+		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
+		user.setTelephone(userForm.getTelephone());
+		user.setPassword(userForm.getPassword());
+		user.setIsAdmin(true);
+
+		userService.insert(user);
+
+		return "redirect:/admin/adminPage";
 	}
 
 	// 管理者をuserテーブルにinsertするための一時的なメソッド
