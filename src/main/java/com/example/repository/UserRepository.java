@@ -26,7 +26,7 @@ public class UserRepository {
 	private NamedParameterJdbcTemplate template;
 
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	/**
 	 * Userオブジェクトを生成するローマッパー.
@@ -40,6 +40,8 @@ public class UserRepository {
 		user.setAddress(rs.getString("address"));
 		user.setZipcode(rs.getString("zipcode"));
 		user.setTelephone(rs.getString("telephone"));
+		user.setIsAdmin(rs.getBoolean("is_admin"));
+		
 		return user;
 	};
 
@@ -75,7 +77,7 @@ public class UserRepository {
 	 */
 	public User findByEmail(String email) {
 
-		String sql = "SELECT id, name, email, password, address, zipcode, telephone FROM users WHERE email = :email";
+		String sql = "SELECT id, name, email, password, address, zipcode, telephone, is_admin FROM users WHERE email = :email";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
 
 		List<User> user = template.query(sql, param, USER_ROW_MAPPER);
@@ -95,7 +97,7 @@ public class UserRepository {
 		// パスワードをハッシュ化
 		String password = user.getPassword();
 		user.setPassword(passwordEncoder.encode(password));
-		String sql = "insert into users(name,email,password,zipcode,address,telephone)values(:name,:email,:password,:zipcode,:address,:telephone);";
+		String sql = "insert into users(name,email,password,zipcode,address,telephone,is_admin)values(:name,:email,:password,:zipcode,:address,:telephone,:isAdmin);";
 		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
 		template.update(sql, param);
 		return true;
@@ -108,7 +110,7 @@ public class UserRepository {
 	 * @return shoya fujisawa
 	 */
 	public User findById(Integer id) {
-		String sql = "select id,name,email,password,zipcode,address,telephone from users where id=:id";
+		String sql = "select id,name,email,password,zipcode,address,telephone,is_admin from users where id=:id";
 		MapSqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		User user = template.queryForObject(sql, param, USER_ROW_MAPPER);
 		return user;
