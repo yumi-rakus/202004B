@@ -32,20 +32,22 @@ public class ItemService {
 	 * 
 	 * @param id 商品ID
 	 * @return 商品情報
+	 * 
+	 * @author yumi takahashi
 	 */
 	public Item showDetail(Integer id) {
 		return itemRepository.load(id);
 	}
 
 	/**
-	 * 全商品情報を取得する.
+	 * (削除フラグのたっていない)全商品情報を取得する.
 	 * 
 	 * @return 商品情報一覧
 	 * 
 	 * @author kohei eto
 	 */
-	public List<Item> findAll() {
-		return itemRepository.findAll();
+	public List<Item> findAllNonDeleted() {
+		return itemRepository.findAllNonDeleted();
 	}
 
 	/**
@@ -123,6 +125,29 @@ public class ItemService {
 			itemListForAutocomplete.append("\"");
 		}
 		return itemListForAutocomplete;
+	}
+
+	/**
+	 * 全商品情報を取得する.
+	 * 
+	 * @return 商品情報一覧
+	 * 
+	 * @author yumi takahashi
+	 */
+	public List<Item> findAll() {
+		return itemRepository.findAll();
+	}
+
+	/**
+	 * 商品の削除フラグを更新する.
+	 * 
+	 * @param deleted 削除フラグ(true:商品一覧画面から除去、false:商品一覧画面に表示)
+	 * @param itemId  商品ID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateDeleteFlag(Boolean deleted, Integer itemId) {
+		itemRepository.updateDeleteFlag(deleted, itemId);
 	}
 
 }

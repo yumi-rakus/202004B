@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<title>ラクラクカリー -（管理者）商品一覧</title>
+<link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+<link th:href="@{/css/curry.css}" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
+<link th:href="@{/css/drawer.css}" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
+<script>
+	jQuery(function($) {
+		$(document).ready(function() {
+			$('.drawer').drawer();
+		});
+	});
+</script>
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body style="text-align: center" class="drawer drawer--left">
+	<div class="container">
+		<button type="button" class="drawer-toggle drawer-hamburger">
+			<span class="sr-only">toggle navigation</span> <span
+				class="drawer-hamburger-icon"></span>
+		</button>
+		<nav class="drawer-nav" role="navigation">
+			<ul class="drawer-menu">
+				<li class="side-menu"><span style="font-weight: bold"> <span
+						sec:authorize="isAuthenticated()"> <span
+							sec:authentication="principal.user.name"></span>さん&nbsp;
+					</span> <span sec:authorize="isAnonymous()"> <span>ゲストさん&nbsp;</span>
+					</span>
+				</span></li>
+				<span sec:authorize="isAuthenticated()">
+					<li class="side-menu"><a th:href="@{/mypage}"
+						class="side-content">マイページ</a></li>
+				</span>
+				<li class="side-menu"><a href="item_list_curry.html"
+					th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;</li>
+				<li class="side-menu"><a href="cart_list.html"
+					th:href="@{/showCartList}" class="side-content">ショッピングカート</a>&nbsp;&nbsp;
+				</li>
+				<li class="side-menu"><a href="order_history.html"
+					th:href="@{/showOrderHistory}" class="side-content">注文履歴</a>&nbsp;&nbsp;
+				</li>
+				<li class="side-menu"><a th:href="@{/pdf/allergy.pdf}"
+					target="_blank" class="side-content">アレルギー情報</a>&nbsp;&nbsp;</li>
+			</ul>
+		</nav>
+		<span th:include="fragment-part::frag_nav"></span>
+
+		<h2>商品一覧</h2>
+
+		<!-- search form 今のところ不要-->
+		<!-- <div class="row">
+			<div
+				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="panel-title">商品を検索する</div>
+					</div>
+					<div class="panel-body">
+						<form method="post" action="#" class="form-horizontal">
+							<div class="form-group">
+								<label for="code" class="control-label col-sm-2">商品名</label>
+								<div class="col-sm-9">
+									<input type="text" name="code" id="code"
+										class="form-control input-sm" />
+								</div>
+							</div>
+							<div class="text-center">
+								<button type="submit" value="検索" class="btn btn-primary">検索</button>
+								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<!-- 商品がない場合 -->
+		<h3 th:if="${#lists.isEmpty(itemList)}">商品がありません</h3>
+		<!-- 商品一覧がある場合 -->
+		<div class="row">
+			<div
+				class="table-responsive col-lg-offset-0 col-lg-12 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				
+
+				<table class="table table-striped item-list-table"
+					th:if="${itemList}">
+					<tbody>
+						<tr>
+							<th>
+								<div class="text-center">商品名</div>
+							</th>
+							<th>
+								<div class="text-center">サイズ、価格(税抜)</div>
+							</th>							
+							<th>
+								<div class="text-center">説明</div>
+							</th>
+							<th>
+								<div class="text-center">現在の状態</div>
+							</th>
+							<th>
+							</th>
+							<th>
+							</th>
+						</tr>
+
+
+						<tr th:each="item : ${itemList}">
+							<td>
+								<div class="center">
+									<a th:href="@{'/showDetail?id=' + ${item.id}}"> <img
+										th:src="@{'/img_curry/' + ${item.imagePath}}"
+										class="img-responsive img-rounded item-img-center" width="100"
+										height="300">
+									</a> <br> <a
+										th:href="@{'/showDetail?id=' + ${item.id}}"
+										th:text="${item.name}" class="itemName"></a>
+								</div>
+							</td>
+							<td>
+								<div class="text-left">
+									<ul style="list-style: none">
+										<li>
+											<span class="price">&nbsp;M</span>
+											&nbsp;&nbsp;<span class="itemPrice"	th:text="${#numbers.formatInteger(item.priceM, 1, 'COMMA')} + '円'">&nbsp;&nbsp;2,380円</span>
+										</li>
+										<li>
+											<span class="price">&nbsp;Ｌ</span>
+											&nbsp;&nbsp;<span class="itemPrice"	th:text="${#numbers.formatInteger(item.priceL, 1, 'COMMA')} + '円'">&nbsp;&nbsp;2,380円</span>
+										</li>
+									</ul>
+								</div>
+							</td>
+							<td>
+								<div class="text-left">
+									<div style="width:220px">
+										<span th:text="${item.description}"></span>
+									</div>									
+								</div>
+							</td>
+							<td>
+								<div class="text-center">
+									<span th:if="${item.deleted}" style="font-weight: bold; color:red;" th:text="非表示"></span>
+									<span th:unless="${item.deleted}" style="font-weight: bold; color:blue;" th:value="${item.deleted}" th:text="表示"></span>
+								</div>
+							</td>
+							<td>
+								<input type="hidden" class="itemId" th:value="${item.id}">
+								<button type="button" name="display" class="btn btn-info" th:disabled="${item.deleted == false}" >一覧に表示させる</button>
+							</td>
+							<td>
+								<input type="hidden" class="itemId" th:value="${item.id}">
+								<button type="button" name="noDisplay" class="btn btn-danger" th:disabled="${item.deleted == true}" >一覧から消去する</button>
+							</td>
+						</tr>
+
+
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- end container -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/admin_item_list.js}"></script>
+</body>
+
+</html>

@@ -11,6 +11,13 @@ $(function () {
 				}
 			});
 			
+			
+			$('button[name="delete"]').on('click', function(){
+				$(this).prop('disabled', true);
+				$('form[name="deleteForm"]').submit();
+			});
+					
+			
 			$('.quantity').on('change', function(){
 				
 				setCsrfTokenToAjaxHeader();

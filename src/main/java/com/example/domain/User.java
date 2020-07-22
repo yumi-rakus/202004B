@@ -22,32 +22,40 @@ public class User {
 
 	/** 郵便番号 */
 	private String zipcode;
-	
+
+	/** 郵便番号（上3桁） */
 	private String zipcodefirst;
-	
+
+	/** 郵便番号（下4桁） */
 	private String zipcodelast;
+
 	/** 住所 */
 	private String address;
-	
-	
+
 	/** 電話番号 */
 	private String telephone;
+
+	/** 管理者権限 */
+	private Boolean isAdmin;
 
 	// constructor
 	public User() {
 
 	}
 
-	public User(Integer id, String name, String email, String password, String zipcode,String address,
-			String telephone) {
+	public User(Integer id, String name, String email, String password, String zipcode, String zipcodefirst,
+			String zipcodelast, String address, String telephone, Boolean isAdmin) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.zipcode = zipcode;
+		this.zipcodefirst = zipcodefirst;
+		this.zipcodelast = zipcodelast;
 		this.address = address;
 		this.telephone = telephone;
+		this.isAdmin = isAdmin;
 	}
 
 	// getter setter
@@ -90,8 +98,7 @@ public class User {
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
-	
-	
+
 	public String getZipcodefirst() {
 		return zipcodefirst;
 	}
@@ -124,11 +131,20 @@ public class User {
 		this.telephone = telephone;
 	}
 
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	// toString
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", zipcode="
-				+ zipcode + ", address=" + address + ", telephone=" + telephone + "]";
+				+ zipcode + ", zipcodefirst=" + zipcodefirst + ", zipcodelast=" + zipcodelast + ", address=" + address
+				+ ", telephone=" + telephone + ", isAdmin=" + isAdmin + "]";
 	}
 
 }

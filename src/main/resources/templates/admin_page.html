@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ラクラクカリー -マイページ</title>
+	<title>ラクラクカリー -管理者ページ</title>
 	<link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 	<link th:href="@{/css/curry.css}" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
@@ -63,47 +63,16 @@
 				<div class="well">
 					<div class="app-bg" id="main-layout">
 						<h2 class="cond caps xs-text-center xs-py-20 xs-relative xs-my-0" style="padding:0px 22px">
-							<span>会員情報</span>
+							<span>管理者ページ</span>
 						</h2>
 					</div>
 					<div>
 						<div class="xs-p-20 xs-fill-white">
 							<div class="form-section">
-								<div class="panel panel-default">
-									<div class="panel-body ">
-										<div class="owner-name">
-											<span class="t18" style="font-weight: 600;">
-												<span sec:authorize="isAuthenticated()">
-													<span sec:authentication="principal.user.name"></span>
-												</span>
-											</span>
-											<small class="small-text pull-right t16">
-												<!-- ユーザー情報の更新 -->
-												<a href="/edit-profile" class="popup-edit-account" style="color: rgb(96, 146, 223);">変更する</a>
-											</small>
-										</div>
-										<div class="owner-email t16 cl-78838c pt-10 fw-normal">
-											<span sec:authorize="isAuthenticated()">
-												<span sec:authentication="principal.user.email"></span>
-											</span>
-										</div>
-										<div class=" half-btn pt-5 text-center">
-											<a th:href="@{/showOrderHistory}"
-												class="btn btn-default btn-view-saved-order t18 decoration-none"> 過去の注文履歴
-											</a>
-										</div>
-										<div class=" half-btn pt-5 text-center">
-											<a th:href="@{/favorite}" class="btn btn-default btn-view-saved-order t18 decoration-none"> お気に入り
-											</a>
-										</div>
-									</div>
-								</div>
-								<div class="panel panel-default">
-									<div class="panel-body t15">
-										<h2 class="text-center t18 bold heading-line">保存された住所</h2>
-										<ul class="list-group list-group-flush"></ul>
-									</div>
-								</div>
+								<ul style="font-size: 20px">
+									<li style="padding-top:10px; padding-bottom:10px;"><a th:href="@{/admin/orderList}">注文一覧</a></li>
+									<li style="padding-top:10px; padding-bottom:10px;"><a th:href="@{/admin/itemList}">商品一覧</a></li>
+								</ul>								
 							</div>
 						</div>
 					</div>

@@ -138,7 +138,7 @@ public class CurryController {
 			if (form.getId() == 1) {
 				if (form.getSearchName() == null) {
 					// 検索文字列が空なら全件検索
-					List<Item> itemList = itemService.findAll();
+					List<Item> itemList = itemService.findAllNonDeleted();
 					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
 					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
 					model.addAttribute("itemPage", itemPage);
@@ -150,7 +150,7 @@ public class CurryController {
 					if (itemList.size() == 0) {
 						String no = "該当する商品がありません";
 						model.addAttribute("no", no);
-						List<Item> itemList2 = itemService.findAll();
+						List<Item> itemList2 = itemService.findAllNonDeleted();
 						// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
 						Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
 						model.addAttribute("itemPage", itemPage);
@@ -238,7 +238,7 @@ public class CurryController {
 			if (itemList.size() == 0) {
 				String no = "該当する商品がありません";
 				model.addAttribute("no", no);
-				List<Item> itemList2 = itemService.findAll();
+				List<Item> itemList2 = itemService.findAllNonDeleted();
 				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
 				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
 				model.addAttribute("itemPage", itemPage);
@@ -286,7 +286,7 @@ public class CurryController {
 	@RequestMapping("/search")
 	public String findByItemName(String searchName, Model model) {
 		if (Objects.isNull(searchName)) { // 検索文字列が空なら全件検索
-			List<Item> itemList = itemService.findAll();
+			List<Item> itemList = itemService.findAllNonDeleted();
 			model.addAttribute("itemList", itemList);
 		} else { // 検索文字列があれば曖昧検索
 			List<Item> itemList = itemService.findByItemName(searchName);
@@ -345,6 +345,7 @@ public class CurryController {
 		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
 		user.setTelephone(userForm.getTelephone());
 		user.setPassword(userForm.getPassword());
+		user.setIsAdmin(false);
 
 		userService.insert(user);
 		return "login";
@@ -410,9 +411,9 @@ public class CurryController {
 		// 郵便番号を合体させる
 		String zipCodeFirst = form.getZipcodefirst();
 		String zipCodeLast = form.getZipcodelast();
-		String zipCode = zipCodeFirst+zipCodeLast;
+		String zipCode = zipCodeFirst + zipCodeLast;
 		order.setDestinationZipcode(zipCode);
-		
+
 		order.setDestinationAddress(form.getAddress());
 		order.setDestinationTel(form.getTelephone());
 
@@ -639,6 +640,80 @@ public class CurryController {
 		orderService.updateTotalPrice(userId);
 
 		return "redirect:/showCartList";
+	}
+
+	//////////////////////////////////////////////
+	//// 管理者ページの表示
+	//////////////////////////////////////////////
+	/**
+	 * 管理者ページ画面を出力する.
+	 * 
+	 * @return 管理者ページ画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/admin/adminPage")
+	public String toAdminPage() {
+		return "admin_page";
+	}
+
+	//////////////////////////////////////////////
+	//// 注文一覧管理ページを表示
+	//////////////////////////////////////////////
+	/**
+	 * すべての注文のstatusを管理する注文一覧画面を出力する.
+	 * 
+	 * @param model モデル
+	 * @return 注文一覧管理画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/admin/orderList")
+	public String manageOrderList(Model model) {
+
+		List<Order> orderAllList = orderService.getOrderListByStatusNot0();
+		model.addAttribute("orderList", orderAllList);
+
+		return "order_list";
+	}
+
+	//////////////////////////////////////////////
+	//// 商品管理ページを表示する
+	//////////////////////////////////////////////
+	/**
+	 * 削除フラグを管理する商品一覧ページを出力する.
+	 * 
+	 * @param model モデル
+	 * @return 商品管理画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/admin/itemList")
+	public String manageItemList(Model model) {
+
+		List<Item> itemList = itemService.findAll();
+		model.addAttribute("itemList", itemList);
+
+		return "admin_item_list";
+	}
+
+	// 管理者をuserテーブルにinsertするための一時的なメソッド
+	@RequestMapping("/insertAdmin")
+	public String insertAdmin() {
+
+		User admin = new User();
+
+		admin.setName("admin");
+		admin.setEmail("admin@admin");
+		admin.setZipcode("1112222");
+		admin.setAddress("admin住所");
+		admin.setTelephone("09011112222");
+		admin.setPassword("admin");
+		admin.setIsAdmin(true);
+
+		userService.insert(admin);
+
+		return toLogin();
 	}
 
 	//////////////////////////////////////////////
