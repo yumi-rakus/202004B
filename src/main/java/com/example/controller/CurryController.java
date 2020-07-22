@@ -35,6 +35,7 @@ import com.example.domain.Topping;
 import com.example.domain.User;
 import com.example.form.ItemForm;
 import com.example.form.OrderForm;
+import com.example.form.UpdateItemForm;
 import com.example.form.UserForm;
 import com.example.service.FavoriteService;
 import com.example.service.ItemService;
@@ -89,8 +90,8 @@ public class CurryController {
 	}
 
 	@ModelAttribute
-	public ItemForm setUpForm() {
-		return new ItemForm();
+	public UpdateItemForm setUpUpdateItemForm() {
+		return new UpdateItemForm();
 	}
 
 	//////////////////////////////////////////////
@@ -349,7 +350,6 @@ public class CurryController {
 
 		userService.insert(user);
 		return "login";
-
 	}
 
 	//////////////////////////////////////////////
@@ -576,7 +576,6 @@ public class CurryController {
 	public String showCartList(Model model) {
 
 		if (Objects.isNull((Integer) session.getAttribute("userId"))) {
-
 			model.addAttribute("notExistOrderItemList", "カートに商品がありません");
 		} else {
 			// ログインまたはUUIDを発行している場合
@@ -757,6 +756,70 @@ public class CurryController {
 		return "redirect:/admin/adminPage";
 	}
 
+	//////////////////////////////////////////////
+	//// 商品情報編集ページの表示
+	//////////////////////////////////////////////
+	/**
+	 * 商品情報編集画面を出力する.
+	 * 
+	 * @param model          モデル
+	 * @param itemId         商品ID
+	 * @param updateItemForm フォーム
+	 * @return 商品情報編集画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/admin/toEditItem")
+	public String toEditItem(Model model, String itemId, UpdateItemForm updateItemForm) {
+
+		Item item = itemService.showDetail(Integer.parseInt(itemId));
+		model.addAttribute("item", item);
+
+		updateItemForm.setName(item.getName());
+		updateItemForm.setDescription(item.getDescription());
+		updateItemForm.setPriceM(item.getPriceM());
+		updateItemForm.setPriceL(item.getPriceL());
+
+		return "item_edit";
+	}
+
+	//////////////////////////////////////////////
+	//// 商品情報を更新する
+	//////////////////////////////////////////////
+	/**
+	 * 商品情報を更新する.
+	 * 
+	 * @param updateItemForm フォーム
+	 * @param result         BindingResultオブジェクト
+	 * @param id             商品ID
+	 * @param model          モデル
+	 * @return 商品管理画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/admin/editItem")
+	public String editItem(@Validated UpdateItemForm updateItemForm, BindingResult result, String id, Model model) {
+
+		if (result.hasErrors()) {
+			Item item = itemService.showDetail(Integer.parseInt(id));
+			model.addAttribute("item", item);
+
+			return "item_edit";
+		}
+
+		Item item = new Item();
+
+		item.setId(Integer.parseInt(id));
+		item.setName(updateItemForm.getName());
+		item.setDescription(updateItemForm.getDescription());
+		item.setPriceM(updateItemForm.getPriceM());
+		item.setPriceL(updateItemForm.getPriceL());
+
+		itemService.updateItemByItemId(item);
+
+		return "redirect:/admin/itemList";
+	}
+
 	// 管理者をuserテーブルにinsertするための一時的なメソッド
 	@RequestMapping("/insertAdmin")
 	public String insertAdmin() {
@@ -796,7 +859,7 @@ public class CurryController {
 	 * 注文履歴画面の表示
 	 * 
 	 * @param loginUser 認証済みユーザー
-	 * @param model
+	 * @param model     モデル
 	 * 
 	 * @author soshi morita
 	 */
