@@ -150,4 +150,15 @@ public class ItemService {
 		itemRepository.updateDeleteFlag(deleted, itemId);
 	}
 
+	/**
+	 * 商品情報を更新する.
+	 * 
+	 * @param item 商品情報
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateItem(Item item) {
+		itemRepository.updateItem(item);
+	}
+
 }
