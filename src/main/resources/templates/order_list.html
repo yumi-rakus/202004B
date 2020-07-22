@@ -110,8 +110,8 @@
                   <li class="list-group-item">合計金額：<span th:text="*{#numbers.formatInteger(totalPrice, 1, 'COMMA')}">2,380</span>円(税抜)</li>
 					<li class="list-group-item">
 						<input type="hidden" class="orderId" th:value="*{id}">
-						<button type="button" name="shipped" class="btn btn-info">発送済</button>
-						<button type="button" name="deliveryCompleted" class="btn btn-success">配送完了</button>
+						<button type="button" name="shipped" class="btn btn-info" th:disabled="*{status == 3}">発送済</button>
+						<button type="button" name="deliveryCompleted" class="btn btn-success" th:disabled="*{status == 4}">配送完了</button>
 					</li>
                 </ul>
                 
