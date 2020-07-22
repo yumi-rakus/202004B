@@ -104,7 +104,7 @@
 					th:if="${itemList}">
 					<tbody>
 						<tr>
-							<th>
+							<th style="width:140px">
 								<div class="text-center">商品名</div>
 							</th>
 							<th>
@@ -120,18 +120,19 @@
 							</th>
 							<th>
 							</th>
+							
 						</tr>
 
 
 						<tr th:each="item : ${itemList}">
 							<td>
 								<div class="center">
-									<a th:href="@{'/showDetail?id=' + ${item.id}}"> <img
+									<a th:href="@{'/admin/toEditItem?itemId=' + ${item.id}}"> <img
 										th:src="@{'/img_curry/' + ${item.imagePath}}"
 										class="img-responsive img-rounded item-img-center" width="100"
 										height="300">
 									</a> <br> <a
-										th:href="@{'/showDetail?id=' + ${item.id}}"
+										th:href="@{'/admin/toEditItem?itemId=' + ${item.id}}"
 										th:text="${item.name}" class="itemName"></a>
 								</div>
 							</td>
@@ -170,6 +171,7 @@
 								<input type="hidden" class="itemId" th:value="${item.id}">
 								<button type="button" name="noDisplay" class="btn btn-danger" th:disabled="${item.deleted == true}" >一覧から消去する</button>
 							</td>
+							
 						</tr>
 
 
