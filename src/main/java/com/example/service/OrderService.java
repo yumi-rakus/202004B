@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
+import com.example.domain.User;
 import com.example.repository.OrderRepository;
 
 /**
@@ -29,6 +30,9 @@ public class OrderService {
 
 	@Autowired
 	private OrderRepository orderRepository;
+
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * ショッピングカートの中身を注文する.
@@ -254,7 +258,6 @@ public class OrderService {
 		orderRepository.deleteUuidRecordByUuid(uuid);
 	}
 
-
 	/**
 	 * 注文商品の合計金額を更新する.
 	 * 
@@ -267,7 +270,7 @@ public class OrderService {
 		Integer totalPrice = order.get(0).getCalcTotalPrice();
 		orderRepository.updateTotalPrice(userId, totalPrice);
 	}
-	
+
 	/**
 	 * 
 	 * @param userId
@@ -329,5 +332,97 @@ public class OrderService {
 		List<Order> distinctOrderList = new ArrayList<>(orderMap.values());
 
 		return distinctOrderList;
+	}
+
+	/**
+	 * 未注文以外の注文一覧を取得する.
+	 * 
+	 * @return 未注文以外の注文一覧
+	 * 
+	 * @author yumi takahashi
+	 */
+	public List<Order> getOrderListByStatusNot0() {
+
+		List<Order> orderList = orderRepository.findAllByStatusNot0();
+
+		Map<Integer, List<OrderTopping>> orderToppingMap = new HashMap<>();
+		Map<Integer, OrderItem> orderItemMap = new HashMap<>();
+		// キーがオーダーID、バリューがオーダーアイテムリストのマップを作成
+		Map<Integer, List<OrderItem>> orderItemListMap = new HashMap<>();
+
+		//// トッピングの詰め替え
+		// キーがorder_item_id、バリューを空のリストとする
+		for (Order order : orderList) {
+			orderToppingMap.put(order.getOrderItemList().get(0).getId(), new ArrayList<>());
+		}
+
+		// orderItemIdをキー、トッピングリストをバリューとするマップが完成
+		for (Order order : orderList) {
+			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
+			OrderTopping orderTopping = order.getOrderItemList().get(0).getOrderToppingList().get(0);
+			// オブジェクトが空ではない場合のみトッピングリストに追加
+			if (Objects.nonNull(orderTopping.getTopping().getName())) {
+				orderToppingList.add(order.getOrderItemList().get(0).getOrderToppingList().get(0));
+			}
+		}
+
+		//// 商品本体の詰め替え
+		// orderItemIdをキー、オーダーアイテムとするマップを作成
+		for (Order order : orderList) {
+			orderItemMap.put(order.getOrderItemList().get(0).getId(), order.getOrderItemList().get(0));
+		}
+		// オーダーアイテムごとにトッピングリストを追加をバリューとするマップが完成
+		for (Order order : orderList) {
+			OrderItem orderItem = orderItemMap.get(order.getOrderItemList().get(0).getId());
+			List<OrderTopping> orderToppingList = orderToppingMap.get(order.getOrderItemList().get(0).getId());
+			orderItem.setOrderToppingList(orderToppingList);
+			orderItemMap.put(order.getOrderItemList().get(0).getId(), orderItem);
+		}
+
+		//// 注文番号ごとにオーダーアイテムのリストを作成
+		for (Order order : orderList) {
+			orderItemListMap.put(order.getId(), new ArrayList<>());
+		}
+		for (OrderItem orderItem : orderItemMap.values()) {
+			List<OrderItem> list = orderItemListMap.get(orderItem.getOrderId());
+			list.add(orderItem);
+		}
+
+		// オーダーIDをキー、オーダーをバリューとするマップを作成
+		// オーダーのオーダーアイテムリストは空にする
+		Map<Integer, Order> distinctOrderMap = new HashMap<>();
+		for (Order order : orderList) {
+			Integer key = order.getId();
+			Order value = order;
+			order.getOrderItemList().clear();
+			distinctOrderMap.put(key, value);
+		}
+
+		for (Order order : distinctOrderMap.values()) {
+			Integer key = order.getId();
+			distinctOrderMap.get(key).setOrderItemList(orderItemListMap.get(key));
+		}
+		List<Order> oList = new ArrayList<>(distinctOrderMap.values());
+
+		for (Order order : oList) {
+			User user = userService.getUserById(order.getUserId());
+			order.setUser(user);
+		}
+
+		// 最新の注文順に並び替え
+		Collections.reverse(oList);
+		return oList;
+	}
+
+	/**
+	 * 注文のstatusを更新する.
+	 * 
+	 * @param status  状態
+	 * @param orderId 注文ID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateStatusByOrderId(Integer status, Integer orderId) {
+		orderRepository.updateStatusByOrderId(status, orderId);
 	}
 }
