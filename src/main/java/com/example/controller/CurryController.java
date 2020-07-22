@@ -815,7 +815,7 @@ public class CurryController {
 		item.setPriceM(updateItemForm.getPriceM());
 		item.setPriceL(updateItemForm.getPriceL());
 
-		itemService.updateItemByItemId(item);
+		itemService.updateItem(item);
 
 		return "redirect:/admin/itemList";
 	}
