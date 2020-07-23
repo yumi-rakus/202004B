@@ -29,6 +29,9 @@ public class OrderItem {
 	/** 商品情報 */
 	private Item item;
 
+	/** 注文米情報 */
+	private OrderRice orderRice;
+
 	/** トッピングリスト */
 	private List<OrderTopping> orderToppingList;
 
@@ -38,7 +41,7 @@ public class OrderItem {
 	}
 
 	public OrderItem(Integer id, Integer itemId, Integer orderId, Integer quantity, Character size, Item item,
-			List<OrderTopping> orderToppingList) {
+			OrderRice orderRice, List<OrderTopping> orderToppingList) {
 		super();
 		this.id = id;
 		this.itemId = itemId;
@@ -46,6 +49,7 @@ public class OrderItem {
 		this.quantity = quantity;
 		this.size = size;
 		this.item = item;
+		this.orderRice = orderRice;
 		this.orderToppingList = orderToppingList;
 	}
 
@@ -98,6 +102,14 @@ public class OrderItem {
 		this.item = item;
 	}
 
+	public OrderRice getOrderRice() {
+		return orderRice;
+	}
+
+	public void setOrderRice(OrderRice orderRice) {
+		this.orderRice = orderRice;
+	}
+
 	public List<OrderTopping> getOrderToppingList() {
 		return orderToppingList;
 	}
@@ -110,7 +122,8 @@ public class OrderItem {
 	@Override
 	public String toString() {
 		return "OrderItem [id=" + id + ", itemId=" + itemId + ", orderId=" + orderId + ", quantity=" + quantity
-				+ ", size=" + size + ", item=" + item + ", orderToppingList=" + orderToppingList + "]";
+				+ ", size=" + size + ", item=" + item + ", orderRice=" + orderRice + ", orderToppingList="
+				+ orderToppingList + "]";
 	}
 
 	// method
