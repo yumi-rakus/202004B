@@ -18,10 +18,12 @@ import com.example.domain.Favorite;
 import com.example.domain.Item;
 import com.example.domain.LoginUser;
 import com.example.domain.Order;
+import com.example.domain.Rice;
 import com.example.service.FavoriteService;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
+import com.example.service.RiceService;
 
 /**
  * 非同期通信を行うレストコントローラー.
@@ -41,6 +43,8 @@ public class AjaxController {
 	private OrderService orderService;
 	@Autowired
 	private FavoriteService favoriteService;
+	@Autowired
+	private RiceService riceService;
 	@Autowired
 	private HttpSession session;
 
@@ -159,5 +163,32 @@ public class AjaxController {
 			return "400";
 		}
 
+	}
+
+	/**
+	 * 選択された米情報を取得する.
+	 * 
+	 * @param riceId 米ID
+	 * @return 米情報が格納されたMap
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/getRiceInfo")
+	public Map<String, String> getRiceInfo(Integer riceId) {
+
+		Map<String, String> riceMap = new HashMap<>();
+
+		try {
+			Rice rice = riceService.findById(riceId);
+
+			riceMap.put("result", "200");
+			riceMap.put("description", rice.getDescription());
+			riceMap.put("imagePath", rice.getImagePath());
+
+		} catch (Exception e) {
+			riceMap.put("result", "400");
+		}
+
+		return riceMap;
 	}
 }
