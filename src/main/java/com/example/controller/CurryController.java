@@ -31,9 +31,11 @@ import com.example.domain.Item;
 import com.example.domain.LoginUser;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
+import com.example.domain.Rice;
 import com.example.domain.Topping;
 import com.example.domain.User;
 import com.example.form.ItemForm;
+import com.example.form.ItemSearchForm;
 import com.example.form.OrderForm;
 import com.example.form.UpdateItemForm;
 import com.example.form.UserForm;
@@ -41,6 +43,7 @@ import com.example.service.FavoriteService;
 import com.example.service.ItemService;
 import com.example.service.OrderItemService;
 import com.example.service.OrderService;
+import com.example.service.RiceService;
 import com.example.service.SendMailService;
 import com.example.service.ToppingService;
 import com.example.service.UserService;
@@ -73,6 +76,8 @@ public class CurryController {
 	private static final int VIEW_SIZE = 9;
 	@Autowired
 	private FavoriteService favoriteService;
+	@Autowired
+	private RiceService riceService;
 
 	@ModelAttribute
 	public UserForm setUpUserForm() {
@@ -94,6 +99,11 @@ public class CurryController {
 		return new UpdateItemForm();
 	}
 
+	@ModelAttribute
+	public ItemSearchForm setUpItemSearchForm() {
+		return new ItemSearchForm();
+	}
+
 	//////////////////////////////////////////////
 	//// 商品一覧画面の表示
 	//////////////////////////////////////////////
@@ -106,7 +116,7 @@ public class CurryController {
 	 * @author kohei eto
 	 */
 	@RequestMapping("")
-	public String index(Model model, Integer page, ItemForm form) {
+	public String index(Model model, Integer page, ItemSearchForm form) {
 		/*
 		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
 		 * itemList); // オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納 StringBuilder
@@ -474,11 +484,16 @@ public class CurryController {
 		Item item = itemService.showDetail(Integer.parseInt(id));
 		List<Topping> toppingList = toppingService.showToppingList();
 		item.setToppingList(toppingList);
+		List<Rice> riceList = riceService.findAllNonDeleted();
+		Rice rice = riceService.findById(1);
 
 		model.addAttribute("item", item);
+		model.addAttribute("riceList", riceList);
+		model.addAttribute("riceSample", rice);
 
 		itemForm.setSize("M");
 		itemForm.setQuantity(1);
+		itemForm.setRiceId(1);
 
 		return "item_detail";
 	}
@@ -535,7 +550,7 @@ public class CurryController {
 	 */
 	@RequestMapping("/cartInComplete")
 
-	public String cartInComplete(Model model, Integer page, ItemForm form, String searchname) {
+	public String cartInComplete(Model model, Integer page, ItemSearchForm form, String searchname) {
 
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
