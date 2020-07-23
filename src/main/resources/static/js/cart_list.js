@@ -28,7 +28,7 @@ $(function () {
 				
 				var price = parseInt($(this).siblings('.itemPrice').text().replace(',', '').replace('円', ''));
 		
-				var toppingPriceList = $(this).parent().next().children().children().children().children('td.text-left').children('.toppingPrice').text().split('円');				
+				var toppingPriceList = $(this).parent().next().next().children().children().children().children('td.text-left').children('.toppingPrice').text().split('円');				
 				toppingPriceList.pop();
 				
 				var toppingPrice = 0;
@@ -37,7 +37,7 @@ $(function () {
 				}
 				
 				var subTotal = (price + toppingPrice) * quantity;
-				$(this).parent().next().next().children().children('.subTotal').text(subTotal.toLocaleString());
+				$(this).parent().next().next().next().children().children('.subTotal').text(subTotal.toLocaleString());
 				
 				update(quantity, itemId, size, subTotal);
 			});
