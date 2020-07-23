@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
+import com.example.domain.OrderRice;
 import com.example.domain.OrderTopping;
 import com.example.form.ItemForm;
 import com.example.repository.OrderItemRepository;
@@ -24,12 +25,12 @@ public class OrderItemService {
 
 	@Autowired
 	private OrderItemRepository orderItemRepository;
-
 	@Autowired
 	private OrderService orderService;
-
 	@Autowired
 	private OrderToppingService orderToppingService;
+	@Autowired
+	private OrderRiceService orderRiceService;
 
 	/**
 	 * 注文商品情報をカートに入れる.
@@ -193,8 +194,10 @@ public class OrderItemService {
 			}
 		}
 
+		Integer riceId = orderRiceService.getRiceIdByOrderItemId(orderItemId);
+
 		if (orderItemId != 0 && form.getToppingIdList().size() == orderToppingService
-				.getToppingIdListByOrderItemId(orderItemId).size() && judge) {
+				.getToppingIdListByOrderItemId(orderItemId).size() && judge && form.getRiceId() == riceId) {
 
 			updateQuantityByOrderItemId(form.getQuantity(), orderItemId);
 
@@ -219,6 +222,12 @@ public class OrderItemService {
 				orderToppingService.insertOrderTopping(orderTopping);
 			}
 
+			////////////////////// order_rices table insert
+			OrderRice orderRice = new OrderRice();
+			orderRice.setRiceId(form.getRiceId());
+			orderRice.setOrderItemId(orderItem.getId());
+
+			orderRiceService.insertOrderRice(orderRice);
 		}
 
 	}
