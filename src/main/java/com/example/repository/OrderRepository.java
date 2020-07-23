@@ -20,7 +20,9 @@ import com.example.domain.Item;
 import com.example.domain.Order;
 
 import com.example.domain.OrderItem;
+import com.example.domain.OrderRice;
 import com.example.domain.OrderTopping;
+import com.example.domain.Rice;
 import com.example.domain.Topping;
 
 /**
@@ -68,6 +70,19 @@ public class OrderRepository {
 		item.setPriceL(rs.getInt("item_pricel"));
 		item.setImagePath(rs.getString("item_imagepath"));
 		orderItem.setItem(item);
+
+		OrderRice orderRice = new OrderRice();
+		orderRice.setId(rs.getInt("order_rice_id"));
+		orderRice.setRiceId(rs.getInt("rice_id"));
+		orderRice.setOrderItemId(rs.getInt("order_item_id"));
+
+		Rice rice = new Rice();
+		rice.setId(rs.getInt("rice_id"));
+		rice.setName(rs.getString("rice_name"));
+		rice.setDescription(rs.getString("rice_description"));
+		rice.setImagePath(rs.getString("rice_imagepath"));
+		orderRice.setRice(rice);
+		orderItem.setOrderRice(orderRice);
 
 		OrderTopping orderTopping = new OrderTopping();
 		orderTopping.setId(rs.getInt("order_topping_id"));
@@ -159,7 +174,12 @@ public class OrderRepository {
 		sql.append("toppings.id AS topping_id, ");
 		sql.append("toppings.name AS topping_name, ");
 		sql.append("toppings.price_m AS topping_pricem, ");
-		sql.append("toppings.price_l AS topping_pricel ");
+		sql.append("toppings.price_l AS topping_pricel, ");
+		sql.append("ordrice.id AS order_rice_id, ");
+		sql.append("rices.id AS rice_id, ");
+		sql.append("rices.name AS rice_name, ");
+		sql.append("rices.description AS rice_description, ");
+		sql.append("rices.image_path AS rice_imagepath ");
 		sql.append("FROM ");
 		sql.append("orders AS ord ");
 		sql.append("LEFT OUTER JOIN ");
@@ -169,11 +189,17 @@ public class OrderRepository {
 		sql.append("order_toppings AS ordtop ");
 		sql.append("ON orditem.id = ordtop.order_item_id ");
 		sql.append("LEFT OUTER JOIN ");
+		sql.append("order_rices AS ordrice ");
+		sql.append("ON orditem.id = ordrice.order_item_id ");
+		sql.append("LEFT OUTER JOIN ");
 		sql.append("items ");
 		sql.append("ON items.id = orditem.item_id ");
 		sql.append("LEFT OUTER JOIN ");
 		sql.append("toppings ");
 		sql.append("ON toppings.id = ordtop.topping_id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("rices ");
+		sql.append("ON rices.id = ordrice.rice_id ");
 		sql.append("WHERE ");
 		sql.append("ord.user_id = :userId ");
 		sql.append("AND ");
@@ -227,7 +253,12 @@ public class OrderRepository {
 		sql.append("toppings.id AS topping_id, ");
 		sql.append("toppings.name AS topping_name, ");
 		sql.append("toppings.price_m AS topping_pricem, ");
-		sql.append("toppings.price_l AS topping_pricel ");
+		sql.append("toppings.price_l AS topping_pricel, ");
+		sql.append("ordrice.id AS order_rice_id, ");
+		sql.append("rices.id AS rice_id, ");
+		sql.append("rices.name AS rice_name, ");
+		sql.append("rices.description AS rice_description, ");
+		sql.append("rices.image_path AS rice_imagepath ");
 		sql.append("FROM ");
 		sql.append("orders AS ord ");
 		sql.append("LEFT OUTER JOIN ");
@@ -237,11 +268,17 @@ public class OrderRepository {
 		sql.append("order_toppings AS ordtop ");
 		sql.append("ON orditem.id = ordtop.order_item_id ");
 		sql.append("LEFT OUTER JOIN ");
+		sql.append("order_rices AS ordrice ");
+		sql.append("ON orditem.id = ordrice.order_item_id ");
+		sql.append("LEFT OUTER JOIN ");
 		sql.append("items ");
 		sql.append("ON items.id = orditem.item_id ");
 		sql.append("LEFT OUTER JOIN ");
 		sql.append("toppings ");
 		sql.append("ON toppings.id = ordtop.topping_id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("rices ");
+		sql.append("ON rices.id = ordrice.rice_id ");
 		sql.append("WHERE ");
 		sql.append("ord.user_id = :userId ");
 		sql.append("AND ");
@@ -433,7 +470,12 @@ public class OrderRepository {
 		sql.append("toppings.id AS topping_id, ");
 		sql.append("toppings.name AS topping_name, ");
 		sql.append("toppings.price_m AS topping_pricem, ");
-		sql.append("toppings.price_l AS topping_pricel ");
+		sql.append("toppings.price_l AS topping_pricel, ");
+		sql.append("ordrice.id AS order_rice_id, ");
+		sql.append("rices.id AS rice_id, ");
+		sql.append("rices.name AS rice_name, ");
+		sql.append("rices.description AS rice_description, ");
+		sql.append("rices.image_path AS rice_imagepath ");
 		sql.append("FROM ");
 		sql.append("orders AS ord ");
 		sql.append("LEFT OUTER JOIN ");
@@ -443,11 +485,17 @@ public class OrderRepository {
 		sql.append("order_toppings AS ordtop ");
 		sql.append("ON orditem.id = ordtop.order_item_id ");
 		sql.append("LEFT OUTER JOIN ");
+		sql.append("order_rices AS ordrice ");
+		sql.append("ON orditem.id = ordrice.order_item_id ");
+		sql.append("LEFT OUTER JOIN ");
 		sql.append("items ");
 		sql.append("ON items.id = orditem.item_id ");
 		sql.append("LEFT OUTER JOIN ");
 		sql.append("toppings ");
 		sql.append("ON toppings.id = ordtop.topping_id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("rices ");
+		sql.append("ON rices.id = ordrice.rice_id ");
 		sql.append("WHERE ");
 		sql.append("ord.user_id = :userId ");
 		sql.append("AND ");
@@ -517,7 +565,12 @@ public class OrderRepository {
 		sql.append("toppings.id AS topping_id, ");
 		sql.append("toppings.name AS topping_name, ");
 		sql.append("toppings.price_m AS topping_pricem, ");
-		sql.append("toppings.price_l AS topping_pricel ");
+		sql.append("toppings.price_l AS topping_pricel, ");
+		sql.append("ordrice.id AS order_rice_id, ");
+		sql.append("rices.id AS rice_id, ");
+		sql.append("rices.name AS rice_name, ");
+		sql.append("rices.description AS rice_description, ");
+		sql.append("rices.image_path AS rice_imagepath ");
 		sql.append("FROM ");
 		sql.append("orders AS ord ");
 		sql.append("LEFT OUTER JOIN ");
@@ -527,11 +580,17 @@ public class OrderRepository {
 		sql.append("order_toppings AS ordtop ");
 		sql.append("ON orditem.id = ordtop.order_item_id ");
 		sql.append("LEFT OUTER JOIN ");
+		sql.append("order_rices AS ordrice ");
+		sql.append("ON orditem.id = ordrice.order_item_id ");
+		sql.append("LEFT OUTER JOIN ");
 		sql.append("items ");
 		sql.append("ON items.id = orditem.item_id ");
 		sql.append("LEFT OUTER JOIN ");
 		sql.append("toppings ");
 		sql.append("ON toppings.id = ordtop.topping_id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("rices ");
+		sql.append("ON rices.id = ordrice.rice_id ");
 		sql.append("WHERE ");
 		sql.append("ord.status != 0 ");
 		sql.append("ORDER BY ");
