@@ -65,6 +65,7 @@ public class SendMailService {
 				mailContent.append("--");
 			}
 			mailContent.append("\n");
+			mailContent.append("ライス: "+item.getOrderRice().getRice().getName()+"\n");
 		}
 		mailContent.append("\n");
 		mailContent.append("商品代金: "+order.get(0).getTotalPrice()+"円\n");
