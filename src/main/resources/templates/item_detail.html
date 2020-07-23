@@ -166,7 +166,7 @@
 								<div th:if="${#fields.hasErrors('${itemForm.quantity}')}" th:errors="${itemForm.quantity}"
 										style="color: red">数量を選択してください</div><br>
 									<label for="quantity">数量:</label>								
-										<select
+										<select id="quantity"
 										th:field="${itemForm.quantity}" class="form-control">
 										<option value=1>1</option>
 										<option value=2>2</option>
@@ -187,6 +187,38 @@
 					</div>
 				</div>
 				<br>
+				
+					<div class="row">
+					<div class="col-xs-offset-2 col-xs-15">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5">
+								<div th:if="${#fields.hasErrors('${itemForm.riceId}')}" th:errors="${itemForm.riceId}"
+										style="color: red">ライスを選択してください</div><br>
+									<label for="rice">ライス:</label>								
+										<select id="rice"
+										th:field="${itemForm.riceId}" class="form-control">
+										<option th:each="rice : ${riceList}" th:value="${rice.id}" th:text="${rice.name}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+						
+						<table>
+							<tr>
+								<td class="ricePhoto">
+									<img th:src="@{'/img_rice/' + ${riceSample.imagePath}}" width="120px" height="150px">
+								</td>
+								<td>
+									<span class="riceDescription" th:text="${riceSample.description}"></span>
+								</td>
+							</tr>
+						</table>
+						
+					</div>
+				</div>
+				<br>
+				
 				<div class="row">
 					<div class="col-xs-offset-2 col-xs-10">
 						<div class="form-group">
@@ -224,28 +256,7 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
-
-
-
-	<script type="text/javascript">
-		$(function () {
-			$('#cartInButton').on('click', function () {
-				$(this).prop('disabled', true);
-				$('form').submit();
-			});
-
-
-			/*  $('#on').on('click', function(){
-				 $('.topping').attr('checked', true).prop('checked', true).change();
-			 }); */
-
-			$('#off').on('click', function () {
-				$('.topping').removeAttr('checked').prop('checked', false).change();
-			});
-
-		});
-
-	</script>
+	<script th:src="@{/js/item_detail.js}"></script>
 
 </body>
 </html>
