@@ -20,6 +20,13 @@ public class OrderRiceRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
+	/**
+	 * 注文米情報を挿入する.
+	 * 
+	 * @param orderRice 注文米情報
+	 * 
+	 * @author yumi takahashi
+	 */
 	public void insertOrderRice(OrderRice orderRice) {
 
 		String sql = "INSERT INTO order_rices (rice_id, order_item_id) VALUES (:riceId, :orderItemId)";
@@ -30,6 +37,14 @@ public class OrderRiceRepository {
 		template.update(sql, param);
 	}
 
+	/**
+	 * 注文商品IDから米IDを取得する.
+	 * 
+	 * @param orderItemId 注文商品ID
+	 * @return 米ID（存在しない場合は0を返す）
+	 * 
+	 * @author yumi takahashi
+	 */
 	public Integer getRiceIdByOrderItemId(Integer orderItemId) {
 
 		String sql1 = "SELECT count(*) FROM order_rices WHERE order_item_id = :orderItemId";
