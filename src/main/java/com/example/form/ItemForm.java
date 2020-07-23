@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * 商品をカートに入れる際にに使用するフォーム.
+ * 商品をカートに入れる際に使用するフォーム.
  * 
  * @author yumi takahashi
  *
@@ -23,25 +23,8 @@ public class ItemForm {
 
 	private Integer itemId;
 
-	private Integer id;
-
-	private String searchName;
-
-	public String getSearchName() {
-		return searchName;
-	}
-
-	public void setSearchName(String searchName) {
-		this.searchName = searchName;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@NotNull(message = "ライスを選択してください")
+	private Integer riceId;
 
 	// getter setter
 	public String getSize() {
@@ -76,10 +59,19 @@ public class ItemForm {
 		this.itemId = itemId;
 	}
 
+	public Integer getRiceId() {
+		return riceId;
+	}
+
+	public void setRiceId(Integer riceId) {
+		this.riceId = riceId;
+	}
+
+	// toString
 	@Override
 	public String toString() {
 		return "ItemForm [size=" + size + ", toppingIdList=" + toppingIdList + ", quantity=" + quantity + ", itemId="
-				+ itemId + ", id=" + id + ", searchName=" + searchName + "]";
+				+ itemId + ", riceId=" + riceId + "]";
 	}
 
 }
