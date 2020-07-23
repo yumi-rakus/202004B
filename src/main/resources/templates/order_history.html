@@ -120,6 +120,8 @@
                   <li class="list-group-item" th:unless="*{#lists.isEmpty(orderToppingList)}">トッピング：
 										<div style="padding-left: 10px;" th:each="orderTopping : *{orderToppingList}"  th:text="${orderTopping.topping.name}"></div>
 									</li>
+				  <!-- 米 -->
+				  <li class="list-group-item">ライス：<span th:text="*{orderRice.rice.name}">新潟県産コシヒカリ</span></li>
                   <li class="list-group-item">商品サイズ：<span th:text="*{size}">M</span></li>
                   <li class="list-group-item">商品数量：<span th:text="*{quantity}">M</span></li>
                   <li class="list-group-item">小計：<span th:text="${#numbers.formatInteger(orderItem.getSubTotal(), 1, 'COMMA')}">2,380</span>円(税抜)</li>
