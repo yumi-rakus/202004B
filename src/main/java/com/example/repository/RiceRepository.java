@@ -50,9 +50,7 @@ public class RiceRepository {
 
 		String sql = "SELECT id, name, description, image_path, deleted FROM rices WHERE deleted = false ORDER BY id";
 
-		SqlParameterSource param = new MapSqlParameterSource();
-
-		List<Rice> riceList = template.query(sql, param, RICE_ROW_MAPPER);
+		List<Rice> riceList = template.query(sql, RICE_ROW_MAPPER);
 
 		return riceList;
 	}
@@ -74,6 +72,39 @@ public class RiceRepository {
 		List<Rice> rice = template.query(sql, param, RICE_ROW_MAPPER);
 
 		return rice.get(0);
+	}
+
+	/**
+	 * 全米情報を取得する.
+	 * 
+	 * @return 米情報一覧
+	 * 
+	 * @author yumi takahashi
+	 */
+	public List<Rice> findAll() {
+
+		String sql = "SELECT id, name, description, image_path, deleted FROM rices ORDER BY id";
+
+		List<Rice> riceList = template.query(sql, RICE_ROW_MAPPER);
+
+		return riceList;
+	}
+
+	/**
+	 * 米IDから、削除フラグを更新する.
+	 * 
+	 * @param deleted 削除フラグ
+	 * @param riceId  米ID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateDeleteFlag(Boolean deleted, Integer riceId) {
+
+		String sql = "UPDATE rices SET deleted = :deleted WHERE id = :riceId";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("deleted", deleted).addValue("riceId", riceId);
+
+		template.update(sql, param);
 	}
 
 }
