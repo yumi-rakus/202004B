@@ -657,6 +657,26 @@ public class CurryController {
 	}
 
 	//////////////////////////////////////////////
+	//// お米についてページの表示
+	//////////////////////////////////////////////
+	/**
+	 * お米について画面を出力する.
+	 * 
+	 * @param model モデル
+	 * @return お米について画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/riceInfo")
+	public String showRiceInfo(Model model) {
+
+		List<Rice> riceList = riceService.findAll();
+		model.addAttribute("riceList", riceList);
+
+		return "rice_info";
+	}
+
+	//////////////////////////////////////////////
 	//// 管理者ページの表示
 	//////////////////////////////////////////////
 	/**
@@ -833,6 +853,26 @@ public class CurryController {
 		itemService.updateItem(item);
 
 		return "redirect:/admin/itemList";
+	}
+
+	//////////////////////////////////////////////
+	//// 米管理ページを表示
+	//////////////////////////////////////////////
+	/**
+	 * 削除フラグを管理する米一覧ページを出力する.
+	 * 
+	 * @param model モデル
+	 * @return 米管理画面
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/admin/riceList")
+	public String manageRiceList(Model model) {
+
+		List<Rice> riceList = riceService.findAll();
+		model.addAttribute("riceList", riceList);
+
+		return "admin_rice_list";
 	}
 
 	// 管理者をuserテーブルにinsertするための一時的なメソッド
