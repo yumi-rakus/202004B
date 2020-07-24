@@ -120,7 +120,7 @@ public class AjaxController {
 	}
 
 	/**
-	 * 削除フラグを更新する.
+	 * 商品の削除フラグを更新する.
 	 * 
 	 * @param deleted 削除フラグ
 	 * @param itemId  商品ID
@@ -190,5 +190,30 @@ public class AjaxController {
 		}
 
 		return riceMap;
+	}
+
+	/**
+	 * 米の削除フラグを更新する.
+	 * 
+	 * @param deleted 削除フラグ
+	 * @param riceId  米ID
+	 * @return ステータスコード
+	 * 
+	 * @author yumi takahashi
+	 */
+	@RequestMapping("/updateRiceDeleteFlag")
+	public Map<String, Integer> updateRiceDeleteFlag(Boolean deleted, Integer riceId) {
+
+		Map<String, Integer> resultMap = new HashMap<>();
+
+		try {
+			riceService.updateDeleteFlag(deleted, riceId);
+			resultMap.put("result", 200);
+
+		} catch (Exception e) {
+			resultMap.put("result", 400);
+		}
+
+		return resultMap;
 	}
 }
