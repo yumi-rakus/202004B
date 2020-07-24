@@ -44,4 +44,27 @@ public class RiceService {
 	public Rice findById(Integer id) {
 		return riceRepository.load(id);
 	}
+
+	/**
+	 * 全米情報を取得する.
+	 * 
+	 * @return 米情報一覧
+	 * 
+	 * @author yumi takahashi
+	 */
+	public List<Rice> findAll() {
+		return riceRepository.findAll();
+	}
+
+	/**
+	 * 削除フラグを更新する.
+	 * 
+	 * @param deleted 削除フラグ
+	 * @param riceId  米ID
+	 * 
+	 * @author yumi takahashi
+	 */
+	public void updateDeleteFlag(Boolean deleted, Integer riceId) {
+		riceRepository.updateDeleteFlag(deleted, riceId);
+	}
 }
