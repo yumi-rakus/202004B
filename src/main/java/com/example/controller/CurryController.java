@@ -118,7 +118,12 @@ public class CurryController {
 		itemMap.put(2, "価格高い順");
 		itemMap.put(3, "人気順");
 		model.addAttribute("itemMap", itemMap);
-
+		
+		if(session.getAttribute("userId")!=null) {
+		Integer userId = (Integer)session.getAttribute("userId");
+		Integer points = userService.getPoints(userId);
+		session.setAttribute("points", points);
+		}
 		/*
 		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
 		 * itemList);
@@ -362,6 +367,7 @@ public class CurryController {
 			List<OrderItem> orderItemList = order.get(0).getOrderItemList();
 			model.addAttribute("orderItemList", orderItemList);
 			model.addAttribute("tax", order.get(0).getTax());
+			model.addAttribute("price", order.get(0).getTotalPrice());
 			model.addAttribute("totalPrice", order.get(0).getCalcTotalPrice() + order.get(0).getTax());
 			Map<String, String> orderTimeMap = new LinkedHashMap<>();
 			orderTimeMap.put("10:59:59", "10時");
@@ -374,8 +380,10 @@ public class CurryController {
 			orderTimeMap.put("17:59:59", "17時");
 			orderTimeMap.put("18:59:59", "18時");
 			User user = userService.getUserById(userId);
+			Integer points = userService.getPoints(userId);
 			model.addAttribute("user", user);
 			model.addAttribute("orderTime", orderTimeMap);
+			model.addAttribute("points",points);
 			return "order_confirm";
 		} catch (IndexOutOfBoundsException e) {
 			return showCartList(model);
@@ -388,7 +396,7 @@ public class CurryController {
 	 * @author shoya fujisawa
 	 */
 	@RequestMapping("/order")
-	public String order(@Validated OrderForm form, BindingResult result, Model model, Integer userId) {
+	public String order(@Validated OrderForm form, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
 			return Confirm(form, model);
@@ -436,11 +444,16 @@ public class CurryController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
+		
 		order.setPaymentMethod(form.getPaymentMethod());
+		order.setDiscountPrice(form.getDiscountPrice());
 		orderService.order(order);
-
-		sendMailService.sendMail();
+		Integer points = (int) (order.getTotalPrice()*0.05);
+		Integer usedPoints = form.getUsedPoints();
+		Integer userId = (Integer)session.getAttribute("userId");
+		userService.addPoints(points, userId);
+		userService.subPoints(usedPoints, userId);
+		sendMailService.sendMail(userId);
 		return "redirect:/orderFinished";
 	}
 
@@ -451,6 +464,9 @@ public class CurryController {
 	 */
 	@RequestMapping("/orderFinished")
 	public String finished() {
+		Integer userId = (Integer)session.getAttribute("userId");
+		Integer points = userService.getPoints(userId);
+		session.setAttribute("points", points);
 		return "order_finished";
 	}
 

@@ -28,18 +28,18 @@ public class User {
 	private String zipcodelast;
 	/** 住所 */
 	private String address;
-	
-	
 	/** 電話番号 */
 	private String telephone;
-
+	/** ポイント */
+	private Integer points;
+	
 	// constructor
 	public User() {
 
 	}
 
-	public User(Integer id, String name, String email, String password, String zipcode,String address,
-			String telephone) {
+	public User(Integer id, String name, String email, String password, String zipcode, String address,
+			String telephone, Integer points) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -48,6 +48,7 @@ public class User {
 		this.zipcode = zipcode;
 		this.address = address;
 		this.telephone = telephone;
+		this.points = points;
 	}
 
 	// getter setter
@@ -124,11 +125,19 @@ public class User {
 		this.telephone = telephone;
 	}
 
+	public Integer getPoints() {
+		return points;
+	}
+
+	public void setPoints(Integer points) {
+		this.points = points;
+	}
+
 	// toString
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", zipcode="
-				+ zipcode + ", address=" + address + ", telephone=" + telephone + "]";
+				+ zipcode + ", address=" + address + ", telephone=" + telephone + ", points=" + points +"]";
 	}
 
 }

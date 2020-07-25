@@ -72,4 +72,37 @@ public class UserService {
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
+	
+	/**
+	 * ユーザ情報にポイントを付与
+	 * 
+	 * @param points
+	 * @param id
+	 * @author shoya fujisawa
+	 */
+	public void addPoints(Integer points,Integer id) {
+		userRepository.addPoints(points, id);
+	}
+	
+	/**
+	 * ユーザ情報から使用ポイントを引く
+	 * 
+	 * @param points
+	 * @param id
+	 * @author shoya fujisawa
+	 */
+	public void subPoints(Integer points,Integer id) {
+		userRepository.subPoints(points, id);
+	}
+	/**
+	 * ユーザのポイントを取得
+	 * 
+	 * @param id
+	 * @return points
+	 * @author shoya fujisawa
+	 */
+	public Integer getPoints(Integer id) {
+		Integer points = userRepository.getPoints(id);
+		return points;
+	}
 }

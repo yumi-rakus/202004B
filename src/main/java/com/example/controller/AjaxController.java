@@ -79,4 +79,10 @@ public class AjaxController {
 
 		return updateMap;
 	}
+	
+//	@RequestMapping("/usePoint")
+//	public Integer getNewPrice(Integer newTotalPrice) {
+//		Integer userId = (Integer) session.getAttribute("userId");
+//		orderService.updatePrice(userId, newTotalPrice);
+//	}
 }

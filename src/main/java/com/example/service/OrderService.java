@@ -29,7 +29,7 @@ public class OrderService {
 
 	@Autowired
 	private OrderRepository orderRepository;
-
+	
 	/**
 	 * ショッピングカートの中身を注文する.
 	 * 
@@ -40,7 +40,7 @@ public class OrderService {
 	public void order(Order order) {
 		orderRepository.order(order);
 	}
-
+	
 	/**
 	 * ショッピングカートリストを取得する.
 	 * 
@@ -329,5 +329,9 @@ public class OrderService {
 		List<Order> distinctOrderList = new ArrayList<>(orderMap.values());
 
 		return distinctOrderList;
+	}
+	
+	public void updatePrice(Integer id,Integer newTotalPrice) {
+		orderRepository.updateTotalPrice(id, newTotalPrice);
 	}
 }
