@@ -158,3 +158,54 @@ th {
 	background: rgba(0, 0, 0, 0.7);
 	color: #fff;
 }
+
+/* お気に入りボタン関連 */
+.heart {
+	background: url(/img_curry/web_heart_animation.png);
+	background-position: left;
+	background-repeat: no-repeat;
+	height: 100px;
+	width: 100px;
+	cursor: pointer;
+	position: relative;
+	margin: 0 0 -10% 65%;
+	background-size: 2900px;
+}
+.heart:hover {
+	background-position: right;
+}
+.likeCount {
+	margin-top: 40px;
+	margin-left: 55px;
+	font-size: 14px;
+	color: #999999;
+}
+@-webkit-keyframes heartBlast {
+	0% {
+		background-position: left;
+	}
+	100% {
+		background-position: right;
+	}
+}
+
+@keyframes heartBlast {
+	0% {
+		background-position: left;
+	}
+	100% {
+		background-position: right;
+	}
+}
+
+.heartAnimation {
+	-webkit-animation-name: heartBlast;
+	animation-name: heartBlast;
+	-webkit-animation-duration: .8s;
+	animation-duration: .8s;
+	-webkit-animation-iteration-count: 1;
+	animation-iteration-count: 1;
+	-webkit-animation-timing-function: steps(28);
+	animation-timing-function: steps(28);
+	background-position: right;
+}

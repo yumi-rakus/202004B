@@ -6,14 +6,23 @@ $(function() {
 		xhr.setRequestHeader(header, token);
 	});
 
+	
 	// 1. お気に入りに登録されているかを判定
 	determineIsRegistered();
-
+	
 	// 2. お気に入りへの追加
-	$('.modal').on('click', function() {
-		addToFavorite($(this));
-	});
-
+		$('.heart').on('click', function() {
+			$(this).css('background-position', '');
+			var D = $(this).attr('rel');
+			if (D === 'like') {
+				$(this).addClass('heartAnimation'); //applying animation class
+			} else {
+				// 削除機能追加時に下を使う
+				// $(this).removeClass('heartAnimation').attr('rel', 'like');
+				// $(this).css('background-position', 'left');
+			}
+			addToFavorite();
+		});
 
 	function determineIsRegistered() {
 		$.ajax({
@@ -27,14 +36,14 @@ $(function() {
 			.done(function(status) {
 				if (status == '200') {
 					var msg = 'お気に入り追加済み';
-					$('#btnToFavorite').text(msg).attr('disabled', true);
+					$('.heart').addClass('heartAnimation'); //applying animation class
 				}
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
 				alert('リクエストに失敗' + textStatus + ':\n' + errorThrown);
 			});
 	}
-	function addToFavorite(thisElement) {
+	function addToFavorite() {
 		$.ajax({
 			type: 'POST',
 			url: '/ajax/toFavorite',
@@ -59,7 +68,7 @@ $(function() {
 
 				// モーダル操作
 				//.modalについたhrefと同じidを持つ要素を探す
-				var modalId = thisElement.attr('href');
+				var modalId = '#toFavorite';
 				var modalThis = $('body').find(modalId);
 				//bodyの最下にwrapを作る
 				$('body').append('<div id="modalWrap" />');
@@ -77,8 +86,8 @@ $(function() {
 					mdlHeight();
 				});
 				function clickAction() {
-					modalThis.fadeOut('200');
-					wrap.fadeOut('200', function() {
+					modalThis.fadeOut('100');
+					wrap.fadeOut('100', function() {
 						wrap.remove();
 					});
 				}
@@ -87,8 +96,8 @@ $(function() {
 					clickAction();
 					return false;
 				});
-				//2秒後に消える
-				setTimeout(clickAction, 2000);
+				//1.5秒後に消える
+				setTimeout(clickAction, 1500);
 				return false;
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
