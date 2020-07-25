@@ -235,7 +235,7 @@
 								<input type="hidden" id="itemId" name="itemId" th:value="${item.id}">
 								<input class="form-control btn btn-warning btn-block"
 									type="submit" id="cartInButton" value="カートに入れる">
-								<a class="modal form-control btn btn-light btn-block" href="#toFavorite" role="button">お気に入りに追加</a>
+								<a id="btnToFavorite" class="modal btn btn-light btn-block" href="#toFavorite" role="button">お気に入りに追加</a>
 								<!-- 以下がモーダルで呼ばれる -->
 								<div class="modalBox" id="toFavorite">
 									<div class="modalInner">

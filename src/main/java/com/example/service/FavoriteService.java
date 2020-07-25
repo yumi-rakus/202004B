@@ -28,4 +28,13 @@ public class FavoriteService {
     return favoriteRepository.delete(favorite);
   }
 
+  public String isRegistered(Integer userId, Integer itemId) {
+    Integer count = favoriteRepository.countByUserIdAndItemId(userId, itemId);
+    if (count == 1) {
+      return "200"; // 存在する場合
+    } else {
+      return "400"; // 存在しない場合
+    }
+  }
+
 }

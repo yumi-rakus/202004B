@@ -1,12 +1,40 @@
 $(function() {
-	$('.modal').on('click', function() {
-		var token = $("meta[name='_csrf']").attr('content');
-		var header = $("meta[name='_csrf_header']").attr('content');
-		$(document).ajaxSend(function(e, xhr, options) {
-			xhr.setRequestHeader(header, token);
-		});
+	// 0. security認証
+	var token = $("meta[name='_csrf']").attr('content');
+	var header = $("meta[name='_csrf_header']").attr('content');
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
+	});
 
-		var thisElement = $(this);
+	// 1. お気に入りに登録されているかを判定
+	determineIsRegistered();
+
+	// 2. お気に入りへの追加
+	$('.modal').on('click', function() {
+		addToFavorite($(this));
+	});
+
+
+	function determineIsRegistered() {
+		$.ajax({
+			type: 'POST',
+			url: '/ajax/isRegistered',
+			data: {
+				itemId: $('#itemId').val()
+			},
+			dataType: 'text'
+		})
+			.done(function(status) {
+				if (status == '200') {
+					var msg = 'お気に入り追加済み';
+					$('#btnToFavorite').text(msg).attr('disabled', true);
+				}
+			})
+			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+				alert('リクエストに失敗' + textStatus + ':\n' + errorThrown);
+			});
+	}
+	function addToFavorite(thisElement) {
 		$.ajax({
 			type: 'POST',
 			url: '/ajax/toFavorite',
@@ -66,5 +94,6 @@ $(function() {
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
 				alert('リクエストに失敗' + textStatus + ':\n' + errorThrown);
 			});
-	});
+		determineIsRegistered();
+	}
 });

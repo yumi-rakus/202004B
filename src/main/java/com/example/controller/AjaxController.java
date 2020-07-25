@@ -165,6 +165,15 @@ public class AjaxController {
 
 	}
 
+	@RequestMapping("/isRegistered")
+	public String isRegistered(@AuthenticationPrincipal LoginUser loginUser, Integer itemId) {
+		if (Objects.isNull(loginUser)) {
+			return "400";
+		} else {
+			return favoriteService.isRegistered(loginUser.getUser().getId(), itemId);
+		}
+	}
+
 	/**
 	 * 選択された米情報を取得する.
 	 * 

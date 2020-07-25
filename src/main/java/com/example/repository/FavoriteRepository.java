@@ -60,6 +60,12 @@ public class FavoriteRepository {
     List<Favorite> favoriteList = template.query(sql, param, FAVORITE_ROW_MAPPER);
     return favoriteList;
   }
+  public Integer countByUserIdAndItemId(Integer userId, Integer itemId) {
+    String sql = "SELECT COUNT(*) FROM favorites WHERE user_id = :userId AND item_id = :itemId";
+    SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId).addValue("itemId", itemId);
+    Integer count = template.queryForObject(sql, param, Integer.class);
+    return count;
+  }
 
   public boolean delete(Favorite favorite) {
     String sql = "DELETE FROM favorites WHERE user_id = :userId AND item_id = :itemId";
