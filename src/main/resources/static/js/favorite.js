@@ -6,23 +6,13 @@ $(function() {
 		xhr.setRequestHeader(header, token);
 	});
 
-	
 	// 1. お気に入りに登録されているかを判定
 	determineIsRegistered();
-	
+
 	// 2. お気に入りへの追加
-		$('.heart').on('click', function() {
-			$(this).css('background-position', '');
-			var D = $(this).attr('rel');
-			if (D === 'like') {
-				$(this).addClass('heartAnimation'); //applying animation class
-			} else {
-				// 削除機能追加時に下を使う
-				// $(this).removeClass('heartAnimation').attr('rel', 'like');
-				// $(this).css('background-position', 'left');
-			}
-			addToFavorite();
-		});
+	$('.heart').on('click', function() {
+		addToFavorite($(this));
+	});
 
 	function determineIsRegistered() {
 		$.ajax({
@@ -35,7 +25,6 @@ $(function() {
 		})
 			.done(function(status) {
 				if (status == '200') {
-					var msg = 'お気に入り追加済み';
 					$('.heart').addClass('heartAnimation'); //applying animation class
 				}
 			})
@@ -43,7 +32,7 @@ $(function() {
 				alert('リクエストに失敗' + textStatus + ':\n' + errorThrown);
 			});
 	}
-	function addToFavorite() {
+	function addToFavorite(elem) {
 		$.ajax({
 			type: 'POST',
 			url: '/ajax/toFavorite',
@@ -54,7 +43,6 @@ $(function() {
 		})
 			.done(function(status) {
 				// メッセージ内容の操作
-				var msg;
 				if (status == '200') {
 					msg = 'お気に入りに追加しました！';
 				} else if (status == '201') {
@@ -65,7 +53,18 @@ $(function() {
 					msg = '不正なリクエストです。';
 				}
 				$('.modalInner').text(msg);
-
+				// ハートのアニメーション
+				if (status != '401' && status != '400') {
+					elem.css('background-position', '');
+					var D = elem.attr('rel');
+					if (D === 'like') {
+						elem.addClass('heartAnimation'); //applying animation class
+					} else {
+						// 削除機能追加時に下を使う
+						// $(this).removeClass('heartAnimation').attr('rel', 'like');
+						// $(this).css('background-position', 'left');
+					}
+				}
 				// モーダル操作
 				//.modalについたhrefと同じidを持つ要素を探す
 				var modalId = '#toFavorite';
@@ -103,6 +102,5 @@ $(function() {
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
 				alert('リクエストに失敗' + textStatus + ':\n' + errorThrown);
 			});
-		determineIsRegistered();
 	}
 });
