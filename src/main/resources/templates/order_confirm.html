@@ -3,28 +3,32 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ラクラクカリー -注文確認</title>
-<link th:href="@{../css/bootstrap.css}" rel="stylesheet">
-<link th:href="@{../css/curry.css}" rel="stylesheet">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
-<link th:href="@{/css/drawer.css}" rel="stylesheet">
-<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
-<script>
-	jQuery(function($) {
-		$(document).ready(function() {
-			$('.drawer').drawer();
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ラクラクカリー -注文確認</title>
+	<link th:href="@{../css/bootstrap.css}" rel="stylesheet">
+	<link th:href="@{../css/curry.css}" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/validationEngine.jquery.min.css" type="text/css"/>
+	<link th:href="@{/css/drawer.css}" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery-1.8.2.min.js" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-ja.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+	<!-- <script src="//code.jquery.com/jquery-1.12.1.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
+	<script>
+		jQuery(function ($) {
+			$(document).ready(function () {			
+				$('.drawer').drawer();
+			});
+			$(document).ready(function() {
+				$("#orderForm").validationEngine();
+			});
 		});
-	});
-</script>
+	</script>
 <script type="text/javascript">
 	var toDoubleDigits = function(num) {
 		num += "";
@@ -120,7 +124,7 @@
 					</tr>
 					<tr th:each="orderItem:${orderItemList}">
 						<td>
-							<div class="center">
+							<div class="text-center">
 								<img th:src="@{'/img_curry/'+${orderItem.item.imagePath}}"
 									class="img-responsive img-rounded item-img-center" width="100"
 									height="300"><br> <span
@@ -181,30 +185,38 @@
 					</tr>
 				</tbody>
 			</table>
+
 		</div>
 	</div>
-
-	<div class="row">
-		<div class="col-xs-offset-2 col-xs-8">
-			<div class="form-group text-center">
-				<span id="total-price"
-					th:text="'消費税：' + ${#numbers.formatInteger(tax, 1, 'COMMA')} + '円'">消費税：8,000円</span><br>
-				<span id="total-price"
-					th:text="'ご注文金額合計：' + ${#numbers.formatInteger(totalPrice, 1, 'COMMA')} + '円'">ご注文金額合計：38,000円
-					(税込)</span>
+		<div class="row">
+			<div class="col-xs-offset-2 col-xs-8">
+				<div class="form-group text-center">
+					<form>
+					<div>
+					<input type="radio" value="1" onclick="hyoji('block')" name="selectPoints">ポイントを使用する<br>
+					<input type="radio" value="2" onclick="hyoji('none')" name="selectPoints" checked>ポイントを使用しない
+					</div>
+					</form><br>
+					<div id="selectPoints">
+					<input type="text" th:value="${points}" id="points">ポイント<br>
+					</div>
+					<span id="total-price" class="tax" th:text="'消費税：' + ${#numbers.formatInteger(tax, 1, 'COMMA')} + '円'">消費税：8,000円</span><br>
+					<span id="total-price" class="totalPrice" th:text="'ご注文金額合計：' + ${#numbers.formatInteger(totalPrice, 1, 'COMMA')} + '円'" th:value="${totalPrice}">ご注文金額合計：38,000円 (税込)</span><br>
+					<span id="total-price" class="text"></span>
+					<span id="total-price" class="newTotalPrice"></span>
+					<p></p>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- table -->
-	<form action="order_finished.html" th:action="@{/order}"
-		th:object="${orderForm}">
-
-		<div class="row">
-			<div
-				class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-				<h3 class="text-center">お届け先情報</h3>
-				<div class="h-adr">
+		<!-- table -->
+		<form action="order_finished.html" th:action="@{/order}" th:object="${orderForm}" id="orderForm" novalidate>
+			
+			<div class="row">
+				<div
+					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+					<h3 class="text-center">お届け先情報</h3>
+					<div class="h-adr">					
 					<table class="table table-striped item-list-table">
 						<tbody>
 							<tr>
@@ -212,12 +224,8 @@
 									<div class="text-center">お名前</div>
 								</td>
 								<td>
-								
-									<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-										style="color: red" class="text-center"></div> <input
-									type="text" th:field="${user.name}" class="form-control">
-								
-									
+									<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red" class="text-center"></div>
+									<input type="text" th:field="${user.name}" class="validate[required]">
 								</td>
 							</tr>
 							<tr>
@@ -225,9 +233,8 @@
 									<div class="text-center">メールアドレス</div>
 								</td>
 								<td>
-									<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-										style="color: red" class="text-center"></div> <input
-									type="text" th:field="${user.email}" class="form-control">
+									<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red" class="text-center"></div>
+									<input type="text" th:field="${user.email}" class="validate[required,custom[email]]">
 								</td>
 							</tr>
 							<tr>
@@ -235,23 +242,15 @@
 									<div class="text-center">郵便番号</div>
 								</td>
 								<td>
-								<div th:if="${#fields.hasErrors('zipcodefirst')}"
-											th:errors="*{zipcodefirst}" style="color: red"
-											class="text-center"></div>
-											<div th:if="${#fields.hasErrors('zipcodelast')}"
-											th:errors="*{zipcodelast}" style="color: red"
-											class="text-center"></div>
 									<div class="col-xs-8">
 									<div class="text-left">
 									<div class="input-group">
-										
-										<input type="text" th:field="${user.zipcodefirst}"
-											class="form-control"
-											>
-										<!--  &nbsp;&nbsp;<button>住所検索</button>-->
-										<span class="input-group-addon">-</span>
-										
-										<input type="text" th:field="${user.zipcodelast}" class="form-control" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');">
+
+									<div th:if="${#fields.hasErrors('zipcodefirst')}" th:errors="*{zipcodefirst}" style="color:red" class="text-center"></div>
+									<input type="text" th:field="${user.zipcodefirst}" class="validate[required]" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');"><!--  &nbsp;&nbsp;<button>住所検索</button>-->
+									<span class="input-group-addon">-</span>
+									<div th:if="${#fields.hasErrors('zipcodelast')}" th:errors="*{zipcodelast}" style="color:red" class="text-center"></div>
+									<input type="text" th:field="${user.zipcodelast}" class="validate[required]" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');">
 									</div>
 									</div>
 									</div>
@@ -262,10 +261,8 @@
 									<div class="text-center">住所</div>
 								</td>
 								<td>
-									<div th:if="${#fields.hasErrors('telephone')}"
-										th:errors="*{telephone}" style="color: red"
-										class="text-center"></div> <textarea type="text"
-									th:field="${user.address}" class="form-control"></textarea>
+									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red" class="text-center"></div>
+									<input type="text" th:field="${user.address}" class="validate[required]">
 								</td>
 							</tr>
 							<tr>
@@ -273,10 +270,8 @@
 									<div class="text-center">電話番号</div>
 								</td>
 								<td>
-									<div th:if="${#fields.hasErrors('telephone')}"
-										th:errors="*{telephone}" style="color: red"
-										class="text-center"></div> <input type="text"
-									th:field="${user.telephone}" class="form-control">
+									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red" class="text-center"></div>
+									<input type="text" th:field="${user.telephone}" class="validate[required]">
 								</td>
 							</tr>
 							<tr>
@@ -293,9 +288,8 @@
 												class="text-left"></div>
 												</div>
 											<div class="col-sm-6">
-												<input type="date" name="name" id="date"
-													class="form-control input-sm" th:field="*{orderDate}"
-													min="" />
+												<input type="date" name="name" id="date"							
+													class="form-control input-sm validate[required]" th:field="*{orderDate}" min=""/>
 											</div>
 
 										</div>
@@ -306,9 +300,8 @@
 											</div>
 											<div class="col-sm-12">
 												<label class="radio-inline" th:each="time:${orderTime}">
-													<input type="radio" name="responsibleCompany"
-													checked="checked" th:field="*{time}" th:value="${time.key}"
-													th:text="${time.value}" class="pull-left"><br>
+													<input type="radio"
+														name="responsibleCompany" checked="checked" th:field="*{time}" th:value="${time.key}" th:text="${time.value}" class="validate[required]"><br>												
 												</label>
 											</div>
 										<!-- 	
@@ -368,9 +361,10 @@
 								<td>
 									<div class="row">
 										<div class="col-sm-12">
-											<label class="radio-inline"> <input type="radio"
-												name="responsibleCompany" checked="checked"
-												th:field="*{paymentMethod}" value="1"> 代金引換
+											<label class="radio-inline">
+												<input type="radio"
+													name="responsibleCompany" checked="checked" th:field="*{paymentMethod}" value="1" class="validate[required]">
+												代金引換
 											</label>
 										</div>
 									</div>
@@ -383,11 +377,11 @@
 								<td align="center">
 									<div class="row">
 										<div class="col-sm-12">
-											<label class="radio-inline"> <input type="radio"
-												name="responsibleCompany" checked="checked"
-												th:field="*{paymentMethod}" value="2"> クレジットカード
-											</label><br>
-											<br>
+											<label class="radio-inline">
+												<input type="radio"
+													name="responsibleCompany" checked="checked" th:field="*{paymentMethod}" value="2" class="validate[required]">
+												クレジットカード
+											</label><br><br>
 										</div>
 									</div>
 								</td>
@@ -396,25 +390,52 @@
 					</table>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-offset-4 col-xs-4">
-				<div class="form-group">
-					<input class="form-control btn btn-warning btn-block" type="submit"
-						value="この内容で注文する" id="order">
+			<input type="hidden" name="totalPrice" th:value="${price}">
+			<input type="hidden" id="newTotalPrice" name="discountPrice" value="0">
+			<input type="hidden" id="usedPoint" name="usedPoints" value="0">
+			<div class="row">
+				<div class="col-xs-offset-4 col-xs-4">
+					<div class="form-group">
+						<input class="form-control btn btn-warning btn-block" type="submit" value="この内容で注文する" id="order">
+					</div>
 				</div>
 			</div>
 		</div>
 	</form>
 	<!-- end container -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<<!-- script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
 	<script th:src="@{../js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/order_confirm.js}"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('#order').on('click', function() {
 				$(this).prop('disabled', true);
 				$('form').submit();
+			});
+		});
+		
+		$(function() {
+			$("#selectPoints").hide();
+		});
+		
+		function hyoji(disp){
+			document.getElementById("selectPoints").style.display=disp;
+		}
+		
+		
+		$(function() {
+			$(document).on("change","#points",function() {
+				
+				var points = $("#points").val();
+				console.log(points)
+				$("#usedPoint").val(points);
+				var strTotalPrice = $(".totalPrice").text();
+				var totalPrice = strTotalPrice.replace(/[^0-9^\.]/g,"");
+				var newTotalPrice = totalPrice - points;
+				$(".text").text("ポイント利用後:")
+				$(".newTotalPrice").text(newTotalPrice.toLocaleString()+"円");
+				$("#newTotalPrice").val(newTotalPrice);
 			});
 		});
 	</script>

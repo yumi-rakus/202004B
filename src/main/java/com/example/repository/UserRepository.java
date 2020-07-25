@@ -41,7 +41,7 @@ public class UserRepository {
 		user.setZipcode(rs.getString("zipcode"));
 		user.setTelephone(rs.getString("telephone"));
 		user.setIsAdmin(rs.getBoolean("is_admin"));
-		
+		user.setPoints(rs.getInt("points"));
 		return user;
 	};
 
@@ -77,7 +77,7 @@ public class UserRepository {
 	 */
 	public User findByEmail(String email) {
 
-		String sql = "SELECT id, name, email, password, address, zipcode, telephone, is_admin FROM users WHERE email = :email";
+		String sql = "SELECT id, name, email, password, address, zipcode, telephone, is_admin, points FROM users WHERE email = :email";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
 
 		List<User> user = template.query(sql, param, USER_ROW_MAPPER);
@@ -107,12 +107,46 @@ public class UserRepository {
 	 * ユーザidからユーザ情報を取得
 	 * 
 	 * @param userId
-	 * @return shoya fujisawa
+	 * @author shoya fujisawa
 	 */
 	public User findById(Integer id) {
-		String sql = "select id,name,email,password,zipcode,address,telephone,is_admin from users where id=:id";
+		String sql = "select id,name,email,password,zipcode,address,telephone,is_admin,points from users where id=:id";
 		MapSqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		User user = template.queryForObject(sql, param, USER_ROW_MAPPER);
 		return user;
+	}
+	
+	/**
+	 * ユーザ情報にポイントを追加
+	 * 
+	 * @param points
+	 * @param id
+	 * @author shoya fujisawa
+	 */
+	public void addPoints(Integer points, Integer id) {
+		String sql = "update users set points=points+:points where id=:id";
+		MapSqlParameterSource param = new MapSqlParameterSource().addValue("points", points).addValue("id", id);
+		template.update(sql, param);
+	}
+	
+	public void subPoints(Integer points, Integer id) {
+		String sql = "update users set points=points-:points where id=:id";
+		MapSqlParameterSource param = new MapSqlParameterSource().addValue("points", points).addValue("id", id);
+		template.update(sql, param);
+	}
+	
+	/**
+	 * ユーザのポイントを取得
+	 * 
+	 * @param id
+	 * @return points
+	 * @author shoya fujisawa
+	 */
+	public Integer getPoints(Integer id) {
+		String sql = "select id,name,email,password,zipcode,address,telephone,is_admin,points from users where id=:id";
+		MapSqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		User user = template.queryForObject(sql, param, USER_ROW_MAPPER);
+		Integer points = user.getPoints();
+		return points;
 	}
 }

@@ -33,7 +33,10 @@ public class OrderForm {
 	private String telephone;
 	@NotNull(message = "支払い方法を選択してください")
 	private Integer paymentMethod;
-
+	
+	private Integer discountPrice;
+	
+	private Integer usedPoints;
 	// getter setter
 	public Integer getUserId() {
 		return userId;
@@ -129,6 +132,22 @@ public class OrderForm {
 
 	public void setPaymentMethod(Integer paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+	
+	public Integer getDiscountPrice() {
+		return discountPrice;
+	}
+
+	public void setDiscountPrice(Integer discountPrice) {
+		this.discountPrice = discountPrice;
+	}
+
+	public Integer getUsedPoints() {
+		return usedPoints;
+	}
+
+	public void setUsedPoints(Integer usedPoints) {
+		this.usedPoints = usedPoints;
 	}
 
 	// toString

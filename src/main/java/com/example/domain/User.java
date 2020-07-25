@@ -38,13 +38,16 @@ public class User {
 	/** 管理者権限 */
 	private Boolean isAdmin;
 
+	/** ポイント */
+	private Integer points;
+
 	// constructor
 	public User() {
 
 	}
 
 	public User(Integer id, String name, String email, String password, String zipcode, String zipcodefirst,
-			String zipcodelast, String address, String telephone, Boolean isAdmin) {
+			String zipcodelast, String address, String telephone, Boolean isAdmin, Integer points) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -56,6 +59,7 @@ public class User {
 		this.address = address;
 		this.telephone = telephone;
 		this.isAdmin = isAdmin;
+		this.points = points;
 	}
 
 	// getter setter
@@ -139,12 +143,21 @@ public class User {
 		this.isAdmin = isAdmin;
 	}
 
+	public Integer getPoints() {
+		return points;
+	}
+
+	public void setPoints(Integer points) {
+		this.points = points;
+	}
+
 	// toString
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", zipcode="
 				+ zipcode + ", zipcodefirst=" + zipcodefirst + ", zipcodelast=" + zipcodelast + ", address=" + address
-				+ ", telephone=" + telephone + ", isAdmin=" + isAdmin + "]";
+				+ ", telephone=" + telephone + ", isAdmin=" + isAdmin + ", points=" + points + "]";
+
 	}
 
 }

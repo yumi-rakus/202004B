@@ -53,7 +53,10 @@ public class Order {
 
 	/** 注文商品リスト */
 	private List<OrderItem> orderItemList;
-
+	
+	/** ポイント利用後金額　*/
+	private Integer discountPrice;
+	
 	// constructor
 	public Order() {
 
@@ -61,7 +64,7 @@ public class Order {
 
 	public Order(Integer id, Integer userId, Integer status, Integer totalPrice, Date orderDate, String destinationName,
 			String destinationEmail, String destinationZipcode, String destinationAddress, String destinationTel,
-			Timestamp deliveryTime, Integer paymentMethod, User user, List<OrderItem> orderItemList) {
+			Timestamp deliveryTime, Integer paymentMethod, User user, List<OrderItem> orderItemList, Integer discountPrice) {
 		super();
 		this.id = id;
 		this.userId = userId;
@@ -77,6 +80,7 @@ public class Order {
 		this.paymentMethod = paymentMethod;
 		this.user = user;
 		this.orderItemList = orderItemList;
+		this.discountPrice = discountPrice;
 	}
 
 	// getter setter
@@ -192,6 +196,14 @@ public class Order {
 		this.orderItemList = orderItemList;
 	}
 
+	public Integer getDiscountPrice() {
+		return discountPrice;
+	}
+
+	public void setDiscountPrice(Integer discountPrice) {
+		this.discountPrice = discountPrice;
+	}
+
 	// toString
 	@Override
 	public String toString() {
@@ -199,7 +211,7 @@ public class Order {
 				+ ", orderDate=" + orderDate + ", destinationName=" + destinationName + ", destinationEmail="
 				+ destinationEmail + ", destinationZipcode=" + destinationZipcode + ", destinationAddress="
 				+ destinationAddress + ", destinationTel=" + destinationTel + ", deliveryTime=" + deliveryTime
-				+ ", paymentMethod=" + paymentMethod + ", user=" + user + ", orderItemList=" + orderItemList + "]";
+				+ ", paymentMethod=" + paymentMethod + ", user=" + user + ", orderItemList=" + orderItemList + ", discountPrice=" + discountPrice +"]";
 	}
 
 	// method

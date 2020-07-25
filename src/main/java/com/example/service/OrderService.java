@@ -44,7 +44,7 @@ public class OrderService {
 	public void order(Order order) {
 		orderRepository.order(order);
 	}
-
+	
 	/**
 	 * ショッピングカートリストを取得する.
 	 * 
@@ -424,5 +424,9 @@ public class OrderService {
 	 */
 	public void updateStatusByOrderId(Integer status, Integer orderId) {
 		orderRepository.updateStatusByOrderId(status, orderId);
+	}
+	
+	public void updatePrice(Integer id,Integer newTotalPrice) {
+		orderRepository.updateTotalPrice(id, newTotalPrice);
 	}
 }
