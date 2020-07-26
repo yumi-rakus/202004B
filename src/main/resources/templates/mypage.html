@@ -79,7 +79,9 @@
 											</span>
 											<small class="small-text pull-right t16">
 												<!-- ユーザー情報の更新 -->
-												<a href="/edit-profile" class="popup-edit-account" style="color: rgb(96, 146, 223);">変更する</a>
+											  <form method="post" name="form1">
+												<a th:href="@{/edit-mypage}" class="popup-edit-account" style="color: rgb(96, 146, 223);">変更する</a>
+											  </form>
 											</small>
 										</div>
 										<div class="owner-email t16 cl-78838c pt-10 fw-normal">

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -953,6 +954,50 @@ public class CurryController {
 	 */
 	@RequestMapping("/mypage")
 	public String mypage() {
+		return "mypage";
+	}
+
+	/**
+	 * @author kohei eto マイページ一覧画面を表示
+	 */
+	@RequestMapping("/edit-mypage")
+	public String editProfile(@AuthenticationPrincipal LoginUser loginUser, Model model) {
+		User user = userService.findByidl(loginUser.getUser().getId());
+		model.addAttribute("user", user);
+
+		return "edit-mypage";
+	}
+
+	/**
+	 * @author kohei eto マイページ情報変更画面
+	 */
+	@RequestMapping("/update-mypage")
+	public String mypageEdit(UserForm userForm, String name, Model model, @AuthenticationPrincipal LoginUser loginUser) {
+
+		User user = userService.findByidl(loginUser.getUser().getId());
+		String a = user.getZipcode();
+		String b = a.replaceAll(a,"[0-9]{3}-[0-9]{4}");
+		
+		model.addAttribute("user", user);
+		
+		return "editing-mypage";
+	}
+
+	/**
+	 * @author suisu kohei eto マイページ情報変更
+	 */
+	@RequestMapping("/updating-mypage")
+	public String edit(UserForm userForm, @AuthenticationPrincipal LoginUser loginUser) {
+		
+		
+		User user2 = new User();
+		user2.setName(userForm.getName());
+		user2.setEmail(userForm.getEmail());
+		user2.setZipcode(userForm.getZipcodeFirst() + userForm.getZipcodeLast());
+		user2.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
+		user2.setTelephone(userForm.getTelephone());
+
+		userService.update(loginUser.getUser().getId(), user2);
 		return "mypage";
 	}
 
