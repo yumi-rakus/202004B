@@ -25,7 +25,7 @@ $(function() {
 		})
 			.done(function(status) {
 				if (status == '200') {
-					$('.heart').addClass('heartAnimation'); //applying animation class
+					$('.heart').addClass('liked').attr('rel', 'liked'); //applying animation class
 				}
 			})
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
@@ -42,17 +42,6 @@ $(function() {
 			dataType: 'text'
 		})
 			.done(function(status) {
-				// メッセージ内容の操作
-				if (status == '200') {
-					msg = 'お気に入りに追加しました！';
-				} else if (status == '201') {
-					msg = 'お気に入りに追加済みです。';
-				} else if (status == '401') {
-					msg = 'ログインしてください。';
-				} else if (status == '400') {
-					msg = '不正なリクエストです。';
-				}
-				$('.modalInner').text(msg);
 				// ハートのアニメーション
 				if (status != '401' && status != '400') {
 					elem.css('background-position', '');
@@ -65,7 +54,18 @@ $(function() {
 						// $(this).css('background-position', 'left');
 					}
 				}
-				// モーダル操作
+				//// モーダル操作
+				// メッセージ内容の操作
+				if (status == '200') {
+					msg = 'お気に入りに追加しました！';
+				} else if (status == '201') {
+					msg = 'お気に入りに追加済みです。';
+				} else if (status == '401') {
+					msg = 'ログインしてください。';
+				} else if (status == '400') {
+					msg = '不正なリクエストです。';
+				}
+				$('.modalInner').text(msg);
 				//.modalについたhrefと同じidを持つ要素を探す
 				var modalId = '#toFavorite';
 				var modalThis = $('body').find(modalId);

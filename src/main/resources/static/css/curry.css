@@ -174,6 +174,9 @@ th {
 .heart:hover {
 	background-position: right;
 }
+.liked {
+	background-position: right;
+}
 .likeCount {
 	margin-top: 40px;
 	margin-left: 55px;
