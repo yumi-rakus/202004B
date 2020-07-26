@@ -147,7 +147,6 @@ public class AjaxController {
 	public String ajaxToFavorite(@AuthenticationPrincipal LoginUser loginUser, Integer itemId) {
 		// 追加に成功したら200、追加できなかった場合は201を返す。
 		// 不正なリクエストの場合は400、ログインしていなかった場合は401を返す。
-		System.out.println("restcontroller");
 		if (Objects.isNull(loginUser)) {
 			return "401";
 		}
@@ -163,6 +162,24 @@ public class AjaxController {
 			return "400";
 		}
 
+	}
+
+	@RequestMapping("/deleteFromFavorite")
+	public String deleteFromFavorite(@AuthenticationPrincipal LoginUser loginUser, Integer itemId) {
+		if (Objects.isNull(loginUser)) {
+			return "401";
+		}
+		try {
+			Favorite favorite = new Favorite(loginUser.getUser().getId(), itemId, new Date());
+			boolean hasDeleted = favoriteService.delete(favorite);
+			if (hasDeleted) {
+				return "200";
+			} else {
+				return "201";
+			}
+		} catch (Exception e) {
+			return "400";
+		}
 	}
 
 	@RequestMapping("/isRegistered")
