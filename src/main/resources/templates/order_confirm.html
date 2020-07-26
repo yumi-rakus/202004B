@@ -198,12 +198,17 @@
 					</div>
 					</form><br>
 					<div id="selectPoints">
-					<input type="text" th:value="${points}" id="points">ポイント<br>
+					<span class="message" style="color:red"></span>
+					<input type="text" th:value="${points}" id="points">ポイント
+					<button id="useButton">使う</button><br>
+					<input type="hidden" th:value="${points}" id="userPoints">
 					</div>
 					<span id="total-price" class="tax" th:text="'消費税：' + ${#numbers.formatInteger(tax, 1, 'COMMA')} + '円'">消費税：8,000円</span><br>
 					<span id="total-price" class="totalPrice" th:text="'ご注文金額合計：' + ${#numbers.formatInteger(totalPrice, 1, 'COMMA')} + '円'" th:value="${totalPrice}">ご注文金額合計：38,000円 (税込)</span><br>
+					<div id="newTotalPriceDisplay">
 					<span id="total-price" class="text"></span>
 					<span id="total-price" class="newTotalPrice"></span>
+					</div>
 					<p></p>
 				</div>
 			</div>
@@ -270,7 +275,7 @@
 									<div class="text-center">電話番号</div>
 								</td>
 								<td>
-									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red" class="text-center"></div>
+									<div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red" class="text-center"></div>
 									<input type="text" th:field="${user.telephone}" class="validate[required]">
 								</td>
 							</tr>
@@ -403,10 +408,9 @@
 		</div>
 	</form>
 	<!-- end container -->
-	<<!-- script
+	<!-- script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
 	<script th:src="@{../js/bootstrap.min.js}"></script>
-	<script th:src="@{/js/order_confirm.js}"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('#order').on('click', function() {
@@ -421,21 +425,56 @@
 		
 		function hyoji(disp){
 			document.getElementById("selectPoints").style.display=disp;
+			if(disp=="none"){
+				document.getElementById("newTotalPriceDisplay").style.display=disp;
+				document.getElementById("newTotalPrice").value=0;
+				document.getElementById("usedPoint").value=0;
+				$("#order").prop('disabled', false);
+			}else{
+				document.getElementById("newTotalPriceDisplay").style.display=disp;
+			}
 		}
 		
-		
 		$(function() {
-			$(document).on("change","#points",function() {
+			$("#useButton").on("click",function() {
 				
-				var points = $("#points").val();
-				console.log(points)
+				var strPoints = $("#points").val();
+				var strUserPoints = $("#userPoints").val();
+				var points = Number(strPoints);
+				var userPoints = Number(strUserPoints)
+				console.log(points);
+				console.log(userPoints);
+				if(points==""){
+					$(".message").text("入力必須です").show();
+					$(".text").hide();
+					$(".newTotalPrice").hide();
+					$("#order").prop('disabled', true);
+				}else if(Number.isInteger(points)==false) {
+					$(".message").text("整数を半角数字で入力してください").show();
+					$(".text").hide();
+					$(".newTotalPrice").hide();
+					$("#order").prop('disabled', true);
+				}else if(points<0){
+					$(".message").text("不正な入力値です").show();
+					$(".text").hide();
+					$(".newTotalPrice").hide();
+					$("#order").prop('disabled', true);
+				}else if(userPoints<points) {
+					$(".message").text("保有ポイントを上回っています").show();		
+					$(".text").hide();
+					$(".newTotalPrice").hide();
+					$("#order").prop('disabled', true);
+				}else {
+				$("#order").prop('disabled', false);
+				$(".message").hide();
 				$("#usedPoint").val(points);
 				var strTotalPrice = $(".totalPrice").text();
 				var totalPrice = strTotalPrice.replace(/[^0-9^\.]/g,"");
 				var newTotalPrice = totalPrice - points;
-				$(".text").text("ポイント利用後:")
-				$(".newTotalPrice").text(newTotalPrice.toLocaleString()+"円");
+				$(".text").text("ポイント利用後:").show();
+				$(".newTotalPrice").text(newTotalPrice.toLocaleString()+"円").show();
 				$("#newTotalPrice").val(newTotalPrice);
+				}
 			});
 		});
 	</script>

@@ -35,7 +35,7 @@ public class OrderForm {
 	private Integer paymentMethod;
 	
 	private Integer discountPrice;
-	
+
 	private Integer usedPoints;
 	// getter setter
 	public Integer getUserId() {
