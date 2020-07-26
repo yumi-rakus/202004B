@@ -40,9 +40,9 @@ public class UserService {
 	 */
 	public User getUserById(Integer id) {
 		User user = userRepository.findById(id);
-		String zipCode=user.getZipcode();
-		String zipCodeFirst=zipCode.substring(0,3);
-		String zipCodeLast=zipCode.substring(3);
+		String zipCode = user.getZipcode();
+		String zipCodeFirst = zipCode.substring(0, 3);
+		String zipCodeLast = zipCode.substring(3);
 		user.setZipcodefirst(zipCodeFirst);
 		user.setZipcodelast(zipCodeLast);
 		return user;
@@ -62,14 +62,26 @@ public class UserService {
 	}
 
 	/**
-	 * メールアドレスからユーザ情報を取得する.
+	 * idからユーザ情報を取得する.
 	 * 
-	 * @param email メールアドレス
+	 * @param id
 	 * @return ユーザ情報
 	 * 
 	 * @author kohei eto
 	 */
-	public User findByEmail(String email) {
-		return userRepository.findByEmail(email);
+	public User findByidl(Integer id) {
+		return userRepository.findById(id);
 	}
+
+	/**
+	 * 
+	 * @param id
+	 * @param user
+	 * 
+	 * @author kohei eto
+	 */
+	public void update(Integer id, User user) {
+		userRepository.update(id, user);
+	}
+
 }

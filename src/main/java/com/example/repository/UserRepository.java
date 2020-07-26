@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.domain.User;
+import com.example.form.UserForm;
 
 /**
  * usersテーブルを操作するリポジトリ.
@@ -102,6 +103,24 @@ public class UserRepository {
 	}
 
 	/**
+	 * ユーザ情報を更新する
+	 * 
+	 * @param user ユーザ情報
+	 * @param name ユーザメールアドレス
+	 * @return true
+	 * @author kohei eto
+	 */
+	public boolean update(User user, String name) {
+		// パスワードをハッシュ化
+		String password = user.getPassword();
+		user.setPassword(passwordEncoder.encode(password));
+		String sql = "update users SET name = :name, email = :email, password = :password where email = :email";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("email", name);
+		template.update(sql, param);
+		return true;
+	}
+
+	/**
 	 * ユーザidからユーザ情報を取得
 	 * 
 	 * @param userId
@@ -112,5 +131,23 @@ public class UserRepository {
 		MapSqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		User user = template.queryForObject(sql, param, USER_ROW_MAPPER);
 		return user;
+	}
+
+	/**
+	 * 
+	 * @param userid
+	 * @param user
+	 * @author kohei eto
+	 */
+	public void update(Integer id, User user) {
+
+		/* SqlParameterSource param = new BeanPropertySqlParameterSource(user); */
+		String sql = "update users SET name = :name, email = :email, zipcode = :zipcode, address = :address, telephone = :telephone  where id = :id";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", user.getName())
+				.addValue("email", user.getEmail()).addValue("zipcode", user.getZipcode())
+				.addValue("address", user.getAddress()).addValue("telephone", user.getTelephone()).addValue("id", id);
+
+		template.update(sql, param);
 	}
 }
