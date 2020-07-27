@@ -459,6 +459,13 @@ public class CurryController {
 		
 		order.setPaymentMethod(form.getPaymentMethod());
 		order.setDiscountPrice(form.getDiscountPrice());
+		order.setTax(order.getTax());
+		order.setTaxIncludedPrice(order.getTotalPrice()+order.getTax());
+		if(form.getDiscountPrice()!=0) {
+			order.setUsedPoints(order.getTaxIncludedPrice()-order.getDiscountPrice());
+		}else if(form.getDiscountPrice()==0) {
+			order.setUsedPoints(0);
+		}
 		orderService.order(order);
 		Integer points = (int) (order.getTotalPrice()*0.05);
 		Integer usedPoints = form.getUsedPoints();

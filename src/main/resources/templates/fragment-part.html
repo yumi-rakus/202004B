@@ -41,7 +41,7 @@
 								<a th:href="@{/mypage}" class="navbar-link">
 									<span sec:authentication="principal.user.name"></span>さん&nbsp;ようこそ&nbsp;&nbsp;
 								</a>
-								<span th:text="${session.points}"></span>ポイント
+								<span th:text="${#numbers.formatInteger(session.points, 1, 'COMMA')}"></span>ポイント
 							</span>
 							<span sec:authorize="isAnonymous()">
 								<span>ゲストさん&nbsp;ようこそ&nbsp;&nbsp;</span>

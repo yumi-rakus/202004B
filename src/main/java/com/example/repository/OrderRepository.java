@@ -52,6 +52,10 @@ public class OrderRepository {
 		order.setDeliveryTime(rs.getTimestamp("delivery_time"));
 		order.setPaymentMethod(rs.getInt("payment_method"));
 		order.setDiscountPrice(rs.getInt("discount_price"));
+		order.setTax(rs.getInt("tax"));
+		order.setTaxIncludedPrice(rs.getInt("tax_included_price"));
+		order.setUsedPoints(rs.getInt("used_points"));
+		
 
 		OrderItem orderItem = new OrderItem();
 		orderItem.setId(rs.getInt("order_item_id"));
@@ -124,7 +128,8 @@ public class OrderRepository {
 	 */
 	public void order(Order order) {
 		String sql = "UPDATE orders SET status=:status,order_date=:orderDate,destination_name=:destinationName,destination_email=:destinationEmail"
-				+ ",destination_zipcode=:destinationZipcode,destination_address=:destinationAddress,destination_tel=:destinationTel,delivery_time=:deliveryTime,payment_method=:paymentMethod,discount_price=:discountPrice where user_id=:userId and status=0";
+				+ ",destination_zipcode=:destinationZipcode,destination_address=:destinationAddress,destination_tel=:destinationTel"
+				+ ",delivery_time=:deliveryTime,payment_method=:paymentMethod,discount_price=:discountPrice,tax=:tax,tax_included_price=:taxIncludedPrice,used_points=:usedPoints where user_id=:userId and status=0";
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("status", order.getStatus())
 				.addValue("orderDate", order.getOrderDate()).addValue("destinationName", order.getDestinationName())
@@ -135,7 +140,10 @@ public class OrderRepository {
 				.addValue("deliveryTime", order.getDeliveryTime())
 				.addValue("paymentMethod", order.getPaymentMethod())
 				.addValue("discountPrice", order.getDiscountPrice())
-				.addValue("userId", order.getUserId());
+				.addValue("userId", order.getUserId())
+				.addValue("tax", order.getTax())
+				.addValue("taxIncludedPrice", order.getTaxIncludedPrice())
+				.addValue("usedPoints", order.getUsedPoints());
 		template.update(sql, param);
 	}
 
@@ -165,6 +173,9 @@ public class OrderRepository {
 		sql.append("ord.delivery_time AS delivery_time, ");
 		sql.append("ord.payment_method AS payment_method, ");
 		sql.append("ord.discount_price AS discount_price, ");
+		sql.append("ord.tax AS tax, ");
+		sql.append("ord.tax_included_price AS tax_included_price, ");
+		sql.append("ord.used_points AS used_points, ");
 		sql.append("orditem.id AS order_item_id, ");
 		sql.append("items.id AS item_id, ");
 		sql.append("ord.id AS order_id, ");
@@ -245,6 +256,9 @@ public class OrderRepository {
 		sql.append("ord.delivery_time AS delivery_time, ");
 		sql.append("ord.payment_method AS payment_method, ");
 		sql.append("ord.discount_price AS discount_price, ");
+		sql.append("ord.tax AS tax, ");
+		sql.append("ord.tax_included_price AS tax_included_price, ");
+		sql.append("ord.used_points AS used_points, ");
 		sql.append("orditem.id AS order_item_id, ");
 		sql.append("items.id AS item_id, ");
 		sql.append("ord.id AS order_id, ");
@@ -463,6 +477,9 @@ public class OrderRepository {
 		sql.append("ord.delivery_time AS delivery_time, ");
 		sql.append("ord.payment_method AS payment_method, ");
 		sql.append("ord.discount_price AS discount_price, ");
+		sql.append("ord.tax AS tax, ");
+		sql.append("ord.tax_included_price AS tax_included_price, ");
+		sql.append("ord.used_points AS used_points, ");
 		sql.append("orditem.id AS order_item_id, ");
 		sql.append("items.id AS item_id, ");
 		sql.append("ord.id AS order_id, ");
@@ -558,6 +575,10 @@ public class OrderRepository {
 		sql.append("ord.destination_tel AS destination_tel, ");
 		sql.append("ord.delivery_time AS delivery_time, ");
 		sql.append("ord.payment_method AS payment_method, ");
+		sql.append("ord.discount_price AS discount_price, ");
+		sql.append("ord.tax AS tax, ");
+		sql.append("ord.tax_included_price AS tax_included_price, ");
+		sql.append("ord.used_points AS used_points, ");
 		sql.append("orditem.id AS order_item_id, ");
 		sql.append("items.id AS item_id, ");
 		sql.append("ord.id AS order_id, ");
