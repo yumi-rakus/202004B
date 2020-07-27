@@ -75,6 +75,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 			session.setAttribute("userId", user.getId());
 		}
+		
+		if(user!=null) {
+			session.setAttribute("points", user.getPoints());
+		}
 		// 権限付与の例
 		Collection<GrantedAuthority> authorityList = new ArrayList<>();
 

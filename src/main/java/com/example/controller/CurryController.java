@@ -130,11 +130,6 @@ public class CurryController {
 		itemMap.put(3, "人気順");
 		model.addAttribute("itemMap", itemMap);
 
-		if (session.getAttribute("userId") != null) {
-			Integer userId = (Integer) session.getAttribute("userId");
-			Integer points = userService.getPoints(userId);
-			session.setAttribute("points", points);
-		}
 		/*
 		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
 		 * itemList);
