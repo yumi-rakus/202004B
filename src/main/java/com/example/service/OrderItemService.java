@@ -52,7 +52,7 @@ public class OrderItemService {
 	 * @author yumi takahashi
 	 */
 	public void deleteByOrderItemId(Integer orderItemId) {
-		orderItemRepository.deleteByItemId(orderItemId);
+		orderItemRepository.deleteByOrderItemId(orderItemId);
 	}
 
 	/**
