@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.domain.User;
-import com.example.form.UserForm;
 
 /**
  * usersテーブルを操作するリポジトリ.
@@ -135,7 +134,6 @@ public class UserRepository {
 		return user;
 	}
 
-	
 	/**
 	 * ユーザ情報にポイントを追加
 	 * 
@@ -148,13 +146,13 @@ public class UserRepository {
 		MapSqlParameterSource param = new MapSqlParameterSource().addValue("points", points).addValue("id", id);
 		template.update(sql, param);
 	}
-	
+
 	public void subPoints(Integer points, Integer id) {
 		String sql = "update users set points=points-:points where id=:id";
 		MapSqlParameterSource param = new MapSqlParameterSource().addValue("points", points).addValue("id", id);
 		template.update(sql, param);
 	}
-	
+
 	/**
 	 * ユーザのポイントを取得
 	 * 
@@ -169,7 +167,6 @@ public class UserRepository {
 		Integer points = user.getPoints();
 		return points;
 	}
-
 
 	/**
 	 * 
