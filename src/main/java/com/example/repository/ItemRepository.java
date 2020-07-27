@@ -61,31 +61,13 @@ public class ItemRepository {
 	}
 
 	/**
-	 * (削除フラグのたっていない)全商品情報を取得する.
-	 * 
-	 * @return 商品情報一覧
-	 * 
-	 * @author kohei eto
-	 */
-	public List<Item> findAllNonDeleted() {
-
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m";
-
-		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
-
-		return itemlist;
-	}
-
-	/**
-	 * 商品情報を商品名で曖昧検索し、検索された商品情報を取得する.
+	 * // あいまい検索で価格安い順に取得
 	 * 
 	 * @param name 検索キー
 	 * @return 検索された商品情報
 	 * 
 	 * @author kohei eto
 	 */
-
-	// あいまい検索で価格安い順に取得
 	public List<Item> findByItemName(String name) {
 		String sql = "select * from items where name like :name and deleted = false order by price_m";
 
@@ -97,7 +79,14 @@ public class ItemRepository {
 
 	}
 
-	// あいまい検索で価格高い順に取得
+	/**
+	 * あいまい検索で価格高い順に取得
+	 * 
+	 * @param name 検索キー
+	 * @return 検索された商品情報
+	 * 
+	 * @author kohei eto
+	 */
 	public List<Item> findByItemName2(String name) {
 		String sql = "select * from items where name like :name and deleted = false  order by price_m desc";
 
@@ -108,7 +97,14 @@ public class ItemRepository {
 		return itemList;
 	}
 
-	// あいまい検索でid順で取得
+	/**
+	 * あいまい検索でid順に取得
+	 * 
+	 * @param name 検索キー
+	 * @return 検索された商品情報
+	 * 
+	 * @author kohei eto
+	 */
 	public List<Item> findByItemName3(String name) {
 		String sql = "select * from items where name like :name and deleted = false  order by id";
 
@@ -119,7 +115,13 @@ public class ItemRepository {
 		return itemList;
 	}
 
-	// 全商品情報を価格安い順で取得
+	/**
+	 * 全商品情報を価格安い順に取得
+	 * 
+	 * @return 商品情報一覧
+	 * 
+	 * @author kohei eto
+	 */
 	public List<Item> findAllByPrice() {
 
 		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m, name";
@@ -129,7 +131,13 @@ public class ItemRepository {
 		return itemlist;
 	}
 
-	// 全商品情報を価格高い順で取得
+	/**
+	 * 全商品情報を価格高い順に取得
+	 * 
+	 * @return 商品情報一覧
+	 * 
+	 * @author kohei eto
+	 */
 	public List<Item> findAllByPrice2() {
 
 		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m desc, name";
@@ -139,7 +147,13 @@ public class ItemRepository {
 		return itemlist;
 	}
 
-	// 全商品情報をid順で取得
+	/**
+	 * 全商品情報をid順に取得
+	 * 
+	 * @return 商品情報一覧
+	 * 
+	 * @author kohei eto
+	 */
 	public List<Item> findAllByPrice3() {
 
 		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by id, name";
