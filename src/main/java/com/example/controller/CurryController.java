@@ -104,10 +104,12 @@ public class CurryController {
 		return new ItemSearchForm();
 	}
 
+//////////////////////////////////////////////
+//// 商品一覧を表示, 商品検索を行う
+//////////////////////////////////////////////
 	/**
-	 * 商品一覧を表示
+	 * 商品一覧を表示 商品検索を行う
 	 * 
-	 * @param model モデル
 	 * @return 商品一覧画面
 	 * 
 	 * @author kohei eto
@@ -217,36 +219,6 @@ public class CurryController {
 			}
 		}
 		return pageNumbers;
-	}
-
-	//////////////////////////////////////////////
-	//// 商品の検索
-	//////////////////////////////////////////////
-	/**
-	 * 商品検索を行う
-	 * 
-	 * @param searchName 検索する名前
-	 * @param model      モデル
-	 * @return 検索された商品一覧画面
-	 * 
-	 * @author kohei eto
-	 */
-	@RequestMapping("/search")
-	public String findByItemName(String searchName, Model model) {
-		if (Objects.isNull(searchName)) { // 検索文字列が空なら全件検索
-			List<Item> itemList = itemService.findAllNonDeleted();
-			model.addAttribute("itemList", itemList);
-		} else { // 検索文字列があれば曖昧検索
-			List<Item> itemList = itemService.findByItemName(searchName);
-			if (itemList.size() == 0) {
-				String no = "該当する商品がありません";
-				model.addAttribute("no", no);
-			}
-
-			model.addAttribute("itemList", itemList);
-		}
-
-		return "item_list_curry";
 	}
 
 	//////////////////////////////////////////////

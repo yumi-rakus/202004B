@@ -122,21 +122,21 @@ alert('半角数字を入力してください') } }); */ -->
 								<td><span th:text="${user.telephone}">090-0000-0000</span>
 								</td>
 							</tr>
+
+						</table>
+						<form align="center" th:action="@{/update-mypage}">
+							<button>ユーザ情報を変更する</button>
+						</form>
 					</fieldset>
 
 				</div>
-				
 
 			</div>
 		</div>
 	</div>
 
-	</div>
-	
-	
-	<form th:action="@{/update-mypage}">
-					<button>ユーザ情報を変更する</button>
-				</form>
+
+
 	<!-- end container -->
 	<!-- 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -146,6 +146,5 @@ alert('半角数字を入力してください') } }); */ -->
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 
 	<script th:src="@{/js/ajaxzip3.js}" charset="UTF-8"></script>
-
 </body>
 </html>
