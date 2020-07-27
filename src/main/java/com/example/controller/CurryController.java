@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -105,9 +104,6 @@ public class CurryController {
 		return new ItemSearchForm();
 	}
 
-	//////////////////////////////////////////////
-	//// 商品一覧画面の表示
-	//////////////////////////////////////////////
 	/**
 	 * 商品一覧を表示
 	 * 
@@ -118,6 +114,7 @@ public class CurryController {
 	 */
 	@RequestMapping("")
 	public String index(Model model, Integer page, ItemSearchForm form) {
+
 		/*
 		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
 		 * itemList); // オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納 StringBuilder
@@ -125,17 +122,18 @@ public class CurryController {
 		 * model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
 		 */
 
-		Map<Integer, String> itemMap = new LinkedHashMap<>();
-		itemMap.put(1, "価格安い順");
-		itemMap.put(2, "価格高い順");
-		itemMap.put(3, "人気順");
+		Map<String, String> itemMap = new LinkedHashMap<>();
+		itemMap.put("1", "価格安い順");
+		itemMap.put("2", "価格高い順");
+		itemMap.put("3", "人気順");
 		model.addAttribute("itemMap", itemMap);
-		
-		if(session.getAttribute("userId")!=null) {
-		Integer userId = (Integer)session.getAttribute("userId");
-		Integer points = userService.getPoints(userId);
-		session.setAttribute("points", points);
+
+		if (session.getAttribute("userId") != null) {
+			Integer userId = (Integer) session.getAttribute("userId");
+			Integer points = userService.getPoints(userId);
+			session.setAttribute("points", points);
 		}
+
 		/*
 		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
 		 * itemList);
@@ -151,127 +149,60 @@ public class CurryController {
 
 		// 検索文字列があれば曖昧検索
 
+		List<Item> itemList = new ArrayList<>();
+
 		try {
-			if (form.getId() == 1) {
+			if (form.getId().equals("1")) {
 				if (form.getSearchName() == null) {
 					// 検索文字列が空なら全件検索
-					List<Item> itemList = itemService.findAllNonDeleted();
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
+					itemList = itemService.findAllByPrice();
 				} else {
-					List<Item> itemList = itemService.findByItemName(form.getSearchName());
+					itemList = itemService.findByItemName(form.getSearchName());
 					if (itemList.size() == 0) {
 						String no = "該当する商品がありません";
 						model.addAttribute("no", no);
-						List<Item> itemList2 = itemService.findAllNonDeleted();
-						// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-						Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
-						model.addAttribute("itemPage", itemPage);
-						// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-						List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-						model.addAttribute("pageNumbers", pageNumbers);
-					} else {
-						// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-						Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-						model.addAttribute("itemPage", itemPage);
-						// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-						List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-						model.addAttribute("pageNumbers", pageNumbers);
+						itemList = itemService.findAllByPrice();
 					}
 				}
 
-			} else if (form.getId() == 2) {
+			} else if (form.getId().equals("2")) {
 				if (form.getSearchName() == null) {
 					// 検索文字列が空なら全件検索
-					List<Item> itemList = itemService.findAllByPrice2();
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
+					itemList = itemService.findAllByPrice2();
 				}
-
-				List<Item> itemList = itemService.findByItemName2(form.getSearchName());
+				itemList = itemService.findByItemName2(form.getSearchName());
 				if (itemList.size() == 0) {
 					String no = "該当する商品がありません";
 					model.addAttribute("no", no);
-					List<Item> itemList2 = itemService.findAllByPrice2();
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
-				} else {
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
+					itemList = itemService.findAllByPrice2();
+
 				}
 
-			} else if (form.getId() == 3) {
+			} else if (form.getId().equals("3")) {
 				if (form.getSearchName() == null) {
 					// 検索文字列が空なら全件検索
-					List<Item> itemList = itemService.findAllByPrice3();
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
+					itemList = itemService.findAllByPrice3();
 				}
-
-				List<Item> itemList = itemService.findByItemName3(form.getSearchName());
+				itemList = itemService.findByItemName3(form.getSearchName());
 				if (itemList.size() == 0) {
 					String no = "該当する商品がありません";
 					model.addAttribute("no", no);
-					List<Item> itemList2 = itemService.findAllByPrice3();
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
-				} else {
-					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-					model.addAttribute("itemPage", itemPage);
-					// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-					List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-					model.addAttribute("pageNumbers", pageNumbers);
+					itemList = itemService.findAllByPrice3();
 				}
-
 			}
 
 		} catch (NullPointerException e) {
-			List<Item> itemList = itemService.findAllByPrice3();
-			if (itemList.size() == 0) {
-				String no = "該当する商品がありません";
-				model.addAttribute("no", no);
-				List<Item> itemList2 = itemService.findAllNonDeleted();
-				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
-				model.addAttribute("itemPage", itemPage);
-				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-				model.addAttribute("pageNumbers", pageNumbers);
-			} else {
-				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
-				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
-				model.addAttribute("itemPage", itemPage);
-				// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-				List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-				model.addAttribute("pageNumbers", pageNumbers);
-			}
-
+			itemList = itemService.findAllByPrice();
 		}
+
+		model.addAttribute("searchName", form.getSearchName());
+		model.addAttribute("id", form.getId());
+		// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
+		Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
+		model.addAttribute("itemPage", itemPage);
+		// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
+		List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
+		model.addAttribute("pageNumbers", pageNumbers);
 
 		return "item_list_curry";
 	}
@@ -395,7 +326,7 @@ public class CurryController {
 			Integer points = userService.getPoints(userId);
 			model.addAttribute("user", user);
 			model.addAttribute("orderTime", orderTimeMap);
-			model.addAttribute("points",points);
+			model.addAttribute("points", points);
 			return "order_confirm";
 		} catch (IndexOutOfBoundsException e) {
 			return showCartList(model);
@@ -456,13 +387,13 @@ public class CurryController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		order.setPaymentMethod(form.getPaymentMethod());
 		order.setDiscountPrice(form.getDiscountPrice());
 		orderService.order(order);
-		Integer points = (int) (order.getTotalPrice()*0.05);
+		Integer points = (int) (order.getTotalPrice() * 0.05);
 		Integer usedPoints = form.getUsedPoints();
-		Integer userId = (Integer)session.getAttribute("userId");
+		Integer userId = (Integer) session.getAttribute("userId");
 		userService.addPoints(points, userId);
 		userService.subPoints(usedPoints, userId);
 		sendMailService.sendMail(userId);
@@ -476,7 +407,7 @@ public class CurryController {
 	 */
 	@RequestMapping("/orderFinished")
 	public String finished() {
-		Integer userId = (Integer)session.getAttribute("userId");
+		Integer userId = (Integer) session.getAttribute("userId");
 		Integer points = userService.getPoints(userId);
 		session.setAttribute("points", points);
 		return "order_finished";
@@ -972,14 +903,15 @@ public class CurryController {
 	 * @author kohei eto マイページ情報変更画面
 	 */
 	@RequestMapping("/update-mypage")
-	public String mypageEdit(UserForm userForm, String name, Model model, @AuthenticationPrincipal LoginUser loginUser) {
+	public String mypageEdit(UserForm userForm, String name, Model model,
+			@AuthenticationPrincipal LoginUser loginUser) {
 
 		User user = userService.findByidl(loginUser.getUser().getId());
 		String a = user.getZipcode();
-		String b = a.replaceAll(a,"[0-9]{3}-[0-9]{4}");
-		
+		String b = a.replaceAll("[0-9]{3}[0-9]{4}", "[0-9]{3}-[0-9]{4}");
+		System.out.println(b);
 		model.addAttribute("user", user);
-		
+
 		return "editing-mypage";
 	}
 
@@ -988,8 +920,7 @@ public class CurryController {
 	 */
 	@RequestMapping("/updating-mypage")
 	public String edit(UserForm userForm, @AuthenticationPrincipal LoginUser loginUser) {
-		
-		
+
 		User user2 = new User();
 		user2.setName(userForm.getName());
 		user2.setEmail(userForm.getEmail());
@@ -998,7 +929,8 @@ public class CurryController {
 		user2.setTelephone(userForm.getTelephone());
 
 		userService.update(loginUser.getUser().getId(), user2);
-		return "mypage";
+
+		return "login";
 	}
 
 	//////////////////////////////////////////////

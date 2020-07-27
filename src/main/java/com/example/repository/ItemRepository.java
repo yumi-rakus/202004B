@@ -122,7 +122,7 @@ public class ItemRepository {
 	// 全商品情報を価格安い順で取得
 	public List<Item> findAllByPrice() {
 
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m";
+		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m, name";
 
 		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
 
@@ -132,7 +132,7 @@ public class ItemRepository {
 	// 全商品情報を価格高い順で取得
 	public List<Item> findAllByPrice2() {
 
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m desc";
+		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m desc, name";
 
 		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
 
@@ -142,7 +142,7 @@ public class ItemRepository {
 	// 全商品情報をid順で取得
 	public List<Item> findAllByPrice3() {
 
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by id";
+		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by id, name";
 
 		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
 
