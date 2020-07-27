@@ -42,6 +42,8 @@ public class ToppingRepository {
 	 * トッピング情報を全件取得する.
 	 * 
 	 * @return トッピング情報全件
+	 * 
+	 * @author yumi takahashi
 	 */
 	public List<Topping> findAll() {
 

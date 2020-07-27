@@ -40,17 +40,6 @@ public class ItemService {
 	}
 
 	/**
-	 * (削除フラグのたっていない)全商品情報を取得する.
-	 * 
-	 * @return 商品情報一覧
-	 * 
-	 * @author kohei eto
-	 */
-	public List<Item> findAllNonDeleted() {
-		return itemRepository.findAllNonDeleted();
-	}
-
-	/**
 	 * 商品の名前で曖昧検索する.
 	 * 
 	 * @param name 検索キー
