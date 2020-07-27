@@ -104,8 +104,11 @@
                     <span th:case="9" th:text="キャンセル"></span>
                     <span th:case="*">NoN</span>
                     </span>
-                  </li>
-                  <li class="list-group-item">合計金額：<span th:text="*{#numbers.formatInteger(totalPrice, 1, 'COMMA')}">2,380</span>円(税抜)</li>
+									</li>
+									<hr>
+                  <li class="list-group-item">合計金額(税込)：<span th:text="*{#numbers.formatInteger(taxIncludedPrice, 1, 'COMMA')}">2,380</span>円</li>
+                  <li class="list-group-item">利用ポイント&nbsp;&nbsp;：<span th:text="*{#numbers.formatInteger(usedPoints, 1, 'COMMA')}">2,380</span>ポイント</li>
+                  <li class="list-group-item"><strong>ご請求額(税込)：<span th:text="*{#numbers.formatInteger(discountPrice, 1, 'COMMA')}">2,380</span>円</strong></li>
                 </ul>
               </td>
               <td th:each="orderItem : *{orderItemList}" th:object="${orderItem}">
