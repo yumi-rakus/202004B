@@ -149,7 +149,7 @@ public class CurryController {
 			if (form.getId() == 1) {
 				if (form.getSearchName() == null) {
 					// 検索文字列が空なら全件検索
-					List<Item> itemList = itemService.findAllNonDeleted();
+					List<Item> itemList = itemService.findAllByPrice();
 					// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
 					Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
 					model.addAttribute("itemPage", itemPage);
@@ -161,7 +161,7 @@ public class CurryController {
 					if (itemList.size() == 0) {
 						String no = "該当する商品がありません";
 						model.addAttribute("no", no);
-						List<Item> itemList2 = itemService.findAllNonDeleted();
+						List<Item> itemList2 = itemService.findAllByPrice();
 						// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
 						Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
 						model.addAttribute("itemPage", itemPage);
@@ -245,11 +245,11 @@ public class CurryController {
 			}
 
 		} catch (NullPointerException e) {
-			List<Item> itemList = itemService.findAllByPrice3();
+			List<Item> itemList = itemService.findAllByPrice();
 			if (itemList.size() == 0) {
 				String no = "該当する商品がありません";
 				model.addAttribute("no", no);
-				List<Item> itemList2 = itemService.findAllNonDeleted();
+				List<Item> itemList2 = itemService.findAllByPrice();
 				// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
 				Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList2);
 				model.addAttribute("itemPage", itemPage);
