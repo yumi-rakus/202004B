@@ -898,25 +898,6 @@ public class CurryController {
 		return "admin_rice_list";
 	}
 
-	// 管理者をuserテーブルにinsertするための一時的なメソッド
-	@RequestMapping("/insertAdmin")
-	public String insertAdmin() {
-
-		User admin = new User();
-
-		admin.setName("admin");
-		admin.setEmail("admin@admin");
-		admin.setZipcode("1112222");
-		admin.setAddress("admin住所");
-		admin.setTelephone("09011112222");
-		admin.setPassword("admin");
-		admin.setIsAdmin(true);
-
-		userService.insert(admin);
-
-		return toLogin();
-	}
-
 	//////////////////////////////////////////////
 	//// ログイン・ログアウト機能
 	//////////////////////////////////////////////
