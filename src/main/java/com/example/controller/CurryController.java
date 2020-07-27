@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -130,11 +129,11 @@ public class CurryController {
 		itemMap.put(2, "価格高い順");
 		itemMap.put(3, "人気順");
 		model.addAttribute("itemMap", itemMap);
-		
-		if(session.getAttribute("userId")!=null) {
-		Integer userId = (Integer)session.getAttribute("userId");
-		Integer points = userService.getPoints(userId);
-		session.setAttribute("points", points);
+
+		if (session.getAttribute("userId") != null) {
+			Integer userId = (Integer) session.getAttribute("userId");
+			Integer points = userService.getPoints(userId);
+			session.setAttribute("points", points);
 		}
 		/*
 		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
@@ -395,7 +394,7 @@ public class CurryController {
 			Integer points = userService.getPoints(userId);
 			model.addAttribute("user", user);
 			model.addAttribute("orderTime", orderTimeMap);
-			model.addAttribute("points",points);
+			model.addAttribute("points", points);
 			return "order_confirm";
 		} catch (IndexOutOfBoundsException e) {
 			return showCartList(model);
@@ -456,20 +455,20 @@ public class CurryController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		order.setPaymentMethod(form.getPaymentMethod());
 		order.setDiscountPrice(form.getDiscountPrice());
 		order.setTax(order.getTax());
-		order.setTaxIncludedPrice(order.getTotalPrice()+order.getTax());
-		if(form.getDiscountPrice()!=0) {
-			order.setUsedPoints(order.getTaxIncludedPrice()-order.getDiscountPrice());
-		}else if(form.getDiscountPrice()==0) {
+		order.setTaxIncludedPrice(order.getTotalPrice() + order.getTax());
+		if (form.getDiscountPrice() != 0) {
+			order.setUsedPoints(order.getTaxIncludedPrice() - order.getDiscountPrice());
+		} else if (form.getDiscountPrice() == 0) {
 			order.setUsedPoints(0);
 		}
 		orderService.order(order);
-		Integer points = (int) (order.getTotalPrice()*0.05);
+		Integer points = (int) (order.getTotalPrice() * 0.05);
 		Integer usedPoints = form.getUsedPoints();
-		Integer userId = (Integer)session.getAttribute("userId");
+		Integer userId = (Integer) session.getAttribute("userId");
 		userService.addPoints(points, userId);
 		userService.subPoints(usedPoints, userId);
 		sendMailService.sendMail(userId);
@@ -483,7 +482,7 @@ public class CurryController {
 	 */
 	@RequestMapping("/orderFinished")
 	public String finished() {
-		Integer userId = (Integer)session.getAttribute("userId");
+		Integer userId = (Integer) session.getAttribute("userId");
 		Integer points = userService.getPoints(userId);
 		session.setAttribute("points", points);
 		return "order_finished";
@@ -979,14 +978,15 @@ public class CurryController {
 	 * @author kohei eto マイページ情報変更画面
 	 */
 	@RequestMapping("/update-mypage")
-	public String mypageEdit(UserForm userForm, String name, Model model, @AuthenticationPrincipal LoginUser loginUser) {
+	public String mypageEdit(UserForm userForm, String name, Model model,
+			@AuthenticationPrincipal LoginUser loginUser) {
 
 		User user = userService.findByidl(loginUser.getUser().getId());
-		String a = user.getZipcode();
-		String b = a.replaceAll(a,"[0-9]{3}-[0-9]{4}");
-		
+		// String a = user.getZipcode();
+		// String b = a.replaceAll(a, "[0-9]{3}-[0-9]{4}");
+
 		model.addAttribute("user", user);
-		
+
 		return "editing-mypage";
 	}
 
@@ -995,8 +995,7 @@ public class CurryController {
 	 */
 	@RequestMapping("/updating-mypage")
 	public String edit(UserForm userForm, @AuthenticationPrincipal LoginUser loginUser) {
-		
-		
+
 		User user2 = new User();
 		user2.setName(userForm.getName());
 		user2.setEmail(userForm.getEmail());
