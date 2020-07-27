@@ -297,7 +297,7 @@ public class CurryController {
 	@RequestMapping("/search")
 	public String findByItemName(String searchName, Model model) {
 		if (Objects.isNull(searchName)) { // 検索文字列が空なら全件検索
-			List<Item> itemList = itemService.findAllNonDeleted();
+			List<Item> itemList = itemService.findAllByPrice();
 			model.addAttribute("itemList", itemList);
 		} else { // 検索文字列があれば曖昧検索
 			List<Item> itemList = itemService.findByItemName(searchName);
