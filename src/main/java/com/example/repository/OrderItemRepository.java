@@ -66,7 +66,7 @@ public class OrderItemRepository {
 	 * 
 	 * @author yumi takahashi
 	 */
-	public void deleteByItemId(Integer orderItemId) {
+	public void deleteByOrderItemId(Integer orderItemId) {
 
 		StringBuilder sql = new StringBuilder();
 
