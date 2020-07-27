@@ -239,7 +239,7 @@
 								</td>
 								<td>
 									<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red" class="text-center"></div>
-									<input type="text" th:field="${user.email}" class="validate[required,custom[email]]">
+									<input type="text" th:field="${user.email}" class="validate[required]">
 								</td>
 							</tr>
 							<tr>

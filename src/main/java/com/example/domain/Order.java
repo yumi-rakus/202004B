@@ -57,14 +57,24 @@ public class Order {
 	/** ポイント利用後金額　*/
 	private Integer discountPrice;
 	
+	/** 消費税 */
+	private Integer tax;
+	
+	/** 税込金額 */
+	private Integer taxIncludedPrice;
+	
+	/** 利用ポイント */
+	private Integer usedPoints;
+	
 	// constructor
 	public Order() {
 
 	}
-
+	
 	public Order(Integer id, Integer userId, Integer status, Integer totalPrice, Date orderDate, String destinationName,
 			String destinationEmail, String destinationZipcode, String destinationAddress, String destinationTel,
-			Timestamp deliveryTime, Integer paymentMethod, User user, List<OrderItem> orderItemList, Integer discountPrice) {
+			Timestamp deliveryTime, Integer paymentMethod, User user, List<OrderItem> orderItemList, Integer discountPrice,
+			Integer tax, Integer taxIncludedPrice, Integer usedPoints) {
 		super();
 		this.id = id;
 		this.userId = userId;
@@ -81,8 +91,11 @@ public class Order {
 		this.user = user;
 		this.orderItemList = orderItemList;
 		this.discountPrice = discountPrice;
+		this.tax = tax;
+		this.taxIncludedPrice = taxIncludedPrice;
+		this.usedPoints = usedPoints;
 	}
-
+	
 	// getter setter
 	public Integer getId() {
 		return id;
@@ -203,6 +216,26 @@ public class Order {
 	public void setDiscountPrice(Integer discountPrice) {
 		this.discountPrice = discountPrice;
 	}
+	
+	public void setTax(Integer tax) {
+		this.tax = tax;
+	}
+
+	public Integer getTaxIncludedPrice() {
+		return taxIncludedPrice;
+	}
+
+	public void setTaxIncludedPrice(Integer taxIncludedPrice) {
+		this.taxIncludedPrice = taxIncludedPrice;
+	}
+
+	public Integer getUsedPoints() {
+		return usedPoints;
+	}
+
+	public void setUsedPoints(Integer usedPoints) {
+		this.usedPoints = usedPoints;
+	}
 
 	// toString
 	@Override
@@ -211,7 +244,8 @@ public class Order {
 				+ ", orderDate=" + orderDate + ", destinationName=" + destinationName + ", destinationEmail="
 				+ destinationEmail + ", destinationZipcode=" + destinationZipcode + ", destinationAddress="
 				+ destinationAddress + ", destinationTel=" + destinationTel + ", deliveryTime=" + deliveryTime
-				+ ", paymentMethod=" + paymentMethod + ", user=" + user + ", orderItemList=" + orderItemList + ", discountPrice=" + discountPrice +"]";
+				+ ", paymentMethod=" + paymentMethod + ", user=" + user + ", orderItemList=" + orderItemList 
+				+ ", discountPrice=" + discountPrice + ", tax=" + tax + ", newTotalPrice=" + taxIncludedPrice + ", usedPoints=" + usedPoints +"]";
 	}
 
 	// method
