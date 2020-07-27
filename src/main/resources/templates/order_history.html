@@ -42,14 +42,12 @@
 				<span sec:authorize="isAuthenticated()">
 					<li class="side-menu"><a th:href="@{/mypage}" class="side-content">マイページ</a></li>
 				</span>
-				<li class="side-menu"><a href="item_list_curry.html" th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;
-				</li>
-				<li class="side-menu"><a href="cart_list.html" th:href="@{/showCartList}"
-						class="side-content">ショッピングカート</a>&nbsp;&nbsp; </li>
-				<li class="side-menu"><a href="order_history.html" th:href="@{/showOrderHistory}"
-						class="side-content">注文履歴</a>&nbsp;&nbsp; </li>
-				<li class="side-menu"><a th:href="@{/pdf/allergy.pdf}" target="_blank"
-						class="side-content">アレルギー情報</a>&nbsp;&nbsp; </li>
+				<li class="side-menu"><a href="item_list_curry.html"
+					th:href="@{/edit-mypage}" class="side-content">ユーザ情報変更</a>&nbsp;&nbsp;</li>
+				<li class="side-menu"><a href="cart_list.html"
+					th:href="@{/favorite}" class="side-content">お気に入り</a>&nbsp;&nbsp;</li>
+				<li class="side-menu"><a th:href="@{/pdf/allergy.pdf}"
+					target="_blank" class="side-content">アレルギー情報</a>&nbsp;&nbsp;</li>
 			</ul>
 		</nav>
 		<span th:include="fragment-part::frag_nav"></span>
@@ -106,6 +104,9 @@
                     </span>
                   </li>
                   <li class="list-group-item">合計金額：<span th:text="*{#numbers.formatInteger(totalPrice, 1, 'COMMA')}">2,380</span>円(税抜)</li>
+                  <li class="list-group-item">税込金額：<span th:text="*{#numbers.formatInteger(taxIncludedPrice, 1, 'COMMA')}">2,380</span>円</li>           
+                  <li th:unless="*{usedPoints} eq 0" class="list-group-item">ポイント利用金額：<span th:text="*{#numbers.formatInteger(discountPrice, 1, 'COMMA')}">2,380</span>円(税込)</li>
+                  <li th:unless="*{usedPoints} eq 0" class="list-group-item">利用ポイント：<span th:text="*{#numbers.formatInteger(usedPoints, 1, 'COMMA')}">2,380</span>ポイント</li>                  
                 </ul>
               </td>
               <td th:each="orderItem : *{orderItemList}" th:object="${orderItem}">

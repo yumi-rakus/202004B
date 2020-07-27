@@ -92,14 +92,12 @@ $( function() {
 				<span sec:authorize="isAuthenticated()">
 					<li class="side-menu"><a th:href="@{/mypage}" class="side-content">マイページ</a></li>
 				</span>
-				<li class="side-menu"><a href="item_list_curry.html" th:href="@{/}" class="side-content">商品一覧</a>&nbsp;&nbsp;
-				</li>
-				<li class="side-menu"><a href="cart_list.html" th:href="@{/showCartList}"
-						class="side-content">ショッピングカート</a>&nbsp;&nbsp; </li>
-				<li class="side-menu"><a href="order_history.html" th:href="@{/showOrderHistory}"
-						class="side-content">注文履歴</a>&nbsp;&nbsp; </li>
-				<li class="side-menu"><a th:href="@{/pdf/allergy.pdf}" target="_blank"
-						class="side-content">アレルギー情報</a>&nbsp;&nbsp; </li>
+				<li class="side-menu"><a href="item_list_curry.html"
+					th:href="@{/edit-mypage}" class="side-content">ユーザ情報変更</a>&nbsp;&nbsp;</li>
+				<li class="side-menu"><a href="cart_list.html"
+					th:href="@{/favorite}" class="side-content">お気に入り</a>&nbsp;&nbsp;</li>
+				<li class="side-menu"><a th:href="@{/pdf/allergy.pdf}"
+					target="_blank" class="side-content">アレルギー情報</a>&nbsp;&nbsp;</li>
 			</ul>
 		</nav>
 		<!-- ハンバーガー終わり -->
