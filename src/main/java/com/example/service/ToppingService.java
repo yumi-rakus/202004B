@@ -1,6 +1,9 @@
 package com.example.service;
 
+import java.text.Collator;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +35,15 @@ public class ToppingService {
 	 * @author yumi takahashi
 	 */
 	public List<Topping> showToppingList() {
-		return toppingRepository.findAll();
+
+		List<Topping> toppingList = toppingRepository.findAll();
+
+		List<Topping> sorted = toppingList.stream().sorted((str1, str2) -> {
+			Collator collator = Collator.getInstance(Locale.JAPANESE);
+			return collator.compare(str1.getName(), str2.getName());
+		}).collect(Collectors.toList());
+
+		return sorted;
 	}
 
 	/**
