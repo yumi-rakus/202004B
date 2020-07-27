@@ -61,22 +61,6 @@ public class ItemRepository {
 	}
 
 	/**
-	 * (削除フラグのたっていない)全商品情報を取得する.
-	 * 
-	 * @return 商品情報一覧
-	 * 
-	 * @author kohei eto
-	 */
-	public List<Item> findAllNonDeleted() {
-
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m";
-
-		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
-
-		return itemlist;
-	}
-
-	/**
 	 * 商品情報を商品名で曖昧検索し、検索された商品情報を取得する.
 	 * 
 	 * @param name 検索キー
@@ -122,7 +106,7 @@ public class ItemRepository {
 	// 全商品情報を価格安い順で取得
 	public List<Item> findAllByPrice() {
 
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m";
+		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m, name";
 
 		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
 
