@@ -173,7 +173,6 @@ public class CurryController {
 
 		}
 
-
 		// ページが範囲外の場合は1ページ目を表示
 		if (page == null || page <= 0 || page > 2) {
 			page = 1;
@@ -244,8 +243,7 @@ public class CurryController {
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
 		user.setZipcode(userForm.getZipcodefirst() + userForm.getZipcodelast());
-		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast()
-		);
+		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
 		user.setTelephone(userForm.getTelephone());
 		user.setPassword(userForm.getPassword());
 		user.setIsAdmin(false);
@@ -464,7 +462,8 @@ public class CurryController {
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
 			if (orderService.status0ExistByUserId((Integer) session.getAttribute("userId"))) {
-				List<Order> order = orderService.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
+				List<Order> order = orderService
+						.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
 
 				if (order.get(0).getOrderItemList().get(0).getItem().getId() == 0) {
 					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
@@ -853,14 +852,16 @@ public class CurryController {
 	}
 
 	/**
-	 * @author suisu kohei eto マイページ情報変更
+	 * @author kohei eto マイページ情報変更
 	 */
 	@RequestMapping("/updating-mypage")
 	public String edit(@Validated UserForm userForm, BindingResult result, @AuthenticationPrincipal LoginUser loginUser,
 			Model model) {
-		if (result.hasErrors()) {
-			return mypageEdit(userForm, model, loginUser);
-		}
+
+		/*
+		 * if (result.hasErrors()) { return mypageEdit(userForm, model, loginUser); }
+		 */
+
 		User user2 = new User();
 		user2.setName(userForm.getName());
 		user2.setEmail(userForm.getEmail());

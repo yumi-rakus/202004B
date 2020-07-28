@@ -41,7 +41,7 @@ public class UserService {
 	public User getUserById(Integer id) {
 		User user = userRepository.findById(id);
 		String zipCode = user.getZipcode();
-		String zipCodeFirst = zipCode.substring(0, 3);
+		String zipCodeFirst = zipCode.substring(0,3);
 		String zipCodeLast = zipCode.substring(3);
 		user.setZipcodefirst(zipCodeFirst);
 		user.setZipcodelast(zipCodeLast);
