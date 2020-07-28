@@ -48,10 +48,7 @@ $(function () {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery-1.8.2.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-ja.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js" type="text/javascript" charset="utf-8"></script>
-
-
-
-
+<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <script>
 	$(document).ready(function() {
 		$("#inputName").validationEngine();
@@ -86,7 +83,7 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputName">名前:</label>
 								<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputName" class="form-control validate[required]"
+								<input type="text" id="inputName" class="form-control validate[required,maxSize[50]]"
 									th:value="${user.name}" name="name" th:field="${user.name}" >
 							</div>
 							
@@ -95,7 +92,7 @@ alert('半角数字を入力してください') } }); */ -->
 								<label for="inputEmail">メールアドレス:</label>
 								<label th:if="${emailResult}" th:text="${emailResult}"></label>
 								<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputEmail" class="form-control validate[required]"
+								<input type="text" id="inputEmail" class="form-control validate[required,custom[email]]"
 									th:value="${user.email}" th:field="${user.email}">
 							</div>
 							
@@ -112,11 +109,11 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="col-sm-5">
 								
 								<div class="input-group">
-								<input type="text" id="zipcodeFirst" class="form-control validate[required]"  th:field="${user.zipcodefirst}">
+								<input type="text" class="form-control validate[required,funcCall[size[3]]]"  th:field="${user.zipcodefirst}" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');">
 												 
 								<span class="input-group-addon">-</span>
 											
-								<input type="text" id="zipcodeLast" class="form-control validate[required]"  th:field="${user.zipcodelast}" onkeyup="AjaxZip3.zip2addr('zipcodeFirst','zipcodeLast','addressFirst','addressFirst');">
+								<input type="text" class="form-control validate[required,funcCall[size[4]]]"  th:field="${user.zipcodelast}" onkeyup="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');">
 								</div>			                         
 							</div>
 							</div>
@@ -124,18 +121,18 @@ alert('半角数字を入力してください') } }); */ -->
 							
 							<!-- 住所（都道府県市区町村） -->
 							<div class="form-group ">
-								<label for="inputAddress">住所（都道府県市区町村）:</label>
+								<label for="inputAddress">住所:</label>
 								<label th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputAddress" class="form-control validate[required]"
-									placeholder="Address" th:field="${user.address}">
+								<input type="text" id="address" class="form-control validate[required]"
+									 th:field="${user.address}">
 							</div>
 							
 							<!-- 電話番号 -->
 							<div class="form-group">
 								<label for="inputTel">電話番号:</label>
 								<label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="text" id="inputTel" class="form-control validate[required]"
-									placeholder="Tel" th:field="${user.telephone}">
+								<input type="text" id="inputTel" class="form-control validate[required,minSize[10],maxSize[12]]"
+									 th:field="${user.telephone}">
 							</div>
 							
 							<div class="form-group">
@@ -163,6 +160,14 @@ alert('半角数字を入力してください') } }); */ -->
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 
 	<script th:src="@{/js/ajaxzip3.js}" charset="UTF-8"></script>	
-
+	<script type="text/javascript">
+	function size(field, rules, i, options) {
+		var num = rules[i+2];			
+		var num2 = Number(num);			
+		if (field.val().length !== num2) {
+			return '* ' + num.toString() + '桁で入力してください';
+		}
+	}
+	</script>
 </body>
 </html>

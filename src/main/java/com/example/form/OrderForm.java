@@ -16,7 +16,7 @@ public class OrderForm {
 	private String orderDate;
 
 	@NotBlank(message = "名前を入力してください")
-	@Size(max = 20, message = "20文字以内で入力してください")
+	@Size(max = 50, message = "50文字以内で入力してください")
 	private String name;
 	@NotBlank(message = "メールアドレスを入力してください")
 	@Email(message = "メールアドレスの形式が不正です")

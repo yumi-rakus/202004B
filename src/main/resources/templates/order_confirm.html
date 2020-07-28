@@ -227,7 +227,7 @@
 								</td>
 								<td>
 									<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red" class="text-center"></div>
-									<input type="text" th:field="${user.name}" class="form-control validate[required]">
+									<input type="text" th:field="${user.name}" class="form-control validate[required,maxSize[50]]">
 								</td>
 							</tr>
 							<tr>
@@ -236,7 +236,7 @@
 								</td>
 								<td>
 									<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red" class="text-center"></div>
-									<input type="text" th:field="${user.email}" class="form-control validate[required]">
+									<input type="text" th:field="${user.email}" class="form-control validate[required,custom[email]]">
 								</td>
 							</tr>
 							<tr>
@@ -249,10 +249,10 @@
 									<div class="input-group">
 
 									<div th:if="${#fields.hasErrors('zipcodefirst')}" th:errors="*{zipcodefirst}" style="color:red" class="text-center"></div>
-									<input type="text" th:field="${user.zipcodefirst}" class="form-control validate[required]" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');"><!--  &nbsp;&nbsp;<button>住所検索</button>-->
+									<input type="text" th:field="${user.zipcodefirst}" class="form-control validate[required,funcCall[size[3]]]" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');"><!--  &nbsp;&nbsp;<button>住所検索</button>-->
 									<span class="input-group-addon">-</span>
 									<div th:if="${#fields.hasErrors('zipcodelast')}" th:errors="*{zipcodelast}" style="color:red" class="text-center"></div>
-									<input type="text" th:field="${user.zipcodelast}" class="form-control validate[required]" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');">
+									<input type="text" th:field="${user.zipcodelast}" class="form-control validate[required,funcCall[size[4]]]" onKeyUp="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','address','address');">
 									</div>
 									</div>
 									</div>
@@ -263,7 +263,7 @@
 									<div class="text-center">住所</div>
 								</td>
 								<td>
-									<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color:red" class="text-center"></div>
+									<div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red" class="text-center"></div>
 									<textarea th:field="${user.address}" class="form-control validate[required]"></textarea>
 								</td>
 							</tr>
@@ -273,7 +273,7 @@
 								</td>
 								<td>
 									<div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red" class="text-center"></div>
-									<input type="text" th:field="${user.telephone}" class="form-control validate[required]">
+									<input type="text" th:field="${user.telephone}" class="form-control validate[required,minSize[10],maxSize[12]]">
 								</td>
 							</tr>
 							<tr>
@@ -474,6 +474,14 @@
 				}
 			});
 		});
+		
+		function size(field, rules, i, options) {
+			var num = rules[i+2];			
+			var num2 = Number(num);			
+			if (field.val().length !== num2) {
+				return '* ' + num.toString() + '桁で入力してください';
+			}
+		}
 	</script>
 </body>
 </html>
