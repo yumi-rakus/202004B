@@ -88,4 +88,22 @@ class FavoriteRepositoryTest {
 		assertEquals("3.jpg", favoriteList.get(2).getItem().getImagePath(), "index=2が期待される結果と異なります。");
 	}
 
+	@Test
+	void countByUserIdAndItemIdのテスト() throws Exception {
+		Integer count1 = favoriteRepository.countByUserIdAndItemId(1, 1);
+		assertEquals(1, count1, "期待される結果と異なります。");
+
+		Integer count2 = favoriteRepository.countByUserIdAndItemId(2, 1);
+		assertEquals(0, count2, "期待される結果と異なります。");
+	}
+
+	@Test
+	void deleteのテスト() throws Exception {
+		boolean hasDeleted1 = favoriteRepository.delete(new Favorite(1,1,sdf.parse("20200401")));
+		assertEquals(true, hasDeleted1, "期待される結果と異なります。");
+		
+		boolean hasDeleted2 = favoriteRepository.delete(new Favorite(2,1,sdf.parse("20200401")));
+		assertEquals(false, hasDeleted2, "期待される結果と異なります。");
+	}
+
 }
