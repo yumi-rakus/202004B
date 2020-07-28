@@ -86,14 +86,14 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputName">名前:</label>
 								<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputName" class="form-control  validate[required,maxSize[50]]"
+								<input type="text" id="inputName" class="form-control  validate[required,[minSize[0],maxSize[50]]"
 									placeholder="Name" name="name" th:field="*{name}" >
 							</div>
 							
 							<!-- メールアドレス -->
 							<div class="form-group">
 								<label for="inputEmail">メールアドレス:</label>
-								<label th:if="${emailResult}" th:text="${emailResult}"></label>
+								<label th:if="${emailResult}" th:text="${emailResult}" style="color: red"></label>
 								<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red" class="error-messages">入力してください</label>
 								<input type="text" id="inputEmail" class="form-control validate[required,custom[email]]"
 									placeholder="Email" th:field="*{email}">
@@ -112,11 +112,11 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="col-sm-5">
 								
 								<div class="input-group">
-								<input type="text" name="zipcodeFirst" id="zipcodeFirst" class="form-control validate[required,funcCall[size[3]]]" th:field="*{zipcodefirst}" onkeyup="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','addressFirst','addressFirst');">
+								<input type="text" name="zipcodeFirst" id="zipcodeFirst" class="form-control validate[required,funcCall[size[3]]]" th:field="*{zipcodefirst}" placeholder="123" onkeyup="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','addressFirst','addressFirst');">
 												 
 								<span class="input-group-addon">-</span>
 											
-								<input type="text" name="zipcodeLast" id="zipcodeLast" class="form-control validate[required,funcCall[size[4]]]" th:field="*{zipcodelast}" onkeyup="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','addressFirst','addressFirst');">
+								<input type="text" name="zipcodeLast" id="zipcodeLast" class="form-control validate[required,funcCall[size[4]]]" th:field="*{zipcodelast}" placeholder="4567" onkeyup="AjaxZip3.zip2addr('zipcodefirst','zipcodelast','addressFirst','addressFirst');">
 								</div>			                         
 							</div>
 							</div>
@@ -150,7 +150,7 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputPassword">パスワード:</label>
 								<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="password" id="inputPassword" class="form-control validate[required]"
+								<input type="password" id="inputPassword" class="form-control validate[required,minSize[8],maxSize[16]]"
 									placeholder="Password" th:field="*{password}">
 							</div>
 							
@@ -159,7 +159,7 @@ alert('半角数字を入力してください') } }); */ -->
 								<label for="inputConfirmationPassword">確認用パスワード:</label>
 								<label th:if="${passwordResult}" th:text="${passwordResult}" style="color:red"></label>
 								<label th:if="${#fields.hasErrors('conpassword')}" th:errors="*{conpassword}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="password" id="inputConfirmationPassword" class="form-control validate[required]"
+								<input type="password" id="inputConfirmationPassword" class="form-control validate[required,equals[inputPassword]]"
 									placeholder="Confirmation Password" th:field="*{conpassword}">
 							</div>
 							<div class="form-group">
