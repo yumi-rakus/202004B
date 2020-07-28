@@ -86,8 +86,8 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputName">名前:</label>
 								<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputName" class="form-control"
-									th:value="${user.name}" name="name" th:field="*{name}" >
+								<input type="text" id="inputName" class="form-control validate[required]"
+									th:value="${user.name}" name="name" th:field="${user.name}" >
 							</div>
 							
 							<!-- メールアドレス -->
@@ -96,7 +96,7 @@ alert('半角数字を入力してください') } }); */ -->
 								<label th:if="${emailResult}" th:text="${emailResult}"></label>
 								<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red" class="error-messages">入力してください</label>
 								<input type="text" id="inputEmail" class="form-control validate[required]"
-									th:value="${user.email}" th:field="*{email}">
+									th:value="${user.email}" th:field="${user.email}">
 							</div>
 							
 							<span class="p-country-name" style="display:none;">Japan</span>
@@ -106,17 +106,17 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="row">
 							<div class="col-sm-12">
 							<label for="inputZipcode">郵便番号:</label>
-								<label th:if="${#fields.hasErrors('zipcodeFirst')}" th:errors="*{zipcodeFirst}" style="color: red" class="error-messages">入力してください</label>
-								<label th:if="${#fields.hasErrors('zipcodeLast')}" th:errors="*{zipcodeLast}" style="color: red" class="error-messages">入力してください</label>
+								<label th:if="${#fields.hasErrors('zipcodefirst')}" th:errors="*{zipcodefirst}" style="color: red" class="error-messages">入力してください</label>
+								<label th:if="${#fields.hasErrors('zipcodelast')}" th:errors="*{zipcodelast}" style="color: red" class="error-messages">入力してください</label>
 							</div>
 							<div class="col-sm-5">
 								
 								<div class="input-group">
-								<input type="number" name="zipcodeFirst" id="zipcodeFirst" class="form-control validate[required]" th:placeholder="${user.zipcodefirst}" th:field="*{zipcodeFirst}">
+								<input type="text" id="zipcodeFirst" class="form-control validate[required]"  th:field="${user.zipcodefirst}">
 												 
 								<span class="input-group-addon">-</span>
 											
-								<input type="number" name="zipcodeLast" id="zipcodeLast" class="form-control validate[required]" placeholder="4567" th:field="*{zipcodeLast}" onkeyup="AjaxZip3.zip2addr('zipcodeFirst','zipcodeLast','addressFirst','addressFirst');">
+								<input type="text" id="zipcodeLast" class="form-control validate[required]"  th:field="${user.zipcodelast}" onkeyup="AjaxZip3.zip2addr('zipcodeFirst','zipcodeLast','addressFirst','addressFirst');">
 								</div>			                         
 							</div>
 							</div>
@@ -125,17 +125,9 @@ alert('半角数字を入力してください') } }); */ -->
 							<!-- 住所（都道府県市区町村） -->
 							<div class="form-group ">
 								<label for="inputAddress">住所（都道府県市区町村）:</label>
-								<label th:if="${#fields.hasErrors('addressFirst')}" th:errors="*{addressFirst}" style="color: red" class="error-messages">入力してください</label>
+								<label th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color: red" class="error-messages">入力してください</label>
 								<input type="text" id="inputAddress" class="form-control validate[required]"
-									placeholder="Address" th:field="*{addressFirst}">
-							</div>
-							
-							<!-- 住所（番地以降） -->
-							<div class="form-group">
-								<label for="inputAddress">住所（番地以降）:</label>
-								<label th:if="${#fields.hasErrors('addressLast')}" th:errors="*{addressLast}" style="color: red" class="error-messages">入力してください</label>
-								<input type="text" id="inputAddress" class="form-control  validate[required]"
-									placeholder="Address" th:field="*{addressLast}">
+									placeholder="Address" th:field="${user.address}">
 							</div>
 							
 							<!-- 電話番号 -->
@@ -143,7 +135,7 @@ alert('半角数字を入力してください') } }); */ -->
 								<label for="inputTel">電話番号:</label>
 								<label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
 								<input type="text" id="inputTel" class="form-control validate[required]"
-									placeholder="Tel" th:field="*{telephone}">
+									placeholder="Tel" th:field="${user.telephone}">
 							</div>
 							
 							<div class="form-group">

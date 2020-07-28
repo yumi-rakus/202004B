@@ -105,5 +105,4 @@ class FavoriteRepositoryTest {
 		boolean hasDeleted2 = favoriteRepository.delete(new Favorite(2,1,sdf.parse("20200401")));
 		assertEquals(false, hasDeleted2, "期待される結果と異なります。");
 	}
-
 }
