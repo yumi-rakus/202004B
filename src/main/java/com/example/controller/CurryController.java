@@ -73,11 +73,11 @@ public class CurryController {
 	@Autowired
 	private HttpSession session;
 	@Autowired
-	private static final int VIEW_SIZE = 9;
-	@Autowired
 	private FavoriteService favoriteService;
 	@Autowired
 	private RiceService riceService;
+
+	private static final int VIEW_SIZE = 9;
 
 	@ModelAttribute
 	public UserForm setUpUserForm() {
@@ -104,9 +104,18 @@ public class CurryController {
 		return new ItemSearchForm();
 	}
 
-//////////////////////////////////////////////
-//// 商品一覧を表示, 商品検索を行う
-//////////////////////////////////////////////
+	@ModelAttribute
+	public void setUp(Model model) {
+		Map<String, String> itemMap = new LinkedHashMap<>();
+		itemMap.put("1", "価格安い順");
+		itemMap.put("2", "価格高い順");
+		itemMap.put("3", "人気順");
+		model.addAttribute("itemMap", itemMap);
+	}
+
+	//////////////////////////////////////////////
+	//// 商品一覧を表示, 商品検索を行う
+	//////////////////////////////////////////////
 	/**
 	 * 商品一覧を表示 商品検索を行う
 	 * 
@@ -116,34 +125,6 @@ public class CurryController {
 	 */
 	@RequestMapping("")
 	public String index(Model model, Integer page, ItemSearchForm form) {
-
-		/*
-		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
-		 * itemList); // オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納 StringBuilder
-		 * itemListForAutocomplete = itemService.getItemListForAutocomplete(itemList);
-		 * model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
-		 */
-
-		Map<String, String> itemMap = new LinkedHashMap<>();
-		itemMap.put("1", "価格安い順");
-		itemMap.put("2", "価格高い順");
-		itemMap.put("3", "人気順");
-		model.addAttribute("itemMap", itemMap);
-
-		/*
-		 * List<Item> itemList = itemService.findAll(); model.addAttribute("itemList",
-		 * itemList);
-		 */
-
-		// ページング機能追加
-		if (page == null) {
-			// ページ数の指定が無い場合は1ページ目を表示させる
-			page = 1;
-		}
-
-		/* List<Item> itemList = null; */
-
-		// 検索文字列があれば曖昧検索
 
 		List<Item> itemList = new ArrayList<>();
 
@@ -191,6 +172,10 @@ public class CurryController {
 			itemList = itemService.findAllByPrice();
 		}
 
+		// ページが範囲外の場合は1ページ目を表示
+		if (page == null || page <= 0 || page > 2) {
+			page = 1;
+		}
 		model.addAttribute("searchName", form.getSearchName());
 		model.addAttribute("id", form.getId());
 		// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
@@ -476,8 +461,7 @@ public class CurryController {
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
 			if (orderService.status0ExistByUserId((Integer) session.getAttribute("userId"))) {
-				List<Order> order = orderService
-						.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
+				List<Order> order = orderService.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
 
 				if (order.get(0).getOrderItemList().get(0).getItem().getId() == 0) {
 					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
@@ -857,10 +841,8 @@ public class CurryController {
 	 * @author kohei eto マイページ情報変更画面
 	 */
 	@RequestMapping("/update-mypage")
-	public String mypageEdit(UserForm userForm, Model model,
-			@AuthenticationPrincipal LoginUser loginUser) {
+	public String mypageEdit(UserForm userForm, Model model, @AuthenticationPrincipal LoginUser loginUser) {
 		User user = userService.getUserById(loginUser.getUser().getId());
-
 
 		model.addAttribute("user", user);
 
@@ -871,8 +853,9 @@ public class CurryController {
 	 * @author suisu kohei eto マイページ情報変更
 	 */
 	@RequestMapping("/updating-mypage")
-	public String edit(@Validated UserForm userForm, BindingResult result, @AuthenticationPrincipal LoginUser loginUser, Model model) {
-		if(result.hasErrors()) {
+	public String edit(@Validated UserForm userForm, BindingResult result, @AuthenticationPrincipal LoginUser loginUser,
+			Model model) {
+		if (result.hasErrors()) {
 			return mypageEdit(userForm, model, loginUser);
 		}
 		User user2 = new User();

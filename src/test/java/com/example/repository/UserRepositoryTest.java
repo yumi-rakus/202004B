@@ -85,4 +85,11 @@ class UserRepositoryTest {
 		assertEquals(0, user.getPoints(), "期待される結果と異なります。");
 	}
 
+	@Test
+	void findByEmailのテスト(){
+		User user = userRepository.findByEmail("test@test");
+		assertEquals("test", user.getName(), "期待される結果と異なります。");
+
+	}
+
 }
