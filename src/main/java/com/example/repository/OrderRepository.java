@@ -221,7 +221,8 @@ public class OrderRepository {
 		sql.append("AND ");
 		sql.append("ord.status = 0 ");
 		sql.append("ORDER BY ");
-		sql.append("orditem.id DESC;");
+		sql.append("orditem.id DESC, ");
+		sql.append("ordtop.id;");
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId);
 
