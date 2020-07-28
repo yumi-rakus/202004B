@@ -249,17 +249,11 @@ $( function() {
 						th:each="pageNumber : ${pageNumbers}">
 
 						<a
-							th:href="@{/(size=${itemPage.size}, page=${pageNumber}, searchName=${searchName}, id=${id})}"
+							th:href="@{/(page=${pageNumber}, searchName=${searchName}, id=${id})}"
 							th:text=${pageNumber}
 							th:class="${pageNumber==itemPage.number + 1} ? active"> </a>
 						<!-- , idname=${item.key} -->
 					</div>
-
-
-
-
-
-
 				</div>
 			</div>
 		</div>
