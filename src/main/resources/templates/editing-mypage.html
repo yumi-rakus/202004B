@@ -131,7 +131,7 @@ alert('半角数字を入力してください') } }); */ -->
 							<div class="form-group">
 								<label for="inputTel">電話番号:</label>
 								<label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" style="color: red" class="error-messages">メールアドレスを入力してください</label>
-								<input type="text" id="inputTel" class="form-control validate[required,minSize[10],maxSize[12]]"
+								<input type="text" id="inputTel" class="form-control validate[required,minSize[10],maxSize[11]]"
 									 th:field="${user.telephone}">
 							</div>
 							

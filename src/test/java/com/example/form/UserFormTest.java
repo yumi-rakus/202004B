@@ -43,7 +43,8 @@ class UserFormTest {
 		userForm.setEmail("yamada@sample.com");
 		userForm.setZipcodefirst("111");
 		userForm.setZipcodelast("1111");
-		userForm.setAddress("東京都世田谷区宮坂1-1-1");
+		userForm.setAddressFirst("東京都世田谷区宮坂");
+		userForm.setAddressLast("1-1-1");
 		userForm.setTelephone("09011112222");
 		userForm.setPassword("yamadayamada");
 	}
@@ -270,9 +271,9 @@ class UserFormTest {
 
 		userForm.setZipcodefirst("aaa");
 		Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
-
+		System.out.println(violations);
 		assertEquals(1, violations.size(), "エラーの数が異なります。");
-
+		
 		for (ConstraintViolation<UserForm> v : violations) {
 			assertTrue(v.getConstraintDescriptor().getAnnotation() instanceof Pattern, "エラーの種類が異なります。");
 		}
@@ -348,7 +349,21 @@ class UserFormTest {
 	@Test
 	public void 住所都道府県市区町村failureTest1() {
 
-		userForm.setAddress("");
+		userForm.setAddressFirst("");
+		Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
+
+		assertEquals(1, violations.size(), "エラーの数が異なります。");
+
+		for (ConstraintViolation<UserForm> v : violations) {
+			assertTrue(v.getConstraintDescriptor().getAnnotation() instanceof NotBlank, "エラーの種類が異なります。");
+		}
+	}
+
+/////////// address
+	@Test
+	public void 住所failureTest1() {
+
+		userForm.setAddressLast("");
 		Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
 
 		assertEquals(1, violations.size(), "エラーの数が異なります。");
@@ -427,13 +442,14 @@ class UserFormTest {
 		userForm.setEmail("aaa");
 		userForm.setZipcodefirst("");
 		userForm.setZipcodelast("");
-		userForm.setAddress("");
+		userForm.setAddressFirst("");
+		userForm.setAddressLast("");
 		userForm.setTelephone("");
 		userForm.setPassword("");
 
 		Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
 
-		assertEquals(7, violations.size(), "エラーの数が異なります。");
+		assertEquals(8, violations.size(), "エラーの数が異なります。");
 	}
 
 }

@@ -37,15 +37,24 @@ public class UserForm {
 	/** 郵便番号（上4桁） */
 	@Pattern(regexp = "[0-9]{4}", message = "郵便番号（下4桁）：4桁で入力してください")
 	private String zipcodelast;
-
+	
+	/** 住所の前半 */
+	@NotBlank(message = "都道府県と市区町村を入力してください")
+	private String addressFirst;
+	
+	/** 住所の後半 */
+	@NotBlank(message = "住所の続きを入力してください")
+	private String addressLast;
 	/** 住所（都道府県市区町村） */
-	@NotBlank(message = "住所(都道府県市区町村)を入力してください")
+	
+	//@NotBlank(message = "住所を入力してください")
 	private String address;
 
 	/** 電話番号 */
 	@Size(min=10, max=11, message="電話番号を入力してください")
 	private String telephone;
-
+	
+	
 	/** 確認用パスワード */
 	private String conpassword;
 
@@ -96,6 +105,22 @@ public class UserForm {
 
 	public void setZipcodelast(String zipcodelast) {
 		this.zipcodelast = zipcodelast;
+	}
+	
+	public String getAddressFirst() {
+		return addressFirst;
+	}
+
+	public void setAddressFirst(String addressFirst) {
+		this.addressFirst = addressFirst;
+	}
+
+	public String getAddressLast() {
+		return addressLast;
+	}
+
+	public void setAddressLast(String addressLast) {
+		this.addressLast = addressLast;
 	}
 
 	public String getAddress() {

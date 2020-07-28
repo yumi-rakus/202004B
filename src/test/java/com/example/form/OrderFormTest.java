@@ -87,8 +87,8 @@ class OrderFormTest {
 
 	@Test
 	void 名前の文字数超過テスト() {
-		// 21文字入力
-		orderForm.setName("あああああああああああああああああああああ");
+		// 51文字入力
+		orderForm.setName("あああああああああああああああああああああああああああああああああああああああああああああああああああ");
 		Set<ConstraintViolation<OrderForm>> violations = validator.validate(orderForm);
 
 		assertEquals(1, violations.size(), "期待される結果と異なります");
@@ -221,8 +221,8 @@ class OrderFormTest {
 	}
 	
 	@Test
-	void 電話番号12桁入力テスト() {
-		orderForm.setTelephone("000000000000");
+	void 電話番号11桁入力テスト() {
+		orderForm.setTelephone("00000000000");
 
 		Set<ConstraintViolation<OrderForm>> violations = validator.validate(orderForm);
 
@@ -244,8 +244,8 @@ class OrderFormTest {
 	}
 
 	@Test
-	void 電話番号13桁入力テスト() {
-		orderForm.setTelephone("0000000000000");
+	void 電話番号12桁入力テスト() {
+		orderForm.setTelephone("000000000000");
 
 		Set<ConstraintViolation<OrderForm>> violations = validator.validate(orderForm);
 

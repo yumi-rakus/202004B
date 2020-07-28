@@ -91,5 +91,20 @@ class UserRepositoryTest {
 		assertEquals("test", user.getName(), "期待される結果と異なります。");
 
 	}
-
+	
+	@Test
+	void findByIdメソッドのテスト() {
+		String sql = "select id,name,email,password,zipcode,address,telephone,is_admin,points from users where id=1";
+		SqlParameterSource param = new MapSqlParameterSource();
+		User user = template.query(sql, param, USER_ROW_MAPPER).get(0);
+		
+		assertEquals("test", user.getName(), "期待される結果と異なります。");
+		assertEquals("test@test", user.getEmail(), "期待される結果と異なります。");
+		assertTrue(passwordEncoder.matches("test", user.getPassword()), "期待される結果と異なります。");
+		assertEquals("test住所", user.getAddress(), "期待される結果と異なります。");
+		assertEquals("1111111", user.getZipcode(), "期待される結果と異なります。");
+		assertEquals("11111111111", user.getTelephone(), "期待される結果と異なります。");
+		assertEquals(true, user.getIsAdmin(), "期待される結果と異なります。");
+		assertEquals(0, user.getPoints(), "期待される結果と異なります。");
+	}
 }

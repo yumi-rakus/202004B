@@ -241,7 +241,8 @@ public class CurryController {
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
 		user.setZipcode(userForm.getZipcodefirst() + userForm.getZipcodelast());
-		user.setAddress(userForm.getAddress());
+		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast()
+		);
 		user.setTelephone(userForm.getTelephone());
 		user.setPassword(userForm.getPassword());
 		user.setIsAdmin(false);

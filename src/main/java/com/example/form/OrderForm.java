@@ -29,7 +29,7 @@ public class OrderForm {
 	private String address;
 	@NotBlank(message = "配達日時を入力してください")
 	private String time;
-	@Size(min=10, max=12, message="電話番号を入力してください")
+	@Size(min=10, max=11, message="電話番号を入力してください")
 	private String telephone;
 	@NotNull(message = "支払い方法を選択してください")
 	private Integer paymentMethod;
