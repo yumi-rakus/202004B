@@ -8,9 +8,20 @@ package com.example.form;
  */
 public class ItemSearchForm {
 
+	/**
+	 * 並び替え方法のキー名
+	 */
 	private String id;
 
+	/**
+	 * 曖昧検索する文字列
+	 */
 	private String searchName;
+
+	public ItemSearchForm() {
+		this.id = "1";
+		this.searchName = "";
+	}
 
 	// getter setter
 	public String getId() {
