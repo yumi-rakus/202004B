@@ -64,6 +64,13 @@
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
 			<version>3.0.4.RELEASE</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-test -->
+		<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-test</artifactId>
+				<version>4.0.0.RELEASE</version>
+				<scope>test</scope>
+		</dependency>
 
 		<!-- メール送信関連 -->
 		<dependency>
