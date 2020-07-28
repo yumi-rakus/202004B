@@ -433,7 +433,7 @@ class UserFormTest {
 
 		Set<ConstraintViolation<UserForm>> violations = validator.validate(userForm);
 
-		assertEquals(8, violations.size(), "エラーの数が異なります。");
+		assertEquals(7, violations.size(), "エラーの数が異なります。");
 	}
 
 }
