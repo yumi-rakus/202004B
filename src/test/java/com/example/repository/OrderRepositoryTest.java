@@ -4,10 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.naming.java.javaURLContextFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -406,7 +409,72 @@ class OrderRepositoryTest {
 
 		orderRepository.updateTotalPrice(10, 1000);
 	}
-
+	
+	@Test
+	public void orderメソッドのテスト() {
+		List<Order> orderList = orderRepository.findByUserIdAndStatus0(10);
+		System.out.println(orderList);
+		assertEquals(0, orderList.get(0).getStatus(), "ステータスが期待される結果と異なります");
+		assertEquals(null, orderList.get(0).getDestinationName(), "名前が期待される結果と異なります");
+		assertEquals(null, orderList.get(0).getOrderDate(), "ステータスが期待される結果と異なります");
+		assertEquals(null, orderList.get(0).getDestinationEmail(), "メールアドレスが期待される結果と異なります");
+		assertEquals(null, orderList.get(0).getDestinationZipcode(), "郵便番号が期待される結果と異なります");
+		assertEquals(null, orderList.get(0).getDestinationAddress(), "住所が期待される結果と異なります");
+		assertEquals(null, orderList.get(0).getDestinationTel(), "電話番号が期待される結果と異なります");
+		assertEquals(null, orderList.get(0).getOrderDate(), "配達日が期待される結果と異なります");
+		assertEquals(null, orderList.get(0).getDeliveryTime(), "配達時間が期待される結果と異なります");
+		assertEquals(0, orderList.get(0).getPaymentMethod(), "支払い方法が期待される結果と異なります");
+		assertEquals(10, orderList.get(0).getUserId(), "ユーザIDが期待される結果と異なります");
+		assertEquals(0, orderList.get(0).getDiscountPrice(), "ポイント利用時金額が期待される結果と異なります");
+		assertEquals(0, orderList.get(0).getTax(), "消費税が期待される結果と異なります");
+		assertEquals(0, orderList.get(0).getTaxIncludedPrice(), "税込合計金額が期待される結果と異なります");
+		assertEquals(0, orderList.get(0).getUsedPoints(), "利用ポイントが期待される結果と異なります");
+		
+		Order order = new Order();
+		order.setStatus(1);
+		order.setDestinationName("山田太郎");
+		order.setStatus(1);
+		order.setDestinationEmail("yamada@mail.com");
+		order.setDestinationZipcode("1111111");
+		order.setDestinationAddress("東京都新宿区1-1-1");
+		order.setDestinationTel("0000000000");
+		java.util.Date date = new java.util.Date();
+		order.setOrderDate(date);
+		
+		SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String dateTime = "2020-07-28 9:00:00";
+		try {
+		    java.util.Date dTime = (java.util.Date) sdf.parse(dateTime);
+			Timestamp ts = new Timestamp(dTime.getTime());
+			order.setDeliveryTime(ts);
+		} catch (ParseException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		
+		order.setPaymentMethod(1);
+		order.setUserId(10);
+		order.setDiscountPrice(1500);
+		order.setTotalPrice(1800);
+		order.setTax(200);
+		order.setTaxIncludedPrice(2000);
+		order.setUsedPoints(500);
+		System.out.println(order);
+		orderRepository.order(order);
+		orderList = orderRepository.findByUserIdAndNonStatus0(10);
+		System.out.println(orderList);
+		assertEquals(1, orderList.get(0).getStatus(), "ステータスが期待される結果と異なります");
+		assertEquals("山田太郎", orderList.get(0).getDestinationName(), "名前が期待される結果と異なります");
+		assertEquals("yamada@mail.com", orderList.get(0).getDestinationEmail(), "メールアドレスが期待される結果と異なります");
+		assertEquals("1111111", orderList.get(0).getDestinationZipcode(), "郵便番号が期待される結果と異なります");
+		assertEquals("東京都新宿区1-1-1", orderList.get(0).getDestinationAddress(), "住所が期待される結果と異なります");
+		assertEquals("0000000000", orderList.get(0).getDestinationTel(), "電話番号が期待される結果と異なります");
+		assertEquals(1, orderList.get(0).getPaymentMethod(), "支払い方法が期待される結果と異なります");
+		assertEquals(10, orderList.get(0).getUserId(), "ユーザIDが期待される結果と異なります");
+		assertEquals(1500, orderList.get(0).getDiscountPrice(), "ポイント利用時金額が期待される結果と異なります");
+		assertEquals(2000, orderList.get(0).getTaxIncludedPrice(), "税込合計金額が期待される結果と異なります");
+		assertEquals(500, orderList.get(0).getUsedPoints(), "利用ポイントが期待される結果と異なります");
+	}
 	@AfterEach
 	public void 事後処理() {
 
