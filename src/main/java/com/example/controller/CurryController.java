@@ -857,11 +857,8 @@ public class CurryController {
 	 * @author kohei eto マイページ情報変更画面
 	 */
 	@RequestMapping("/update-mypage")
-	public String mypageEdit(@Validated UserForm userForm, BindingResult result, Model model,
+	public String mypageEdit(UserForm userForm, Model model,
 			@AuthenticationPrincipal LoginUser loginUser) {
-		if(result.hasErrors()) {
-			return mypageEdit(userForm, result, model, loginUser);
-		}
 		User user = userService.getUserById(loginUser.getUser().getId());
 
 
@@ -874,8 +871,10 @@ public class CurryController {
 	 * @author suisu kohei eto マイページ情報変更
 	 */
 	@RequestMapping("/updating-mypage")
-	public String edit(UserForm userForm, @AuthenticationPrincipal LoginUser loginUser) {
-
+	public String edit(@Validated UserForm userForm, BindingResult result, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+		if(result.hasErrors()) {
+			return mypageEdit(userForm, model, loginUser);
+		}
 		User user2 = new User();
 		user2.setName(userForm.getName());
 		user2.setEmail(userForm.getEmail());
