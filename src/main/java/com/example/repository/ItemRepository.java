@@ -68,22 +68,8 @@ public class ItemRepository {
 	 * 
 	 * @author kohei eto
 	 */
-
-	// あいまい検索で価格安い順に取得
 	public List<Item> findByItemName(String name) {
-		String sql = "select * from items where name like :name and deleted = false order by price_m";
-
-		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
-
-		List<Item> itemList = template.query(sql, param, ITEM_ROW_MAPPER);
-
-		return itemList;
-
-	}
-
-	// あいまい検索で価格高い順に取得
-	public List<Item> findByItemName2(String name) {
-		String sql = "select * from items where name like :name and deleted = false  order by price_m desc";
+		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where name like :name and deleted = false order by id";
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
 
@@ -92,45 +78,20 @@ public class ItemRepository {
 		return itemList;
 	}
 
-	// あいまい検索でid順で取得
-	public List<Item> findByItemName3(String name) {
-		String sql = "select * from items where name like :name and deleted = false  order by id";
+	/**
+	 * (削除フラグがたっていない)全商品情報を取得する.
+	 * 
+	 * @return 商品情報一覧
+	 * 
+	 * @author yumi takahashi
+	 */
+	public List<Item> findAllNonDeleted() {
 
-		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+		String sql = "SELECT id, name, description, price_m, price_l, image_path, deleted FROM items WHERE deleted = false ORDER BY id";
 
-		List<Item> itemList = template.query(sql, param, ITEM_ROW_MAPPER);
+		List<Item> itemList = template.query(sql, ITEM_ROW_MAPPER);
 
 		return itemList;
-	}
-
-	// 全商品情報を価格安い順で取得
-	public List<Item> findAllByPrice() {
-
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m, name";
-
-		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
-
-		return itemlist;
-	}
-
-	// 全商品情報を価格高い順で取得
-	public List<Item> findAllByPrice2() {
-
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by price_m desc";
-
-		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
-
-		return itemlist;
-	}
-
-	// 全商品情報をid順で取得
-	public List<Item> findAllByPrice3() {
-
-		String sql = "select id, name, description, price_m, price_l, image_path, deleted from items where deleted = false order by id";
-
-		List<Item> itemlist = template.query(sql, ITEM_ROW_MAPPER);
-
-		return itemlist;
 	}
 
 	/**
