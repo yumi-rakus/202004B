@@ -32,19 +32,15 @@ public class UserForm {
 
 	/** 郵便番号（上3桁） */
 	@Pattern(regexp = "[0-9]{3}", message = "郵便番号（上3桁）：3桁で入力してください")
-	private String zipcodeFirst;
+	private String zipcodefirst;
 
 	/** 郵便番号（上4桁） */
 	@Pattern(regexp = "[0-9]{4}", message = "郵便番号（下4桁）：4桁で入力してください")
-	private String zipcodeLast;
+	private String zipcodelast;
 
 	/** 住所（都道府県市区町村） */
 	@NotBlank(message = "住所(都道府県市区町村)を入力してください")
-	private String addressFirst;
-
-	/** 住所（番地以降） */
-	@NotBlank(message = "住所（番地以降）を入力してください")
-	private String addressLast;
+	private String address;
 
 	/** 電話番号 */
 	@Size(min=10, max=11, message="電話番号を入力してください")
@@ -86,36 +82,28 @@ public class UserForm {
 		this.password = password;
 	}
 
-	public String getZipcodeFirst() {
-		return zipcodeFirst;
+	public String getZipcodefirst() {
+		return zipcodefirst;
 	}
 
-	public void setZipcodeFirst(String zipcodeFirst) {
-		this.zipcodeFirst = zipcodeFirst;
+	public void setZipcodefirst(String zipcodefirst) {
+		this.zipcodefirst = zipcodefirst;
 	}
 
-	public String getZipcodeLast() {
-		return zipcodeLast;
+	public String getZipcodelast() {
+		return zipcodelast;
 	}
 
-	public void setZipcodeLast(String zipcodeLast) {
-		this.zipcodeLast = zipcodeLast;
+	public void setZipcodelast(String zipcodelast) {
+		this.zipcodelast = zipcodelast;
 	}
 
-	public String getAddressFirst() {
-		return addressFirst;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAddressFirst(String addressFirst) {
-		this.addressFirst = addressFirst;
-	}
-
-	public String getAddressLast() {
-		return addressLast;
-	}
-
-	public void setAddressLast(String addressLast) {
-		this.addressLast = addressLast;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getTelephone() {
@@ -138,8 +126,8 @@ public class UserForm {
 	@Override
 	public String toString() {
 		return "UserForm [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password
-				+ ", zipcodeFirst=" + zipcodeFirst + ", zipcodeLast=" + zipcodeLast + ", addressFirst=" + addressFirst
-				+ ", addressLast=" + addressLast + ", telephone=" + telephone + ", conpassword=" + conpassword + "]";
+				+ ", zipcodefirst=" + zipcodefirst + ", zipcodelast=" + zipcodelast + ", address=" + address
+				+ ", telephone=" + telephone + ", conpassword=" + conpassword + "]";
 	}
 
 }

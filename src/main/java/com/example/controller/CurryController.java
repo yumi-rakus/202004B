@@ -352,8 +352,8 @@ public class CurryController {
 
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
-		user.setZipcode(userForm.getZipcodeFirst() + userForm.getZipcodeLast());
-		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
+		user.setZipcode(userForm.getZipcodefirst() + userForm.getZipcodelast());
+		user.setAddress(userForm.getAddress());
 		user.setTelephone(userForm.getTelephone());
 		user.setPassword(userForm.getPassword());
 		user.setIsAdmin(false);
@@ -798,8 +798,8 @@ public class CurryController {
 
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
-		user.setZipcode(userForm.getZipcodeFirst() + userForm.getZipcodeLast());
-		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
+		user.setZipcode(userForm.getZipcodefirst() + userForm.getZipcodelast());
+		user.setAddress(userForm.getAddress());
 		user.setTelephone(userForm.getTelephone());
 		user.setPassword(userForm.getPassword());
 		user.setIsAdmin(true);
@@ -957,7 +957,7 @@ public class CurryController {
 	public String mypageEdit(UserForm userForm, String name, Model model,
 			@AuthenticationPrincipal LoginUser loginUser) {
 
-		User user = userService.findByidl(loginUser.getUser().getId());
+		User user = userService.getUserById(loginUser.getUser().getId());
 		// String a = user.getZipcode();
 		// String b = a.replaceAll(a, "[0-9]{3}-[0-9]{4}");
 
@@ -975,8 +975,8 @@ public class CurryController {
 		User user2 = new User();
 		user2.setName(userForm.getName());
 		user2.setEmail(userForm.getEmail());
-		user2.setZipcode(userForm.getZipcodeFirst() + userForm.getZipcodeLast());
-		user2.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
+		user2.setZipcode(userForm.getZipcodefirst() + userForm.getZipcodelast());
+		user2.setAddress(userForm.getAddress());
 		user2.setTelephone(userForm.getTelephone());
 
 		userService.update(loginUser.getUser().getId(), user2);

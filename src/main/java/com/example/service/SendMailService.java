@@ -67,7 +67,7 @@ public class SendMailService {
 		mailContent.append("\n");
 		mailContent.append("商品代金: " + order.get(0).getTotalPrice() + "円\n");
 		mailContent.append("消費税: " + order.get(0).getTax() + "円\n");
-		mailContent.append("合計金額: " + (order.get(0).getTotalPrice() + order.get(0).getTax()) + "円\n");
+		mailContent.append("合計金額: " + order.get(0).getTaxIncludedPrice() + "円\n");
 		Integer discountPrice = order.get(0).getDiscountPrice();
 		if(discountPrice!=0) {
 			mailContent.append("ポイント利用金額: "+(order.get(0).getDiscountPrice())+"円\n");
