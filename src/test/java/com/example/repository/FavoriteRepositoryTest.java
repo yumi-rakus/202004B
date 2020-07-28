@@ -29,12 +29,10 @@ class FavoriteRepositoryTest {
 	private FavoriteRepository favoriteRepository;
 
 	// Fields
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); // addedDateの下準備
 
 	@BeforeEach
 	void setUp() throws Exception {
-		// addedDateの下準備
-
 		Favorite favorite1 = new Favorite();
 		favorite1.setUserId(1);
 		favorite1.setItemId(1);
@@ -69,11 +67,25 @@ class FavoriteRepositoryTest {
 		assertEquals(1, favoriteList.get(0).getUserId(), "index=0のuserIdが期待される結果と異なります。");
 		assertEquals(1, favoriteList.get(0).getItemId(), "index=0のitemIdが期待される結果と異なります。");
 		assertEquals(sdf.parse("20200401"), favoriteList.get(0).getAddedDate(), "index=0のaddedDateが期待される結果と異なります。");
-		
+		assertEquals(1, favoriteList.get(0).getItem().getId(), "index=0のitem.idが期待される結果と異なります。");
+		assertEquals("カツカレー", favoriteList.get(0).getItem().getName(), "index=0のitem.nameが期待される結果と異なります。");
+		assertEquals("食べると勝負に勝てると言われる勝つカレー。ラクラクカレー定番の１品です", favoriteList.get(0).getItem().getDescription(),
+				"index=0が期待される結果と異なります。");
+		assertEquals(1490, favoriteList.get(0).getItem().getPriceM(), "index=0が期待される結果と異なります。");
+		assertEquals(2570, favoriteList.get(0).getItem().getPriceL(), "index=0が期待される結果と異なります。");
+		assertEquals("1.jpg", favoriteList.get(0).getItem().getImagePath(), "index=0が期待される結果と異なります。");
+
 		assertEquals(3, favoriteList.get(2).getId(), "index=2のidが期待される結果と異なります。");
 		assertEquals(1, favoriteList.get(2).getUserId(), "index=2のuserIdが期待される結果と異なります。");
 		assertEquals(3, favoriteList.get(2).getItemId(), "index=2のitemIdが期待される結果と異なります。");
 		assertEquals(sdf.parse("20200603"), favoriteList.get(2).getAddedDate(), "index=2のaddedDateが期待される結果と異なります。");
+		assertEquals(3, favoriteList.get(2).getItem().getId(), "index=2のitem.idが期待される結果と異なります。");
+		assertEquals("牛すじカレー", favoriteList.get(2).getItem().getName(), "index=2のitem.nameが期待される結果と異なります。");
+		assertEquals("トロトロの牛すじとネギの風味が格別な味わいシンプルなカレーです！", favoriteList.get(2).getItem().getDescription(),
+				"index=2が期待される結果と異なります。");
+		assertEquals(1490, favoriteList.get(2).getItem().getPriceM(), "index=2が期待される結果と異なります。");
+		assertEquals(2570, favoriteList.get(2).getItem().getPriceL(), "index=2が期待される結果と異なります。");
+		assertEquals("3.jpg", favoriteList.get(2).getItem().getImagePath(), "index=2が期待される結果と異なります。");
 	}
 
 }
