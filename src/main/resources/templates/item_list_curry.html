@@ -94,7 +94,7 @@ $('#selectbtn').on('click',function() {
 
 </head>
 
-<body class="drawer drawer--left">
+<body style="text-align: center;" class="drawer drawer--left">
 	<div class="container">
 
 		<!-- ハンバーガー始め -->
@@ -201,7 +201,7 @@ $('#selectbtn').on('click',function() {
 
 							</div>
 							<div class="text-center">
-								<span th:text="${no}"></span>
+								
 								<button type="submit" value="検索" class="btn btn-primary">検索</button>
 								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
 							</div>
@@ -229,7 +229,10 @@ $('#selectbtn').on('click',function() {
 			</div>
 
 		</form>
-
+<div th:if="${no}">
+	<br> <span th:text="${no}"
+		style="color: red; font-weight: bold; text-align: center;"></span> <br>
+</div>
 
 		<!-- table -->
 		<div class="row">

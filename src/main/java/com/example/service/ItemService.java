@@ -1,7 +1,11 @@
 package com.example.service;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +51,6 @@ public class ItemService {
 	 * 
 	 * @author kohei eto
 	 */
-
 	public Page<Item> showListPaging(int page, int size, List<Item> itemList) {
 		// 表示させたいページ数を-1しなければうまく動かない
 		page--;
@@ -70,28 +73,115 @@ public class ItemService {
 		return itemPage;
 	}
 
+	/**
+	 * 価格が安い順に並び替えられた商品一覧を取得する.
+	 * 
+	 * @return 商品一覧
+	 * 
+	 * @author yumi takahashi
+	 */
 	public List<Item> findAllByPrice() {
-		return itemRepository.findAllByPrice();
+
+		List<Item> itemList = itemRepository.findAllNonDeleted();
+
+		// Comparator作成
+		Comparator<Item> comparator = Comparator.comparing(Item::getPriceM).thenComparing((str1, str2) -> {
+			Collator collator = Collator.getInstance(Locale.JAPANESE);
+			return collator.compare(str1.getName(), str2.getName());
+		});
+		// ソート処理
+		List<Item> sorted = itemList.stream().sorted(comparator).collect(Collectors.toList());
+
+		return sorted;
 	}
 
+	/**
+	 * 価格が高い順に並び替えられた商品一覧を取得する.
+	 * 
+	 * @return 商品一覧
+	 * 
+	 * @author yumi takahashi
+	 */
 	public List<Item> findAllByPrice2() {
-		return itemRepository.findAllByPrice2();
+
+		List<Item> itemList = itemRepository.findAllNonDeleted();
+
+		// Comparator作成
+		Comparator<Item> comparator = Comparator.comparing(Item::getPriceM).reversed().thenComparing((str1, str2) -> {
+			Collator collator = Collator.getInstance(Locale.JAPANESE);
+			return collator.compare(str1.getName(), str2.getName());
+		});
+		// ソート処理
+		List<Item> sorted = itemList.stream().sorted(comparator).collect(Collectors.toList());
+
+		return sorted;
 	}
 
+	/**
+	 * ID順に並び替えられた商品一覧を取得する.
+	 * 
+	 * @return 商品一覧
+	 * 
+	 * @author yumi takahashi
+	 */
 	public List<Item> findAllByPrice3() {
-		return itemRepository.findAllByPrice3();
+		return itemRepository.findAllNonDeleted();
 	}
 
+	/**
+	 * 商品情報を商品名で曖昧検索し、検索された商品情報を取得する（価格が安い順）.
+	 * 
+	 * @param name 検索キー
+	 * @return 検索された商品情報
+	 * 
+	 * @author yumi takahashi
+	 */
 	public List<Item> findByItemName(String searchName) {
-		return itemRepository.findByItemName(searchName);
+
+		List<Item> itemList = itemRepository.findByItemName(searchName);
+		// Comparator作成
+		Comparator<Item> comparator = Comparator.comparing(Item::getPriceM).thenComparing((str1, str2) -> {
+			Collator collator = Collator.getInstance(Locale.JAPANESE);
+			return collator.compare(str1.getName(), str2.getName());
+		});
+		// ソート処理
+		List<Item> sorted = itemList.stream().sorted(comparator).collect(Collectors.toList());
+
+		return sorted;
 	}
 
+	/**
+	 * 商品情報を商品名で曖昧検索し、検索された商品情報を取得する（価格が高い順）.
+	 * 
+	 * @param name 検索キー
+	 * @return 検索された商品情報
+	 * 
+	 * @author yumi takahashi
+	 */
 	public List<Item> findByItemName2(String searchName) {
-		return itemRepository.findByItemName2(searchName);
+
+		List<Item> itemList = itemRepository.findByItemName(searchName);
+		// Comparator作成
+		Comparator<Item> comparator = Comparator.comparing(Item::getPriceM).reversed().thenComparing((str1, str2) -> {
+			Collator collator = Collator.getInstance(Locale.JAPANESE);
+			return collator.compare(str1.getName(), str2.getName());
+		});
+		// ソート処理
+		List<Item> sorted = itemList.stream().sorted(comparator).collect(Collectors.toList());
+
+		return sorted;
 	}
 
+	/**
+	 * 商品情報を商品名で曖昧検索し、検索された商品情報を取得する（ID順）.
+	 * 
+	 * @param name 検索キー
+	 * @return 検索された商品情報
+	 * 
+	 * @author yumi takahashi
+	 */
 	public List<Item> findByItemName3(String searchName) {
-		return itemRepository.findByItemName3(searchName);
+		return itemRepository.findByItemName(searchName);
 	}
 
 	/**

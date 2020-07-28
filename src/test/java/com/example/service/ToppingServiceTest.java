@@ -1,24 +1,24 @@
 package com.example.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.domain.Topping;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 class ToppingServiceTest {
 
 	@Autowired
 	private ToppingService toppingService;
-	
+
 	@Test
 	public void findAllTest() {
 
@@ -61,13 +61,13 @@ class ToppingServiceTest {
 		assertEquals(200, toppingList.get(6).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(300, toppingList.get(6).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
 
-		assertEquals(18, toppingList.get(7).getId(), "IDが期待される結果と異なります。");
-		assertEquals("ガーリックスライス", toppingList.get(7).getName(), "名前が期待される結果と異なります。");
+		assertEquals(15, toppingList.get(7).getId(), "IDが期待される結果と異なります。");
+		assertEquals("カマンベールチーズ", toppingList.get(7).getName(), "名前が期待される結果と異なります。");
 		assertEquals(200, toppingList.get(7).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(300, toppingList.get(7).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
 
-		assertEquals(15, toppingList.get(8).getId(), "IDが期待される結果と異なります。");
-		assertEquals("カマンベールチーズ", toppingList.get(8).getName(), "名前が期待される結果と異なります。");
+		assertEquals(18, toppingList.get(8).getId(), "IDが期待される結果と異なります。");
+		assertEquals("ガーリックスライス", toppingList.get(8).getName(), "名前が期待される結果と異なります。");
 		assertEquals(200, toppingList.get(8).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(300, toppingList.get(8).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
 
@@ -136,13 +136,13 @@ class ToppingServiceTest {
 		assertEquals(200, toppingList.get(21).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(300, toppingList.get(21).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
 
-		assertEquals(11, toppingList.get(22).getId(), "IDが期待される結果と異なります。");
-		assertEquals("ベーコン", toppingList.get(22).getName(), "名前が期待される結果と異なります。");
+		assertEquals(12, toppingList.get(22).getId(), "IDが期待される結果と異なります。");
+		assertEquals("ペパロニ･サラミ", toppingList.get(22).getName(), "名前が期待される結果と異なります。");
 		assertEquals(200, toppingList.get(22).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(300, toppingList.get(22).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
 
-		assertEquals(12, toppingList.get(23).getId(), "IDが期待される結果と異なります。");
-		assertEquals("ペパロニ･サラミ", toppingList.get(23).getName(), "名前が期待される結果と異なります。");
+		assertEquals(11, toppingList.get(23).getId(), "IDが期待される結果と異なります。");
+		assertEquals("ベーコン", toppingList.get(23).getName(), "名前が期待される結果と異なります。");
 		assertEquals(200, toppingList.get(23).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(300, toppingList.get(23).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
 
