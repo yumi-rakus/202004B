@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Range;
+
 /**
  * 商品をカートに入れる際に使用するフォーム.
  * 
@@ -19,11 +21,13 @@ public class ItemForm {
 	private List<Integer> toppingIdList;
 
 	@NotNull(message = "数量を選択してください")
+	@Range(min = 1, max = 12, message = "範囲外の数量です")
 	private Integer quantity;
 
 	private Integer itemId;
 
 	@NotNull(message = "ライスを選択してください")
+	@Range(min = 1, max = 16, message = "範囲外です")
 	private Integer riceId;
 
 	// getter setter
