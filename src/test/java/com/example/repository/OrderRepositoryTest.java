@@ -250,8 +250,7 @@ class OrderRepositoryTest {
 				orderList.get(0).getOrderItemList().get(0).getItem().getDescription(), "商品説明が期待される結果と異なります。");
 		assertEquals(2160, orderList.get(0).getOrderItemList().get(0).getItem().getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(3380, orderList.get(0).getOrderItemList().get(0).getItem().getPriceL(), "Lサイズ価格が期待される結果と異なります。");
-		assertEquals("8.jpg", orderList.get(0).getOrderItemList().get(0).getItem().getImagePath(),
-				"画像パスが期待される結果と異なります。");
+		assertEquals("8.jpg", orderList.get(0).getOrderItemList().get(0).getItem().getImagePath(), "画像パスが期待される結果と異なります。");
 		assertEquals(3, orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getId(),
 				"注文トッピングIDが期待される結果と異なります。");
 		assertEquals(2, orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getOrderItemId(),
@@ -260,30 +259,24 @@ class OrderRepositoryTest {
 				"トッピングIDが期待される結果と異なります。");
 		assertEquals(1, orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getId(),
 				"トッピングIDが期待される結果と異なります。");
-		assertEquals("オニオン",
-				orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getName(),
+		assertEquals("オニオン", orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getName(),
 				"トッピング名が期待される結果と異なります。");
-		assertEquals(200,
-				orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceM(),
+		assertEquals(200, orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceM(),
 				"Mサイズ価格が期待される結果と異なります。");
-		assertEquals(300,
-				orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceL(),
+		assertEquals(300, orderList.get(0).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceL(),
 				"Lサイズ価格が期待される結果と異なります。");
 		assertEquals(2, orderList.get(0).getOrderItemList().get(0).getOrderRice().getId(), "注文米IDが期待される結果と異なります。");
 		assertEquals(2, orderList.get(0).getOrderItemList().get(0).getOrderRice().getOrderItemId(),
 				"注文商品IDが期待される結果と異なります。");
 		assertEquals(3, orderList.get(0).getOrderItemList().get(0).getOrderRice().getRiceId(), "米IDが期待される結果と異なります。");
-		assertEquals(3, orderList.get(0).getOrderItemList().get(0).getOrderRice().getRice().getId(),
-				"米IDが期待される結果と異なります。");
+		assertEquals(3, orderList.get(0).getOrderItemList().get(0).getOrderRice().getRice().getId(), "米IDが期待される結果と異なります。");
 		assertEquals("新潟県産新之助", orderList.get(0).getOrderItemList().get(0).getOrderRice().getRice().getName(),
 				"米種名が期待される結果と異なります。");
 		assertEquals(
 				"「コシヒカリとはベクトルが異なるおいしさを持つ米を提供したい」との思いで誕生した2017年販売開始の新品種。大粒できれいなツヤがあり、ほんのりとした香り、豊潤な甘みとコク、しっかりした粘りと弾力を併せ持ちます。 「硬さ」と「粘り」という相反する要素を兼ね備えており、冷めても硬くなりにくく、おいしさを保つ新潟自慢のお米です。",
-				orderList.get(0).getOrderItemList().get(0).getOrderRice().getRice().getDescription(),
-				"米説明が期待される結果と異なります。");
+				orderList.get(0).getOrderItemList().get(0).getOrderRice().getRice().getDescription(), "米説明が期待される結果と異なります。");
 		assertEquals("ngt_shinnosuke.png",
-				orderList.get(0).getOrderItemList().get(0).getOrderRice().getRice().getImagePath(),
-				"米画像パスが期待される結果と異なります。");
+				orderList.get(0).getOrderItemList().get(0).getOrderRice().getRice().getImagePath(), "米画像パスが期待される結果と異なります。");
 
 		assertEquals(10, orderList.get(1).getUserId(), "ユーザIDが期待される結果と異なります。");
 		assertEquals(0, orderList.get(1).getTotalPrice(), "合計金額が期待される結果と異なります。");
@@ -293,14 +286,12 @@ class OrderRepositoryTest {
 		assertEquals(1, orderList.get(1).getOrderItemList().get(0).getQuantity(), "数量が期待される結果と異なります。");
 		assertEquals("M".charAt(0), orderList.get(1).getOrderItemList().get(0).getSize(), "サイズが期待される結果と異なります。");
 		assertEquals(2, orderList.get(1).getOrderItemList().get(0).getItem().getId(), "商品IDが期待される結果と異なります。");
-		assertEquals("ポークポークカレー・ミート", orderList.get(1).getOrderItemList().get(0).getItem().getName(),
-				"商品名が期待される結果と異なります。");
+		assertEquals("ポークポークカレー・ミート", orderList.get(1).getOrderItemList().get(0).getItem().getName(), "商品名が期待される結果と異なります。");
 		assertEquals("グリーンアスパラと相性の良いベーコンにいろどりのフレッシュトマトをトッピングし特製マヨソースでまとめた商品です",
 				orderList.get(1).getOrderItemList().get(0).getItem().getDescription(), "商品説明が期待される結果と異なります。");
 		assertEquals(1490, orderList.get(1).getOrderItemList().get(0).getItem().getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(2570, orderList.get(1).getOrderItemList().get(0).getItem().getPriceL(), "Lサイズ価格が期待される結果と異なります。");
-		assertEquals("2.jpg", orderList.get(1).getOrderItemList().get(0).getItem().getImagePath(),
-				"画像パスが期待される結果と異なります。");
+		assertEquals("2.jpg", orderList.get(1).getOrderItemList().get(0).getItem().getImagePath(), "画像パスが期待される結果と異なります。");
 		assertEquals(1, orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getId(),
 				"注文トッピングIDが期待される結果と異なります。");
 		assertEquals(1, orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getOrderItemId(),
@@ -309,28 +300,22 @@ class OrderRepositoryTest {
 				"トッピングIDが期待される結果と異なります。");
 		assertEquals(5, orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getId(),
 				"トッピングIDが期待される結果と異なります。");
-		assertEquals("プルコギ",
-				orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getName(),
+		assertEquals("プルコギ", orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getName(),
 				"トッピング名が期待される結果と異なります。");
-		assertEquals(200,
-				orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceM(),
+		assertEquals(200, orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceM(),
 				"Mサイズ価格が期待される結果と異なります。");
-		assertEquals(300,
-				orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceL(),
+		assertEquals(300, orderList.get(1).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceL(),
 				"Lサイズ価格が期待される結果と異なります。");
 		assertEquals(1, orderList.get(1).getOrderItemList().get(0).getOrderRice().getId(), "注文米IDが期待される結果と異なります。");
 		assertEquals(1, orderList.get(1).getOrderItemList().get(0).getOrderRice().getOrderItemId(),
 				"注文商品IDが期待される結果と異なります。");
 		assertEquals(7, orderList.get(1).getOrderItemList().get(0).getOrderRice().getRiceId(), "米IDが期待される結果と異なります。");
-		assertEquals(7, orderList.get(1).getOrderItemList().get(0).getOrderRice().getRice().getId(),
-				"米IDが期待される結果と異なります。");
+		assertEquals(7, orderList.get(1).getOrderItemList().get(0).getOrderRice().getRice().getId(), "米IDが期待される結果と異なります。");
 		assertEquals("秋田あきたこまち", orderList.get(1).getOrderItemList().get(0).getOrderRice().getRice().getName(),
 				"米種名が期待される結果と異なります。");
 		assertEquals("「あきたこまち」は、自然豊かな秋田で丹精込めて作られ、食味の評判は最高。光沢が冴え、あっさりとした食感で冷めても味が落ちない特性を備えています。",
-				orderList.get(1).getOrderItemList().get(0).getOrderRice().getRice().getDescription(),
-				"米説明が期待される結果と異なります。");
-		assertEquals("akt_komachi.png",
-				orderList.get(1).getOrderItemList().get(0).getOrderRice().getRice().getImagePath(),
+				orderList.get(1).getOrderItemList().get(0).getOrderRice().getRice().getDescription(), "米説明が期待される結果と異なります。");
+		assertEquals("akt_komachi.png", orderList.get(1).getOrderItemList().get(0).getOrderRice().getRice().getImagePath(),
 				"米画像パスが期待される結果と異なります。");
 
 		assertEquals(10, orderList.get(2).getUserId(), "ユーザIDが期待される結果と異なります。");
@@ -341,14 +326,12 @@ class OrderRepositoryTest {
 		assertEquals(1, orderList.get(2).getOrderItemList().get(0).getQuantity(), "数量が期待される結果と異なります。");
 		assertEquals("M".charAt(0), orderList.get(2).getOrderItemList().get(0).getSize(), "サイズが期待される結果と異なります。");
 		assertEquals(2, orderList.get(2).getOrderItemList().get(0).getItem().getId(), "商品IDが期待される結果と異なります。");
-		assertEquals("ポークポークカレー・ミート", orderList.get(2).getOrderItemList().get(0).getItem().getName(),
-				"商品名が期待される結果と異なります。");
+		assertEquals("ポークポークカレー・ミート", orderList.get(2).getOrderItemList().get(0).getItem().getName(), "商品名が期待される結果と異なります。");
 		assertEquals("グリーンアスパラと相性の良いベーコンにいろどりのフレッシュトマトをトッピングし特製マヨソースでまとめた商品です",
 				orderList.get(2).getOrderItemList().get(0).getItem().getDescription(), "商品説明が期待される結果と異なります。");
 		assertEquals(1490, orderList.get(2).getOrderItemList().get(0).getItem().getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(2570, orderList.get(2).getOrderItemList().get(0).getItem().getPriceL(), "Lサイズ価格が期待される結果と異なります。");
-		assertEquals("2.jpg", orderList.get(2).getOrderItemList().get(0).getItem().getImagePath(),
-				"画像パスが期待される結果と異なります。");
+		assertEquals("2.jpg", orderList.get(2).getOrderItemList().get(0).getItem().getImagePath(), "画像パスが期待される結果と異なります。");
 		assertEquals(2, orderList.get(2).getOrderItemList().get(0).getOrderToppingList().get(0).getId(),
 				"注文トッピングIDが期待される結果と異なります。");
 		assertEquals(1, orderList.get(2).getOrderItemList().get(0).getOrderToppingList().get(0).getOrderItemId(),
@@ -360,25 +343,20 @@ class OrderRepositoryTest {
 		assertEquals("あらびきスライスソｰセｰジ",
 				orderList.get(2).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getName(),
 				"トッピング名が期待される結果と異なります。");
-		assertEquals(200,
-				orderList.get(2).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceM(),
+		assertEquals(200, orderList.get(2).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceM(),
 				"Mサイズ価格が期待される結果と異なります。");
-		assertEquals(300,
-				orderList.get(2).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceL(),
+		assertEquals(300, orderList.get(2).getOrderItemList().get(0).getOrderToppingList().get(0).getTopping().getPriceL(),
 				"Lサイズ価格が期待される結果と異なります。");
 		assertEquals(1, orderList.get(2).getOrderItemList().get(0).getOrderRice().getId(), "注文米IDが期待される結果と異なります。");
 		assertEquals(1, orderList.get(2).getOrderItemList().get(0).getOrderRice().getOrderItemId(),
 				"注文商品IDが期待される結果と異なります。");
 		assertEquals(7, orderList.get(2).getOrderItemList().get(0).getOrderRice().getRiceId(), "米IDが期待される結果と異なります。");
-		assertEquals(7, orderList.get(2).getOrderItemList().get(0).getOrderRice().getRice().getId(),
-				"米IDが期待される結果と異なります。");
+		assertEquals(7, orderList.get(2).getOrderItemList().get(0).getOrderRice().getRice().getId(), "米IDが期待される結果と異なります。");
 		assertEquals("秋田あきたこまち", orderList.get(2).getOrderItemList().get(0).getOrderRice().getRice().getName(),
 				"米種名が期待される結果と異なります。");
 		assertEquals("「あきたこまち」は、自然豊かな秋田で丹精込めて作られ、食味の評判は最高。光沢が冴え、あっさりとした食感で冷めても味が落ちない特性を備えています。",
-				orderList.get(2).getOrderItemList().get(0).getOrderRice().getRice().getDescription(),
-				"米説明が期待される結果と異なります。");
-		assertEquals("akt_komachi.png",
-				orderList.get(2).getOrderItemList().get(0).getOrderRice().getRice().getImagePath(),
+				orderList.get(2).getOrderItemList().get(0).getOrderRice().getRice().getDescription(), "米説明が期待される結果と異なります。");
+		assertEquals("akt_komachi.png", orderList.get(2).getOrderItemList().get(0).getOrderRice().getRice().getImagePath(),
 				"米画像パスが期待される結果と異なります。");
 	}
 
@@ -409,7 +387,7 @@ class OrderRepositoryTest {
 
 		orderRepository.updateTotalPrice(10, 1000);
 	}
-	
+
 	@Test
 	public void orderメソッドのテスト() {
 		List<Order> orderList = orderRepository.findByUserIdAndStatus0(10);
@@ -429,7 +407,7 @@ class OrderRepositoryTest {
 		assertEquals(0, orderList.get(0).getTax(), "消費税が期待される結果と異なります");
 		assertEquals(0, orderList.get(0).getTaxIncludedPrice(), "税込合計金額が期待される結果と異なります");
 		assertEquals(0, orderList.get(0).getUsedPoints(), "利用ポイントが期待される結果と異なります");
-		
+
 		Order order = new Order();
 		order.setStatus(1);
 		order.setDestinationName("山田太郎");
@@ -440,18 +418,18 @@ class OrderRepositoryTest {
 		order.setDestinationTel("0000000000");
 		java.util.Date date = new java.util.Date();
 		order.setOrderDate(date);
-		
-		SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String dateTime = "2020-07-28 9:00:00";
 		try {
-		    java.util.Date dTime = (java.util.Date) sdf.parse(dateTime);
+			java.util.Date dTime = (java.util.Date) sdf.parse(dateTime);
 			Timestamp ts = new Timestamp(dTime.getTime());
 			order.setDeliveryTime(ts);
 		} catch (ParseException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-		
+
 		order.setPaymentMethod(1);
 		order.setUserId(10);
 		order.setDiscountPrice(1500);
@@ -475,6 +453,18 @@ class OrderRepositoryTest {
 		assertEquals(2000, orderList.get(0).getTaxIncludedPrice(), "税込合計金額が期待される結果と異なります");
 		assertEquals(500, orderList.get(0).getUsedPoints(), "利用ポイントが期待される結果と異なります");
 	}
+
+	@Test
+	public void findByUserIdAndNonStatus0のテスト_異常系() {
+		// findByUserIdAndNonStatus0
+		
+		List<Order> orderList1 = orderRepository.findByUserIdAndNonStatus0(1000);
+		assertTrue(orderList1.isEmpty(), "期待される結果と異なります");
+		
+		List<Order> orderList2 = orderRepository.findByUserIdAndNonStatus0(123);
+		assertTrue(orderList2.isEmpty(), "期待される結果と異なります");
+	}
+
 	@AfterEach
 	public void 事後処理() {
 
