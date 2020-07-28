@@ -76,7 +76,7 @@ class ItemServiceTest {
 
 		assertEquals(5, itemList.get(4).getId(), "IDが期待される結果と異なります。");
 		assertEquals("とんかつカレーラーメン", itemList.get(4).getName(), "名前が期待される結果と異なります。");
-		assertEquals("カレーはライスだけではありません。ラクラクピザが開発したカレーラーメンは絶品の美味しさ！", itemList.get(4).getDescription(),
+		assertEquals("カレーはライスだけではありません。ラクラクカレーが開発したカレーラーメンは絶品の美味しさ！", itemList.get(4).getDescription(),
 				"説明が期待される結果と異なります。");
 		assertEquals(1900, itemList.get(4).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(2980, itemList.get(4).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
@@ -164,7 +164,7 @@ class ItemServiceTest {
 
 		assertEquals(15, itemList.get(14).getId(), "IDが期待される結果と異なります。");
 		assertEquals("Family４", itemList.get(14).getName(), "名前が期待される結果と異なります。");
-		assertEquals("ラクラクピザ自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
+		assertEquals("ラクラクカレー自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
 				itemList.get(14).getDescription(), "説明が期待される結果と異なります。");
 		assertEquals(2440, itemList.get(14).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(3650, itemList.get(14).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
@@ -261,7 +261,7 @@ class ItemServiceTest {
 
 		assertEquals(5, item.getId(), "IDが期待される結果と異なります。");
 		assertEquals("とんかつカレーラーメン", item.getName(), "名前が期待される結果と異なります。");
-		assertEquals("カレーはライスだけではありません。ラクラクピザが開発したカレーラーメンは絶品の美味しさ！", item.getDescription(), "説明が期待される結果と異なります。");
+		assertEquals("カレーはライスだけではありません。ラクラクカレーが開発したカレーラーメンは絶品の美味しさ！", item.getDescription(), "説明が期待される結果と異なります。");
 		assertEquals(1900, item.getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(2980, item.getPriceL(), "Lサイズ価格が期待される結果と異なります。");
 		assertEquals("5.jpg", item.getImagePath(), "画像パスが期待される結果と異なります。");
@@ -405,7 +405,7 @@ class ItemServiceTest {
 
 		assertEquals(15, item.getId(), "IDが期待される結果と異なります。");
 		assertEquals("Family４", item.getName(), "名前が期待される結果と異なります。");
-		assertEquals("ラクラクピザ自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
+		assertEquals("ラクラクカレー自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
 				item.getDescription(), "説明が期待される結果と異なります。");
 		assertEquals(2440, item.getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(3650, item.getPriceL(), "Lサイズ価格が期待される結果と異なります。");
@@ -498,7 +498,7 @@ class ItemServiceTest {
 
 		assertEquals(5, itemList.get(1).getId(), "IDが期待される結果と異なります。");
 		assertEquals("とんかつカレーラーメン", itemList.get(1).getName(), "名前が期待される結果と異なります。");
-		assertEquals("カレーはライスだけではありません。ラクラクピザが開発したカレーラーメンは絶品の美味しさ！", itemList.get(1).getDescription(),
+		assertEquals("カレーはライスだけではありません。ラクラクカレーが開発したカレーラーメンは絶品の美味しさ！", itemList.get(1).getDescription(),
 				"説明が期待される結果と異なります。");
 		assertEquals(1900, itemList.get(1).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(2980, itemList.get(1).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
@@ -534,7 +534,7 @@ class ItemServiceTest {
 
 		assertEquals(15, itemList.get(5).getId(), "IDが期待される結果と異なります。");
 		assertEquals("Family４", itemList.get(5).getName(), "名前が期待される結果と異なります。");
-		assertEquals("ラクラクピザ自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
+		assertEquals("ラクラクカレー自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
 				itemList.get(5).getDescription(), "説明が期待される結果と異なります。");
 		assertEquals(2440, itemList.get(5).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(3650, itemList.get(5).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
@@ -828,7 +828,7 @@ class ItemServiceTest {
 
 		assertEquals(15, itemList.get(7).getId(), "IDが期待される結果と異なります。");
 		assertEquals("Family４", itemList.get(7).getName(), "名前が期待される結果と異なります。");
-		assertEquals("ラクラクピザ自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
+		assertEquals("ラクラクカレー自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
 				itemList.get(7).getDescription(), "説明が期待される結果と異なります。");
 		assertEquals(2440, itemList.get(7).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(3650, itemList.get(7).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
@@ -881,7 +881,7 @@ class ItemServiceTest {
 
 		assertEquals(5, itemList.get(13).getId(), "IDが期待される結果と異なります。");
 		assertEquals("とんかつカレーラーメン", itemList.get(13).getName(), "名前が期待される結果と異なります。");
-		assertEquals("カレーはライスだけではありません。ラクラクピザが開発したカレーラーメンは絶品の美味しさ！", itemList.get(13).getDescription(),
+		assertEquals("カレーはライスだけではありません。ラクラクカレーが開発したカレーラーメンは絶品の美味しさ！", itemList.get(13).getDescription(),
 				"説明が期待される結果と異なります。");
 		assertEquals(1900, itemList.get(13).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(2980, itemList.get(13).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
@@ -966,7 +966,7 @@ class ItemServiceTest {
 
 		assertEquals(5, itemList.get(4).getId(), "IDが期待される結果と異なります。");
 		assertEquals("とんかつカレーラーメン", itemList.get(4).getName(), "名前が期待される結果と異なります。");
-		assertEquals("カレーはライスだけではありません。ラクラクピザが開発したカレーラーメンは絶品の美味しさ！", itemList.get(4).getDescription(),
+		assertEquals("カレーはライスだけではありません。ラクラクカレーが開発したカレーラーメンは絶品の美味しさ！", itemList.get(4).getDescription(),
 				"説明が期待される結果と異なります。");
 		assertEquals(1900, itemList.get(4).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(2980, itemList.get(4).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
@@ -1054,7 +1054,7 @@ class ItemServiceTest {
 
 		assertEquals(15, itemList.get(14).getId(), "IDが期待される結果と異なります。");
 		assertEquals("Family４", itemList.get(14).getName(), "名前が期待される結果と異なります。");
-		assertEquals("ラクラクピザ自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
+		assertEquals("ラクラクカレー自慢「特うまプルコギ」定番「デラックス」お子様に人気「ツナマイルド」女性に好評「チーズ＆チーズ」の４種のおいしさを贅沢に組み合わせました",
 				itemList.get(14).getDescription(), "説明が期待される結果と異なります。");
 		assertEquals(2440, itemList.get(14).getPriceM(), "Mサイズ価格が期待される結果と異なります。");
 		assertEquals(3650, itemList.get(14).getPriceL(), "Lサイズ価格が期待される結果と異なります。");
