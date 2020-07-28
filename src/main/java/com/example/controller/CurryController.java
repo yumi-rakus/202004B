@@ -189,10 +189,9 @@ public class CurryController {
 
 		} catch (NullPointerException e) {
 			itemList = itemService.findAllByPrice();
+
 		}
 
-		model.addAttribute("searchName", form.getSearchName());
-		model.addAttribute("id", form.getId());
 		// 表示させたいページ数、ページサイズ、商品リストを渡し１ページに表示させる商品リストを絞り込み
 		Page<Item> itemPage = itemService.showListPaging(page, VIEW_SIZE, itemList);
 		model.addAttribute("itemPage", itemPage);
@@ -260,7 +259,6 @@ public class CurryController {
 		user.setTelephone(userForm.getTelephone());
 		user.setPassword(userForm.getPassword());
 		user.setIsAdmin(false);
-
 		userService.insert(user);
 		return "login";
 	}

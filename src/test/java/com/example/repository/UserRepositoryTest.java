@@ -2,6 +2,8 @@ package com.example.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import com.example.domain.User;
 
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +32,6 @@ class UserRepositoryTest {
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	private UserRepository userRepository;
-
 	// Fields
 	private static final RowMapper<User> USER_ROW_MAPPER = (rs, i) -> {
 		User user = new User();
@@ -49,6 +50,7 @@ class UserRepositoryTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		User user1 = new User();
+		user1.setId(1);
 		user1.setName("test");
 		user1.setEmail("test@test");
 		user1.setPassword("test");
@@ -83,6 +85,48 @@ class UserRepositoryTest {
 		assertEquals("11111111111", user.getTelephone(), "期待される結果と異なります。");
 		assertEquals(true, user.getIsAdmin(), "期待される結果と異なります。");
 		assertEquals(0, user.getPoints(), "期待される結果と異なります。");
+	}
+
+	@Test
+	void findByEmailのテスト() throws Exception {
+		User user = userRepository.findByEmail("test@test");
+		assertEquals(1, user.getId(), "期待される結果と異なります");
+		assertEquals("test", user.getName(), "期待される結果と異なります");
+		assertTrue(passwordEncoder.matches("test", user.getPassword()), "期待される結果と異なります");
+		assertEquals("test住所", user.getAddress(), "期待される結果と異なります。");
+		assertEquals("1111111", user.getZipcode(), "期待される結果と異なります。");
+		assertEquals("11111111111", user.getTelephone(), "期待される結果と異なります。");
+		assertEquals(true, user.getIsAdmin(), "期待される結果と異なります。");
+		assertEquals(0, user.getPoints(), "期待される結果と異なります。");
+	}
+
+	@Test
+	void updateのテスト() throws Exception {
+		User user = userRepository.findById(1);
+		
+		assertEquals(1, user.getId(), "期待される結果と異なります");
+		assertEquals("test", user.getName(), "期待される結果と異なります");
+		assertEquals("test@test", user.getEmail(), "期待される結果と異なります");
+		assertTrue(passwordEncoder.matches("test", user.getPassword()), "期待される結果と異なります。");
+		assertEquals("1111111", user.getZipcode(), "期待される結果と異なります。");
+		assertEquals("test住所", user.getAddress(), "期待される結果と異なります。");
+		assertEquals("11111111111", user.getTelephone(), "期待される結果と異なります。");
+		assertEquals(true, user.getIsAdmin(), "期待される結果と異なります。");
+		assertEquals(0, user.getPoints(), "期待される結果と異なります。");
+		
+		String sql = "UPDATE users SET name = :name, email = :email, zipcode = :zipcode, address = :address, telephone = :telephone  where id = :id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "ken").addValue("email", "ken@ken")
+				.addValue("zipcode", "2222222").addValue("address", "ken住所").addValue("telephone", "22222222222")
+				.addValue("id", 1);
+		template.update(sql, param);
+		
+		User user2 = userRepository.findById(1);
+		assertEquals("ken", user2.getName(), "期待される結果と異なります");
+		assertEquals("ken@ken", user2.getEmail(), "期待される結果と異なります");
+		assertEquals("2222222", user2.getZipcode(), "期待される結果と異なります。");
+		assertEquals("ken住所", user2.getAddress(), "期待される結果と異なります。");
+		assertEquals("22222222222", user2.getTelephone(), "期待される結果と異なります。");
+
 	}
 
 }
