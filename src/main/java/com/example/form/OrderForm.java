@@ -21,15 +21,15 @@ public class OrderForm {
 	@NotBlank(message = "メールアドレスを入力してください")
 	@Email(message = "メールアドレスの形式が不正です")
 	private String email;
-	@Pattern(regexp = "^[0-9]{3}", message = "郵便番号（上3桁）:3桁で入力してください")
+	@Pattern(regexp = "^[0-9]{3}", message = "3桁で入力してください")
 	private String zipcodefirst;
-	@Pattern(regexp = "^[0-9]{4}$", message = "郵便番号（下4桁）:4桁で入力してください")
+	@Pattern(regexp = "^[0-9]{4}$", message = "4桁で入力してください")
 	private String zipcodelast;
 	@NotBlank(message = "住所を入力してください")
 	private String address;
 	@NotBlank(message = "配達日時を入力してください")
 	private String time;
-	@Size(min=10, max=11, message="電話番号を入力してください")
+	@Size(min=10, max=11, message="電話番号を10桁か11桁で入力してください")
 	private String telephone;
 	@NotNull(message = "支払い方法を選択してください")
 	private Integer paymentMethod;
