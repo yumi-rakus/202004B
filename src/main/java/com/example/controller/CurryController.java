@@ -38,6 +38,7 @@ import com.example.form.ItemForm;
 import com.example.form.ItemSearchForm;
 import com.example.form.OrderForm;
 import com.example.form.UpdateItemForm;
+import com.example.form.UpdateUserForm;
 import com.example.form.UserForm;
 import com.example.service.FavoriteService;
 import com.example.service.ItemService;
@@ -102,6 +103,11 @@ public class CurryController {
 	@ModelAttribute
 	public ItemSearchForm setUpItemSearchForm() {
 		return new ItemSearchForm();
+	}
+	
+	@ModelAttribute
+	public UpdateUserForm setUpUpdateUserForm() {
+		return new UpdateUserForm();
 	}
 
 	@ModelAttribute
@@ -688,7 +694,7 @@ public class CurryController {
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
 		user.setZipcode(userForm.getZipcodefirst() + userForm.getZipcodelast());
-		user.setAddress(userForm.getAddress());
+		user.setAddress(userForm.getAddressFirst()+userForm.getAddressLast());
 		user.setTelephone(userForm.getTelephone());
 		user.setPassword(userForm.getPassword());
 		user.setIsAdmin(true);
@@ -843,7 +849,7 @@ public class CurryController {
 	 * @author kohei eto マイページ情報変更画面
 	 */
 	@RequestMapping("/update-mypage")
-	public String mypageEdit(UserForm userForm, Model model, @AuthenticationPrincipal LoginUser loginUser) {
+	public String mypageEdit(UpdateUserForm userForm, Model model, @AuthenticationPrincipal LoginUser loginUser) {
 		User user = userService.getUserById(loginUser.getUser().getId());
 
 		model.addAttribute("user", user);
@@ -855,7 +861,7 @@ public class CurryController {
 	 * @author kohei eto マイページ情報変更
 	 */
 	@RequestMapping("/updating-mypage")
-	public String edit(@Validated UserForm userForm, BindingResult result, @AuthenticationPrincipal LoginUser loginUser,
+	public String edit(@Validated UpdateUserForm userForm, BindingResult result, @AuthenticationPrincipal LoginUser loginUser,
 			Model model) {
 
 		/*
