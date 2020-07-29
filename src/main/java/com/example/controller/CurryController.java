@@ -300,6 +300,7 @@ public class CurryController {
 	public String order(@Validated OrderForm form, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
+			System.out.println(result);
 			return Confirm(form, model);
 		}
 		Order order = new Order();

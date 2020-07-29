@@ -212,7 +212,7 @@
 		</div>
 
 		<!-- table -->
-		<form action="order_finished.html" th:action="@{/order}" th:object="${orderForm}" id="orderForm" novalidate>
+		<form action="order_finished.html" th:action="@{/order}" th:object="${orderForm}" id="orderForm">
 			
 			<div class="row">
 				<div
@@ -482,6 +482,24 @@
 				return '* ' + num.toString() + '桁で入力してください';
 			}
 		}
+		
+		$(function () {
+	        $("form").validationEngine("attach", {focusFirstField: false});
+
+	        $("input").on("input", function () {
+	            if ($("form").validationEngine("validate")) {
+	                $("#order").prop("disabled", false);
+	            } else {
+	                $("#order").prop("disabled", true);
+	            }
+	        });
+
+	        $("#order").on("click", function () {
+	            if ($("form").validationEngine("validate")) {
+	                $("form").submit();
+	            }
+	        });
+	    });
 	</script>
 </body>
 </html>
