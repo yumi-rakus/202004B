@@ -55,7 +55,6 @@ public class OrderRepository {
 		order.setTax(rs.getInt("tax"));
 		order.setTaxIncludedPrice(rs.getInt("tax_included_price"));
 		order.setUsedPoints(rs.getInt("used_points"));
-		
 
 		OrderItem orderItem = new OrderItem();
 		orderItem.setId(rs.getInt("order_item_id"));
@@ -136,12 +135,9 @@ public class OrderRepository {
 				.addValue("destinationEmail", order.getDestinationEmail())
 				.addValue("destinationZipcode", order.getDestinationZipcode())
 				.addValue("destinationAddress", order.getDestinationAddress())
-				.addValue("destinationTel", order.getDestinationTel())
-				.addValue("deliveryTime", order.getDeliveryTime())
-				.addValue("paymentMethod", order.getPaymentMethod())
-				.addValue("discountPrice", order.getDiscountPrice())
-				.addValue("userId", order.getUserId())
-				.addValue("tax", order.getTax())
+				.addValue("destinationTel", order.getDestinationTel()).addValue("deliveryTime", order.getDeliveryTime())
+				.addValue("paymentMethod", order.getPaymentMethod()).addValue("discountPrice", order.getDiscountPrice())
+				.addValue("userId", order.getUserId()).addValue("tax", order.getTax())
 				.addValue("taxIncludedPrice", order.getTaxIncludedPrice())
 				.addValue("usedPoints", order.getUsedPoints());
 		template.update(sql, param);
@@ -416,7 +412,7 @@ public class OrderRepository {
 	 */
 	public void updateUserId(Integer userId, Integer uuid) {
 
-		String sql = "UPDATE orders SET user_id = :userId WHERE user_id = :uuid";
+		String sql = "UPDATE orders SET user_id = :userId WHERE user_id = :uuid AND status = 0";
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId).addValue("uuid", uuid);
 
