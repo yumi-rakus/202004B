@@ -99,17 +99,17 @@ $(function () {
 							<div class="row">
 							<div class="col-sm-12">
 							<label for="inputZipcode">郵便番号:</label>
-								<label th:if="${#fields.hasErrors('zipcodeFirst')}" th:errors="*{zipcodeFirst}" style="color: red" class="error-messages">入力してください</label>
-								<label th:if="${#fields.hasErrors('zipcodeLast')}" th:errors="*{zipcodeLast}" style="color: red" class="error-messages">入力してください</label>
+								<label th:if="${#fields.hasErrors('zipcodefirst')}" th:errors="*{zipcodefirst}" style="color: red" class="error-messages">入力してください</label>
+								<label th:if="${#fields.hasErrors('zipcodelast')}" th:errors="*{zipcodelast}" style="color: red" class="error-messages">入力してください</label>
 							</div>
 							<div class="col-sm-5">
 								
 								<div class="input-group">
-								<input type="number" name="zipcodeFirst" id="zipcodeFirst" class="form-control validate[required]" placeholder="123" th:field="*{zipcodeFirst}">
+								<input type="number" name="zipcodeFirst" id="zipcodeFirst" class="form-control validate[required]" placeholder="123" th:field="*{zipcodefirst}">
 												 
 								<span class="input-group-addon">-</span>
 											
-								<input type="number" name="zipcodeLast" id="zipcodeLast" class="form-control validate[required]" placeholder="4567" th:field="*{zipcodeLast}" onkeyup="AjaxZip3.zip2addr('zipcodeFirst','zipcodeLast','addressFirst','addressFirst');">
+								<input type="number" name="zipcodeLast" id="zipcodeLast" class="form-control validate[required]" placeholder="4567" th:field="*{zipcodelast}" onkeyup="AjaxZip3.zip2addr('zipcodeFirst','zipcodeLast','addressFirst','addressFirst');">
 								</div>			                         
 							</div>
 							</div>
