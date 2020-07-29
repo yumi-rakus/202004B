@@ -105,7 +105,7 @@
                   </li>
 									<hr>
                   <li class="list-group-item">合計金額(税込)：<span th:text="*{#numbers.formatInteger(taxIncludedPrice, 1, 'COMMA')}">2,380</span>円</li>
-                  <li th:unless="*{usedPoints} eq 0" class="list-group-item">利用ポイント&nbsp;&nbsp;：<span th:text="*{#numbers.formatInteger(usedPoints, 1, 'COMMA')}">2,380</span>ポイント</li>
+                  <li class="list-group-item">利用ポイント&nbsp;&nbsp;：<span th:text="*{#numbers.formatInteger(usedPoints, 1, 'COMMA')}">2,380</span>ポイント</li>
                   <li class="list-group-item"><strong>ご請求額(税込)：<span th:text="*{#numbers.formatInteger(discountPrice, 1, 'COMMA')}">2,380</span>円</strong></li>
                 </ul>
               </td>

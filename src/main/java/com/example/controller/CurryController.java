@@ -104,7 +104,7 @@ public class CurryController {
 	public ItemSearchForm setUpItemSearchForm() {
 		return new ItemSearchForm();
 	}
-	
+
 	@ModelAttribute
 	public UpdateUserForm setUpUpdateUserForm() {
 		return new UpdateUserForm();
@@ -347,9 +347,15 @@ public class CurryController {
 		}
 
 		order.setPaymentMethod(form.getPaymentMethod());
-		order.setDiscountPrice(form.getDiscountPrice());
 		order.setTax(order.getTax());
 		order.setTaxIncludedPrice(order.getTotalPrice() + order.getTax());
+
+		if (form.getDiscountPrice() == 0) {
+			order.setDiscountPrice(order.getTaxIncludedPrice());
+		} else {
+			order.setDiscountPrice(form.getDiscountPrice());
+		}
+
 		if (form.getDiscountPrice() != 0) {
 			order.setUsedPoints(order.getTaxIncludedPrice() - order.getDiscountPrice());
 		} else if (form.getDiscountPrice() == 0) {
@@ -468,8 +474,7 @@ public class CurryController {
 		if (Objects.nonNull((Integer) session.getAttribute("userId"))) {
 
 			if (orderService.status0ExistByUserId((Integer) session.getAttribute("userId"))) {
-				List<Order> order = orderService
-						.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
+				List<Order> order = orderService.getOrderListByUserIdAndStatus0((Integer) session.getAttribute("userId"));
 
 				if (order.get(0).getOrderItemList().get(0).getItem().getId() == 0) {
 					model.addAttribute("notExistOrderItemList", "カートに商品がありません");
@@ -694,7 +699,7 @@ public class CurryController {
 		user.setName(userForm.getName());
 		user.setEmail(userForm.getEmail());
 		user.setZipcode(userForm.getZipcodefirst() + userForm.getZipcodelast());
-		user.setAddress(userForm.getAddressFirst()+userForm.getAddressLast());
+		user.setAddress(userForm.getAddressFirst() + userForm.getAddressLast());
 		user.setTelephone(userForm.getTelephone());
 		user.setPassword(userForm.getPassword());
 		user.setIsAdmin(true);
@@ -861,8 +866,8 @@ public class CurryController {
 	 * @author kohei eto マイページ情報変更
 	 */
 	@RequestMapping("/updating-mypage")
-	public String edit(@Validated UpdateUserForm userForm, BindingResult result, @AuthenticationPrincipal LoginUser loginUser,
-			Model model) {
+	public String edit(@Validated UpdateUserForm userForm, BindingResult result,
+			@AuthenticationPrincipal LoginUser loginUser, Model model) {
 
 		/*
 		 * if (result.hasErrors()) { return mypageEdit(userForm, model, loginUser); }
