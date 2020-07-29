@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 
 /**
  * 注文時にメールをユーザに送信するサービス.
@@ -65,13 +66,12 @@ public class SendMailService {
 			mailContent.append("ライス: "+item.getOrderRice().getRice().getName()+"\n");
 		}
 		mailContent.append("\n");
-		mailContent.append("商品代金: " + order.get(0).getTotalPrice() + "円\n");
-		mailContent.append("消費税: " + order.get(0).getTax() + "円\n");
-		mailContent.append("合計金額: " + order.get(0).getTaxIncludedPrice() + "円\n");
-		Integer discountPrice = order.get(0).getDiscountPrice();
-		if(discountPrice!=0) {
-			mailContent.append("ポイント利用金額: "+(order.get(0).getDiscountPrice())+"円\n");
-		}
+		mailContent.append("商品代金: " + String.format("%,d", order.get(0).getTotalPrice()) + "円\n");
+		mailContent.append("消費税: " + String.format("%,d", order.get(0).getTax()) + "円\n");
+		mailContent.append("合計金額: " + String.format("%,d", order.get(0).getTaxIncludedPrice()) + "円\n");
+		mailContent.append("利用ポイント: "+String.format("%,d", order.get(0).getUsedPoints())+"ポイント\n");
+		mailContent.append("ご請求金額: "+String.format("%,d", order.get(0).getDiscountPrice())+"円\n");
+		
 		mailContent.append("\n");
 		if (order.get(0).getStatus() == 1) {
 			mailContent.append("お支払い方法: 代金引換\n配達時にお支払いください。\n");

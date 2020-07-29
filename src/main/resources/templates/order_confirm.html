@@ -468,7 +468,7 @@
 				var strTotalPrice = $(".totalPrice").text();
 				var totalPrice = strTotalPrice.replace(/[^0-9^\.]/g,"");
 				var newTotalPrice = totalPrice - points;
-				$(".text").text("ポイント利用後:").show();
+				$(".text").text("ポイント利用後：").show();
 				$(".newTotalPrice").text(newTotalPrice.toLocaleString()+"円").show();
 				$("#newTotalPrice").val(newTotalPrice);
 				}
