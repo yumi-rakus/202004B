@@ -2,8 +2,6 @@ package com.example.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-
 import com.example.domain.User;
 
 import org.junit.jupiter.api.AfterEach;
