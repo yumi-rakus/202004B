@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ラクラクカリー</title>
+  <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+  <link th:href="@{/css/curry.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
+  <link th:href="@{/css/drawer.css}" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
+  <script>
+    jQuery(function ($) {
+      $(document).ready(function () {
+        $('.drawer').drawer();
+      });
+    });
+  </script>
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="drawer drawer--left">
+  <div class="container">
+    <button type="button" class="drawer-toggle drawer-hamburger">
+      <span class="sr-only">toggle navigation</span>
+      <span class="drawer-hamburger-icon"></span>
+    </button>
+    <nav class="drawer-nav" role="navigation">
+      <ul class="drawer-menu">
+        <li class="side-menu">
+          <span style="font-weight: bold">
+            <span sec:authorize="isAuthenticated()">
+              <span sec:authentication="principal.user.name"></span>さん
+            </span>
+            <span sec:authorize="isAnonymous()">
+              <span>ゲストさん</span>
+            </span>
+          </span>
+        </li>
+        <span sec:authorize="isAuthenticated()">
+          <li class="side-menu"><a th:href="@{/mypage}" class="side-content">マイページ</a></li>
+        </span>
+        <li class="side-menu"><a href="item_list_curry.html"
+					th:href="@{/edit-mypage}" class="side-content">ユーザ情報変更</a>&nbsp;&nbsp;</li>
+		<li class="side-menu"><a href="cart_list.html"
+					th:href="@{/favorite}" class="side-content">お気に入り</a>&nbsp;&nbsp;</li>
+		<li class="side-menu"><a th:href="@{/pdf/allergy.pdf}"
+					target="_blank" class="side-content">アレルギー情報</a>&nbsp;&nbsp;</li>
+      </ul>
+    </nav>
+    <span th:include="fragment-part::frag_nav"></span>
+
+    <h2>お気に入り</h2>
+
+    <!-- search form 今のところ不要-->
+    <!-- <div class="row">
+			<div
+				class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="panel-title">商品を検索する</div>
+					</div>
+					<div class="panel-body">
+						<form method="post" action="#" class="form-horizontal">
+							<div class="form-group">
+								<label for="code" class="control-label col-sm-2">商品名</label>
+								<div class="col-sm-9">
+									<input type="text" name="code" id="code"
+										class="form-control input-sm" />
+								</div>
+							</div>
+							<div class="text-center">
+								<button type="submit" value="検索" class="btn btn-primary">検索</button>
+								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div> -->
+    <!-- お気に入りがない場合 -->
+    <h3 th:if="${#lists.isEmpty(favoriteList)}">お気に入り商品がありません</h3>
+    <!-- お気に入り商品がある場合 -->
+    <div class="row">
+      <div class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+        <table class="table item-list-table">
+          <tbody th:each="favorite : ${favoriteList}">
+            <tr >
+              <td rowspan="2">
+                <a th:href="@{'showDetail?id=' + ${favorite.item.id}}">
+                  <img th:src="@{'/img_curry/' + ${favorite.item.imagePath}}"
+                  class="img-responsive img-rounded item-img-center" width="100" height="300">
+                </a>
+                <p th:text="${favorite.item.name}" class="text-center h5"></p>
+              </td>
+              <td>
+                <div th:text="${favorite.item.description}">
+                  食べると勝負に勝てると言われる勝つカレー。ラクラクカレー定番の１品です
+                </div>
+              </td>
+              <td rowspan="2">
+                <small><span th:text="${#dates.format(favorite.addedDate, 'yyyy年MM月dd日')}">2020年7月19日</span>に追加されました</small>
+                <p>
+                  <a class="form-control btn btn-warning btn-block" th:href="@{'showDetail?id=' + ${favorite.item.id}}" role="button">詳細ページ</a>
+                </p>
+                <form th:action="@{/favorite-delete}" method="post">
+                  <input type="hidden" th:value="${favorite.item.id}" name="itemId">
+                  <button type="submit" class="btn btn-light">削除</button>
+                </form>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div>
+                  <small>Mサイズ</small>：
+                  <span th:text="${#numbers.formatInteger(favorite.item.priceM, 1, 'COMMA')}">1800</span>円
+                </div>
+                <div>
+                  <small>Lサイズ</small>：
+                  <span th:text="${#numbers.formatInteger(favorite.item.priceL, 1, 'COMMA')}">1800</span>円
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- end container -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+
+</html>

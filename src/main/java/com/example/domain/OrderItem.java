@@ -1,6 +1,7 @@
 package com.example.domain;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 注文商品を表すドメイン.
@@ -28,8 +29,11 @@ public class OrderItem {
 	/** 商品情報 */
 	private Item item;
 
+	/** 注文米情報 */
+	private OrderRice orderRice;
+
 	/** トッピングリスト */
-	private List<Topping> orderToppingList;
+	private List<OrderTopping> orderToppingList;
 
 	// constructor
 	public OrderItem() {
@@ -37,7 +41,7 @@ public class OrderItem {
 	}
 
 	public OrderItem(Integer id, Integer itemId, Integer orderId, Integer quantity, Character size, Item item,
-			List<Topping> orderToppingList) {
+			OrderRice orderRice, List<OrderTopping> orderToppingList) {
 		super();
 		this.id = id;
 		this.itemId = itemId;
@@ -45,6 +49,7 @@ public class OrderItem {
 		this.quantity = quantity;
 		this.size = size;
 		this.item = item;
+		this.orderRice = orderRice;
 		this.orderToppingList = orderToppingList;
 	}
 
@@ -97,11 +102,19 @@ public class OrderItem {
 		this.item = item;
 	}
 
-	public List<Topping> getOrderToppingList() {
+	public OrderRice getOrderRice() {
+		return orderRice;
+	}
+
+	public void setOrderRice(OrderRice orderRice) {
+		this.orderRice = orderRice;
+	}
+
+	public List<OrderTopping> getOrderToppingList() {
 		return orderToppingList;
 	}
 
-	public void setOrderToppingList(List<Topping> orderToppingList) {
+	public void setOrderToppingList(List<OrderTopping> orderToppingList) {
 		this.orderToppingList = orderToppingList;
 	}
 
@@ -109,13 +122,37 @@ public class OrderItem {
 	@Override
 	public String toString() {
 		return "OrderItem [id=" + id + ", itemId=" + itemId + ", orderId=" + orderId + ", quantity=" + quantity
-				+ ", size=" + size + ", item=" + item + ", orderToppingList=" + orderToppingList + "]";
+				+ ", size=" + size + ", item=" + item + ", orderRice=" + orderRice + ", orderToppingList="
+				+ orderToppingList + "]";
 	}
 
 	// method
 	public int getSubTotal() {
 
-		int subTotal = 0;
+		int curryPrice = 0;
+
+		if (("M").equals(String.valueOf(this.size))) {
+			curryPrice = item.getPriceM();
+		} else if (("L").equals(String.valueOf(this.size))) {
+			curryPrice = item.getPriceL();
+		}
+
+		int toppingPrice = 0;
+
+		if (Objects.nonNull(this.orderToppingList)) {
+
+			for (OrderTopping orderTopping : this.orderToppingList) {
+
+				if (("M").equals(String.valueOf(this.size))) {
+					toppingPrice += orderTopping.getTopping().getPriceM();
+				} else if (("L").equals(String.valueOf(this.size))) {
+					toppingPrice += orderTopping.getTopping().getPriceL();
+				}
+			}
+
+		}
+
+		int subTotal = (curryPrice + toppingPrice) * this.quantity;
 
 		return subTotal;
 	}

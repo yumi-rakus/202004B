@@ -1,0 +1,214 @@
+@CHARSET "UTF-8";
+
+/* サイズをオレンジ〇で囲む */
+span.price {
+	/* サイズ指定 */
+	width: 175px;
+	height: 175px;
+	/* 背景色 */
+	background-color: #ff4500;
+	/* 角を丸くする */
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+}
+/* 合計金額の文字の大きさを変える */
+span#total-price {
+	font-size: 35px;
+}
+
+/* 商品一覧の画像を中央寄せにする*/
+.item-img-center {
+	margin-left: auto;
+	margin-right: auto;
+}
+/* 商品一覧のセルを固定幅にする*/
+.item-list-table {
+	table-layout: fixed;
+}
+
+th {
+	text-align: center;
+}
+/* 背景と枠を削除 履歴表示で使用 */
+.list-group-item {
+	background-color: transparent;
+	border: 0;
+}
+
+/* 注文ステータスバー関連 */
+#stepHeader {
+	position: relative;
+	height: 56px;
+	border-bottom: 2px solid #f0ad4e;
+	background: #fff;
+	text-align: center;
+}
+
+#stepHeader .header-logo {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+}
+
+#stepHeader .header-inner {
+	width: 950px;
+	margin: 0 auto;
+	padding: 8px 0;
+}
+
+#stepHeader h1 {
+	padding: 10px 0 8px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #f0ad4e;
+}
+
+#stepHeader .header-step li {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	height: 24px;
+	line-height: 25px;
+	margin: 0 5px;
+	padding: 0 6px;
+	border-radius: 3px;
+	background: #e5e5e5;
+	font-size: 15px;
+}
+
+#stepHeader .header-step li.on {
+	background: #f0ad4e;
+	color: #fff;
+}
+
+#stepHeader .header-step-border {
+	width: 300px;
+	*height: 9px;
+	margin: 9px auto -12px;
+	*margin: 0 auto -12px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+#stepHeader .quick-step-header-border {
+	width: 300px;
+}
+
+#stepHeader .header-step .off:after {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	margin: 0 5px;
+	padding: 0 6px;
+	border: 12px solid transparent;
+	border-left: 12px solid #e5e5e5;
+}
+
+#stepHeader .header-step li.on-after {
+	background: #f0ad4e;
+	color: #fff;
+}
+
+#stepHeader .header-step .on-after:after {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	margin: 0 5px;
+	padding: 0 6px;
+	border: 12px solid transparent;
+	border-left: 12px solid #f0ad4e;
+}
+
+/* お気に入り関連 favorite.jsと連動 */
+#modalWrap {
+	display: none;
+	background: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	overflow: hidden;
+}
+
+.modalBox {
+	position: fixed;
+	width: 85%;
+	max-width: 420px;
+	height: 0;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	overflow: hidden;
+	opacity: 1;
+	display: none;
+	border-radius: 3px;
+	z-index: 1000;
+}
+
+.modalInner {
+	padding: 10px;
+	text-align: center;
+	box-sizing: border-box;
+	background: rgba(0, 0, 0, 0.7);
+	color: #fff;
+}
+
+/* お気に入りボタン関連 */
+.heart {
+	background: url(/img_curry/web_heart_animation.png);
+	background-position: left;
+	background-repeat: no-repeat;
+	height: 100px;
+	width: 100px;
+	cursor: pointer;
+	position: relative;
+	margin: 0 0 -10% 65%;
+	background-size: 2900px;
+}
+.heart:hover {
+	background-position: right;
+}
+.liked {
+	background-position: right;
+}
+.likeCount {
+	margin-top: 40px;
+	margin-left: 55px;
+	font-size: 14px;
+	color: #999999;
+}
+@-webkit-keyframes heartBlast {
+	0% {
+		background-position: left;
+	}
+	100% {
+		background-position: right;
+	}
+}
+
+@keyframes heartBlast {
+	0% {
+		background-position: left;
+	}
+	100% {
+		background-position: right;
+	}
+}
+
+.heartAnimation {
+	-webkit-animation-name: heartBlast;
+	animation-name: heartBlast;
+	-webkit-animation-duration: .8s;
+	animation-duration: .8s;
+	-webkit-animation-iteration-count: 1;
+	animation-iteration-count: 1;
+	-webkit-animation-timing-function: steps(28);
+	animation-timing-function: steps(28);
+	background-position: right;
+}

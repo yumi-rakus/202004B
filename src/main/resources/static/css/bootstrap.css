@@ -5459,7 +5459,8 @@ button.close {
   background: transparent;
   border: 0;
 }
-.modal-open {
+/* モーダル関連は独自のCSSを適用 */
+/* .modal-open {
   overflow: hidden;
 }
 .modal {
@@ -5580,7 +5581,7 @@ button.close {
   .modal-lg {
     width: 900px;
   }
-}
+} */
 .tooltip {
   position: absolute;
   z-index: 1070;
